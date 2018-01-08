@@ -1,11 +1,12 @@
 
-trees <-3# 1000
+trees <- 1000
+dataSetSelect <- "IRIS" #"MNIST" "IRIS"
 
 wForest <- function(forest){
 
     treeNum <- length(forest$trees)
     treeSizes <- NA
-    datWrite <- treeNum
+    datWrite <- c(treeNum, ncol(forest$trees[[1]]$ClassProb))
 
     for(i in 1:treeNum){
         classProbs <- NA
@@ -23,7 +24,6 @@ wForest <- function(forest){
 
 library(rerf, lib.loc="rerf")
 
-dataSetSelect <- "IRIS"#"MNIST" "IRIS"
 observedError <- FALSE
 
 if(dataSetSelect == "IRIS"){
@@ -35,14 +35,16 @@ numberOfTestObservations <- 100
 numberOfTestObservations <- 10000
     #Size of the labels is 1 whereas everything else is 4
     #Open and position the image file
-    image_block <- file("../gitRepos/R-RerF/data/ubyte/train-images-idx3-ubyte", "rb")
+    #image_block <- file("../gitRepos/R-RerF/data/ubyte/train-images-idx3-ubyte", "rb")
+    image_block <- file("~/dropbox/gitRepos/R-RerF/data/ubyte/train-images-idx3-ubyte", "rb")
     q <- readBin(image_block, integer(), n=1, endian="big")
     num_images <- readBin(image_block, integer(), n=1, endian="big")
     num_col <- readBin(image_block, integer(), n=1, endian="big")
     num_row <- readBin(image_block, integer(), n=1, endian="big")
 
     #Open and position the label file
-    label_block = file("../gitRepos/R-RerF/data/ubyte/train-labels-idx1-ubyte", "rb")
+    #label_block = file("../gitRepos/R-RerF/data/ubyte/train-labels-idx1-ubyte", "rb")
+    label_block = file("~/dropbox/gitRepos/R-RerF/data/ubyte/train-labels-idx1-ubyte", "rb")
     q <- readBin(label_block, integer(), n=1, endian="big")
     num_labels <- readBin(label_block, integer(), n=1, endian="big")
 
