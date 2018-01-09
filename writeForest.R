@@ -1,6 +1,6 @@
 
-trees <- 1000
-dataSetSelect <- "IRIS" #"MNIST" "IRIS"
+trees <- 2000
+dataSetSelect <- "MNIST" #"MNIST" "IRIS"
 
 wForest <- function(forest){
 

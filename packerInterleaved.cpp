@@ -7,37 +7,29 @@
 #include <typeinfo>
 #include <queue>
 #include <ctime>
+#include "forest.h"
 
-const std::string forestFileName = "forest.csv";
-const std::string testFileName = "testObservations.csv";
-bool debugModeOn = false;
-bool showAllResults = false;
+//bool debugModeOn = false;
+//bool showAllResults = false;
 
-typedef struct Node {
-    double cutValue;
-    int feature;
-    int left;
-    int right;
-} Node;
-
-Node * forest = NULL;
-int numTreesInForest;
-int totalNumberOfNodes;
-int numLeafNodesInForest;
+//Node * forest = NULL;
+//int numTreesInForest;
+//int totalNumberOfNodes;
+//int numLeafNodesInForest;
 
 /////////////////////////////////////////////////////
-void printForest(){
-    printf("\nThere are %d trees in the forest.\n", numTreesInForest);  
-    printf("The mean number of nodes per tree is %f\n", (float)totalNumberOfNodes/(float)numTreesInForest);
-    printf("There are %d leaves in the forest.\n", numLeafNodesInForest);  
-}
+//void printForest(){
+//    printf("\nThere are %d trees in the forest.\n", numTreesInForest);  
+//    printf("The mean number of nodes per tree is %f\n", (float)totalNumberOfNodes/(float)numTreesInForest);
+//    printf("There are %d leaves in the forest.\n", numLeafNodesInForest);  
+//}
 ///////////////////////////////////////////////////////
-void printNode(Node currNode){
-    printf("\ncutValue %f, feature %d, left %d, right %d", currNode.cutValue,currNode.feature,currNode.left,currNode.right);
-}
+//void printNode(Node currNode){
+//    printf("\ncutValue %f, feature %d, left %d, right %d", currNode.cutValue,currNode.feature,currNode.left,currNode.right);
+//}
 
 ///////////////////////////////////////////////////////////////////
-void makePredictions(const std::string& testFile){
+/*void makePredictions(const std::string& testFile){
 
     int numObservations;
     int numCorrectPredictions = 0;
@@ -277,18 +269,22 @@ void createInterleavedForestFromCSV(const std::string& forestCSVFileName){
 }
 
 
-
+*/
 
 int main() {
+const std::string forestFileName = "forest.csv";
+const std::string testFileName = "testObservations.csv";
     std::clock_t    start;
     start = std::clock();
-    createInterleavedForestFromCSV(forestFileName);
+    Forest forest;
+    forest.createInterleavedForestFromCSV(forestFileName);
     std::cout << "Time to read and manipulate the tree: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
          
-    printForest();
+    forest.printForest();
+
 
     start = std::clock();
-    makePredictions(testFileName);
+    forest.makePredictions(testFileName);
     std::cout << "Time to make predictions: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 
     return 0;
