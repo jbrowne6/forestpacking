@@ -2,8 +2,9 @@
 
 class baseForest
 {
-    Node ** forestRoots = NULL;
-    Node * forest = NULL;
+  //  Node ** forestRoots = NULL;
+    //Node * forest = NULL;
+    public:
     int numTreesInForest;
     int totalNumberOfNodes;
     int numLeafNodesInForest;
@@ -13,12 +14,12 @@ class baseForest
     bool showAllResults;
     int returnClassPrediction(int *classTotals);
 
-    public:
+   // public:
     baseForest() : debugModeOn(false), showAllResults(false){}
     void printForest();
-    void createForestFromCSV(const std::string& forestCSVFileName);
-    void createInterleavedForestFromCSV(const std::string& forestCSVFileName);
-    void makePredictions(const std::string& testFile);
+    void virtual createForestFromCSV(const std::string& forestCSVFileName);
+    //void createInterleavedForestFromCSV(const std::string& forestCSVFileName);
+    void virtual makePredictions(const std::string& testFile);
     void turnDebugModeOn();
     void turnShowAllResultsOn();
 };

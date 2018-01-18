@@ -17,7 +17,7 @@ void baseForest::printForest(){
 }
 
 void baseForest::createForestFromCSV(const std::string& forestCSVFileName){
-    std::ifstream fin(forestCSVFileName.c_str());
+/*    std::ifstream fin(forestCSVFileName.c_str());
     int numNodesInTree;
     int numValuesForTree;
     int numInnerNodes;
@@ -109,9 +109,10 @@ void baseForest::createForestFromCSV(const std::string& forestCSVFileName){
         printf("forest is empty\n");
         exit(1);
     }
+    */
 }
 
-void baseForest::createInterleavedForestFromCSV(const std::string& forestCSVFileName){
+/*void baseForest::createInterleavedForestFromCSV(const std::string& forestCSVFileName){
     std::ifstream fin(forestCSVFileName.c_str());
     int numValuesForTree;
     int numInnerNodes;
@@ -248,10 +249,10 @@ void baseForest::createInterleavedForestFromCSV(const std::string& forestCSVFile
         currentNodeToProcess++;
     }
 }
-
+*/
 
 void baseForest::makePredictions(const std::string& testFile){
-    int numObservations;
+/*    int numObservations;
     int numCorrectPredictions = 0;
     int numFeatures;
     int currentNode;
@@ -275,50 +276,7 @@ void baseForest::makePredictions(const std::string& testFile){
     predictionClasses = new int[numObservations];
     observationFeatures = new int[numFeatures];
 
-    if(forestType == 1){
-
-        for(int i = 0; i < numObservations; i++){
-            fin >> currentNumberFromFile;
-            observationClasses[i] = (int)currentNumberFromFile;
-            for(int j=0; j < numFeatures; j++){
-                fin >> currentNumberFromFile;
-                observationFeatures[j] = (int)currentNumberFromFile;
-            }
-
-            for(int p= 0; p < numOfClasses; p++){
-                predictions[p]=0;
-            }
-            for(int k=0; k < numTreesInForest; k++){
-                currentNode = 0;
-                while(forestRoots[k][currentNode].isInternalNode()){
-                    if(forestRoots[k][currentNode].goLeft(observationFeatures[forestRoots[k][currentNode].returnFeature()])){
-                        currentNode = forestRoots[k][currentNode].returnLeftNode(); 
-                    }else{
-                        currentNode = forestRoots[k][currentNode].returnRightNode(); 
-                    }
-                }
-
-                predictions[forestRoots[k][currentNode].returnRightNode()]++;
-            }
-     predictionClasses[i] = returnClassPrediction(predictions);
-            if(showAllResults){
-                printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
-            }
-            if(observationClasses[i] == predictionClasses[i]){
-                numCorrectPredictions++;
-            }
-        }
-        //Pull one more float so that eof is TRUE.
-        fin >> currentNumberFromFile;
-        if(!fin.eof()){
-            printf("test csv not exausted");
-            exit(1);
-        }else{
-            fin.close();
-        }
-        printf("%f%% of the predictions were correct\n", 100.0*(float)numCorrectPredictions/(float)numObservations);
-
-    } else if(forestType == 2){
+   if(forestType == 2){
         for(int i = 0; i < numObservations; i++){
             fin >> currentNumberFromFile;
             observationClasses[i] = (int)currentNumberFromFile;
@@ -391,6 +349,7 @@ void baseForest::makePredictions(const std::string& testFile){
         printf("%f%% of the predictions were correct\n",100.0*(float)numCorrectPredictions/(float)numObservations);
 
     }
+*/
 }
 
 void baseForest::turnDebugModeOn(){

@@ -6,7 +6,9 @@
 #include <string>
 #include <typeinfo>
 #include <ctime>
-#include "baseForest.h"
+//#include "baseForest.h"
+//#include "perTreeForest.h"
+#include "interleavedForest.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2){
@@ -22,9 +24,12 @@ int main(int argc, char* argv[]) {
 
     std::clock_t    start;
     start = std::clock();
-    baseForest forest;
+  //  baseForest forest;
+  //perTreeForest forest;
+  interleavedForest forest;
+  forest.createForestFromCSV(forestFileName);
 
-    switch(algorithmToRun){
+/*    switch(algorithmToRun){
         case 1:
             forest.createForestFromCSV(forestFileName);
             break;
@@ -35,6 +40,7 @@ int main(int argc, char* argv[]) {
             printf("Put 1 or 2\n");
             return -1;
     }
+    */
 
     std::cout << "Time to read and manipulate the tree: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 
