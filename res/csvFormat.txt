@@ -1,0 +1,14 @@
+csv file format--
+    Number of Trees
+    Number of Classes
+    Then for each tree:
+        Number of Nodes in tree
+        treeMap, 1 for each node in tree
+        CutPoints, 1 for each node in tree
+        Which class, 1 for each node in tree
+        Which feature, 1 for each node in tree
+
+properties of trees--
+    number of inner nodes = (number nodes in tree -1)/2
+    number of values for tree = 1 + number nodes *2 + number of inner nodes (see rationale)
+    rationale = (1 for the number of nodes), (Each node shows in tree map), (each inner node has a cut point), (each inner node has a feature), (each leaf has a class)

@@ -6,7 +6,7 @@
 #include <string>
 #include <typeinfo>
 #include <ctime>
-#include "forest.h"
+#include "baseForest.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2){
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 
     std::clock_t    start;
     start = std::clock();
-    Forest forest;
+    baseForest forest;
 
     switch(algorithmToRun){
         case 1:

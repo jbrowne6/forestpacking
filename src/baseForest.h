@@ -1,24 +1,6 @@
-class Node
-{
-    double cutValue;
-    int feature;
-    int left;
-    int right;
+#include "baseNode.h"
 
-    public:
-    void setNode(double cVal, int feat, int l, int r);
-    void printNode();
-    double returnCutValue();
-    int returnFeature();
-    int returnLeftNode(); //should have been Value instead of Node
-    int returnRightNode();//should have been Value instead of Node
-    void setLeftValue(int LVal);
-    void setRightValue(int RVal); 
-    bool isInternalNode();
-    bool goLeft(double featureValue);
-};
-
-class Forest
+class baseForest
 {
     Node ** forestRoots = NULL;
     Node * forest = NULL;
@@ -32,7 +14,7 @@ class Forest
     int returnClassPrediction(int *classTotals);
 
     public:
-    Forest() : debugModeOn(false), showAllResults(false){}
+    baseForest() : debugModeOn(false), showAllResults(false){}
     void printForest();
     void createForestFromCSV(const std::string& forestCSVFileName);
     void createInterleavedForestFromCSV(const std::string& forestCSVFileName);

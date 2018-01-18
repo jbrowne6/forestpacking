@@ -6,53 +6,17 @@
 #include <string>
 #include <typeinfo>
 #include <vector>
-#include "forest.h"
-
-void Node::setNode(double cVal, int feat, int l, int r){
-    cutValue = cVal;
-    feature = feat;
-    left = l;
-    right = r;
-}
-
-void Node::printNode(){
-    printf("\ncutValue %f, feature %d, left %d, right %d", cutValue, feature, left, right);
-}
-
-double Node::returnCutValue(){
-    return cutValue;
-}
-int Node::returnFeature(){
-    return feature;
-}
-int Node::returnLeftNode(){
-    return left;
-}
-int Node::returnRightNode(){
-    return right;
-}
-bool Node::isInternalNode(){
-    return left > 0;
-}
-bool Node::goLeft(double featureValue){
-    return featureValue < cutValue;
-}
-void Node::setLeftValue(int LVal){
-    left = LVal;
-}
-void Node::setRightValue(int RVal){
-    right = RVal;
-}
+#include "baseForest.h"
 
 //Forest() : debugModeOn(false), showAllResults(false){}
 
-void Forest::printForest(){
+void baseForest::printForest(){
     printf("\nThere are %d trees in the forest.\n", numTreesInForest);  
     printf("The mean number of nodes per tree is %f\n", (float)totalNumberOfNodes/(float)numTreesInForest);
     printf("\nThere are %d leaves in the forest.\n", numLeafNodesInForest); 
 }
 
-void Forest::createForestFromCSV(const std::string& forestCSVFileName){
+void baseForest::createForestFromCSV(const std::string& forestCSVFileName){
     std::ifstream fin(forestCSVFileName.c_str());
     int numNodesInTree;
     int numValuesForTree;
@@ -147,7 +111,7 @@ void Forest::createForestFromCSV(const std::string& forestCSVFileName){
     }
 }
 
-void Forest::createInterleavedForestFromCSV(const std::string& forestCSVFileName){
+void baseForest::createInterleavedForestFromCSV(const std::string& forestCSVFileName){
     std::ifstream fin(forestCSVFileName.c_str());
     int numValuesForTree;
     int numInnerNodes;
@@ -286,7 +250,7 @@ void Forest::createInterleavedForestFromCSV(const std::string& forestCSVFileName
 }
 
 
-void Forest::makePredictions(const std::string& testFile){
+void baseForest::makePredictions(const std::string& testFile){
     int numObservations;
     int numCorrectPredictions = 0;
     int numFeatures;
@@ -429,15 +393,15 @@ void Forest::makePredictions(const std::string& testFile){
     }
 }
 
-void Forest::turnDebugModeOn(){
+void baseForest::turnDebugModeOn(){
     debugModeOn = true;
 }
 
-void Forest::turnShowAllResultsOn(){
+void baseForest::turnShowAllResultsOn(){
     showAllResults = true;
 }
 
-int Forest::returnClassPrediction(int *classTotals){
+int baseForest::returnClassPrediction(int *classTotals){
     int predictMaxValue = -1;
     int predictMaxClass = -1;
     for(int m=0; m<numOfClasses; m++){
