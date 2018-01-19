@@ -1,3 +1,6 @@
+#ifndef baseNode_h
+#define baseNode_h
+
 class Node
 {
     double cutValue;
@@ -17,4 +20,4 @@ class Node
     bool isInternalNode();
     bool goLeft(double featureValue);
 };
-
+#endif //baseNode_h

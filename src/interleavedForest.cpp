@@ -33,79 +33,77 @@ void interleavedForest::makePredictions(const std::string& testFile){
     predictionClasses = new int[numObservations];
     observationFeatures = new int[numFeatures];
 
-   if(forestType == 2){
-        for(int i = 0; i < numObservations; i++){
-            fin >> currentNumberFromFile;
-            observationClasses[i] = (int)currentNumberFromFile;
-            for(int j=0; j < numFeatures; j++){
-                fin >> currentNumberFromFile;
-                observationFeatures[j] = (int)currentNumberFromFile;
-            }
-
-            for(int p= 0; p < numOfClasses; p++){
-                predictions[p]=0;
-            }
-            ////////////////////////////////////////////////////////
-            if(1){ // make predictions one tree at a time
-                for(int k=0; k < numTreesInForest; k++){
-                    currentNode = k;
-                    while(forest[currentNode].isInternalNode()){
-                        if(forest[currentNode].goLeft(observationFeatures[forest[currentNode].returnFeature()])){
-                            currentNode = forest[currentNode].returnLeftNode(); 
-                        }else{
-                            currentNode = forest[currentNode].returnRightNode(); 
-                        }
-                    }
-                    predictions[forest[currentNode].returnRightNode()]++;
-                }
-
-            }else{// make predictions in order of memory access 
-                completedTrees = 0;
-                for(int k=0; k < numTreesInForest; k++){
-                    nodesToProcess.push(k);
-                }
-                while(completedTrees < numTreesInForest){
-                    currentNode = nodesToProcess.top();
-                    nodesToProcess.pop();
-                    if(forest[currentNode].isInternalNode()){
-                        if(forest[currentNode].goLeft(observationFeatures[forest[currentNode].returnFeature()])){
-                            nodesToProcess.push(forest[currentNode].returnLeftNode());
-                        }else{
-                            nodesToProcess.push(forest[currentNode].returnRightNode());
-                        }
-
-                    }else{
-                        predictions[forest[currentNode].returnRightNode()]++;
-                        completedTrees++;
-                    }
-
-                }
-                if(!nodesToProcess.empty()){
-                    printf("the priority queue was not emptied.\n");
-                    exit(1);
-                }
-            }
-            ///////////////////////////////////////////////////////
-  predictionClasses[i] = returnClassPrediction(predictions);
-            if(showAllResults){
-                printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
-            }
-            if(observationClasses[i] == predictionClasses[i]){
-                numCorrectPredictions++;
-            }
-        }
-
-        //Pull one more float so that eof is TRUE.
+    for(int i = 0; i < numObservations; i++){
         fin >> currentNumberFromFile;
-        if(!fin.eof()){
-            printf("test csv not exausted");
-            exit(1);
-        }else{
-            fin.close();
+        observationClasses[i] = (int)currentNumberFromFile;
+        for(int j=0; j < numFeatures; j++){
+            fin >> currentNumberFromFile;
+            observationFeatures[j] = (int)currentNumberFromFile;
         }
-        printf("%f%% of the predictions were correct\n",100.0*(float)numCorrectPredictions/(float)numObservations);
 
+        for(int p= 0; p < numOfClasses; p++){
+            predictions[p]=0;
+        }
+        ////////////////////////////////////////////////////////
+        if(1){ // make predictions one tree at a time
+            for(int k=0; k < numTreesInForest; k++){
+                currentNode = k;
+                while(forest[currentNode].isInternalNode()){
+                    if(forest[currentNode].goLeft(observationFeatures[forest[currentNode].returnFeature()])){
+                        currentNode = forest[currentNode].returnLeftNode(); 
+                    }else{
+                        currentNode = forest[currentNode].returnRightNode(); 
+                    }
+                }
+                predictions[forest[currentNode].returnRightNode()]++;
+            }
+
+        }else{// make predictions in order of memory access 
+            completedTrees = 0;
+            for(int k=0; k < numTreesInForest; k++){
+                nodesToProcess.push(k);
+            }
+            while(completedTrees < numTreesInForest){
+                currentNode = nodesToProcess.top();
+                nodesToProcess.pop();
+                if(forest[currentNode].isInternalNode()){
+                    if(forest[currentNode].goLeft(observationFeatures[forest[currentNode].returnFeature()])){
+                        nodesToProcess.push(forest[currentNode].returnLeftNode());
+                    }else{
+                        nodesToProcess.push(forest[currentNode].returnRightNode());
+                    }
+
+                }else{
+                    predictions[forest[currentNode].returnRightNode()]++;
+                    completedTrees++;
+                }
+
+            }
+            if(!nodesToProcess.empty()){
+                printf("the priority queue was not emptied.\n");
+                exit(1);
+            }
+        }
+        ///////////////////////////////////////////////////////
+        predictionClasses[i] = returnClassPrediction(predictions);
+        if(showAllResults){
+            printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
+        }
+        if(observationClasses[i] == predictionClasses[i]){
+            numCorrectPredictions++;
+        }
     }
+
+    //Pull one more float so that eof is TRUE.
+    fin >> currentNumberFromFile;
+    if(!fin.eof()){
+        printf("test csv not exausted");
+        exit(1);
+    }else{
+        fin.close();
+    }
+    printf("%f%% of the predictions were correct\n",100.0*(float)numCorrectPredictions/(float)numObservations);
+
 }
 
 
