@@ -1,39 +1,39 @@
 #include "baseNode.h"
 #include <stdio.h>
 
-void Node::setNode(double cVal, int feat, int l, int r){
+void baseNode::setNode(double cVal, int feat, int l, int r){
     cutValue = cVal;
     feature = feat;
     left = l;
     right = r;
 }
 
-void Node::printNode(){
-    printf("\ncutValue %f, feature %d, left %d, right %d", cutValue, feature, left, right);
+void baseNode::printNode(){
+    printf("cutValue %f, feature %d, left %d, right %d\n", cutValue, feature, left, right);
 }
 
-double Node::returnCutValue(){
+double baseNode::returnCutValue(){
     return cutValue;
 }
-int Node::returnFeature(){
+int baseNode::returnFeature(){
     return feature;
 }
-int Node::returnLeftNode(){
+int baseNode::returnLeftNode(){
     return left;
 }
-int Node::returnRightNode(){
+int baseNode::returnRightNode(){
     return right;
 }
-bool Node::isInternalNode(){
+bool baseNode::isInternalNode(){
     return left > 0;
 }
-bool Node::goLeft(double featureValue){
+bool baseNode::goLeft(double featureValue){
     return featureValue < cutValue;
 }
-void Node::setLeftValue(int LVal){
+void baseNode::setLeftValue(int LVal){
     left = LVal;
 }
-void Node::setRightValue(int RVal){
+void baseNode::setRightValue(int RVal){
     right = RVal;
 }
 

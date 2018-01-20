@@ -1,7 +1,7 @@
 #ifndef baseNode_h
 #define baseNode_h
 
-class Node
+class baseNode
 {
     double cutValue;
     int feature;

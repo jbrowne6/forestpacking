@@ -10,12 +10,10 @@ class baseForest
     int totalNumberOfNodes;
     int numLeafNodesInForest;
     int numOfClasses;
-    int forestType;
     bool debugModeOn;
     bool showAllResults;
     int returnClassPrediction(int *classTotals);
 
-   // public:
     baseForest() : debugModeOn(false), showAllResults(false){}
     void printForest();
     void virtual createForestFromCSV(const std::string& forestCSVFileName);

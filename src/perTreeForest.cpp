@@ -1,11 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <queue>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string>
-#include <typeinfo>
-#include <vector>
 #include "perTreeForest.h"
 
 void perTreeForest::createForestFromCSV(const std::string& forestCSVFileName){
@@ -16,7 +12,6 @@ void perTreeForest::createForestFromCSV(const std::string& forestCSVFileName){
     totalNumberOfNodes = 0;
     numLeafNodesInForest = 0;
     double num;
-    forestType = 1;
 
     //First number in csv is the number of trees
     fin >> num;
@@ -25,7 +20,7 @@ void perTreeForest::createForestFromCSV(const std::string& forestCSVFileName){
     fin >> num;
     numOfClasses = (int)num;
 
-    forestRoots = new Node*[numTreesInForest];
+    forestRoots = new baseNode*[numTreesInForest];
     if(forestRoots == NULL){
         printf("memory for forest was not allocated");
         exit(1);
@@ -53,7 +48,7 @@ void perTreeForest::createForestFromCSV(const std::string& forestCSVFileName){
             numbers.push_back(num);  // store the number 
         }
         //Allocate space for this tree
-        forestRoots[i] = new Node[numNodesInTree];
+        forestRoots[i] = new baseNode[numNodesInTree];
         if(forestRoots[i] == NULL){
             printf("memory not allocated for tree");
             exit(1);
@@ -127,8 +122,6 @@ void perTreeForest::makePredictions(const std::string& testFile){
     predictionClasses = new int[numObservations];
     observationFeatures = new int[numFeatures];
 
-    if(forestType == 1){
-
         for(int i = 0; i < numObservations; i++){
             fin >> currentNumberFromFile;
             observationClasses[i] = (int)currentNumberFromFile;
@@ -169,5 +162,5 @@ void perTreeForest::makePredictions(const std::string& testFile){
             fin.close();
         }
         printf("%f%% of the predictions were correct\n", 100.0*(float)numCorrectPredictions/(float)numObservations);
-    }
+    
 }

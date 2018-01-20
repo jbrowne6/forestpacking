@@ -6,8 +6,6 @@
 #include <string>
 #include <typeinfo>
 #include <ctime>
-//#include "perTreeForest.h"
-//#include "interleavedForest.h"
 #include "forestFactory.h"
 
 int main(int argc, char* argv[]) {
@@ -27,10 +25,8 @@ int main(int argc, char* argv[]) {
 
     forestFactory FF;
     baseForest* forest = FF.makeForest(algorithmToRun);
-  //  baseForest forest;
-  //perTreeForest forest;
- // interleavedForest forest;
-  forest->createForestFromCSV(forestFileName);
+
+    forest->createForestFromCSV(forestFileName);
 
     std::cout << "Time to read and manipulate the tree: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 

@@ -1,9 +1,12 @@
+#include "reverseNode.h"
 #include "baseForest.h"
 
-class interleavedForest : public baseForest {
+class topBinForest : public baseForest {
 
-    baseNode * forest = NULL;
+    reverseNode ** forest = NULL;
+    int bins;
     public:
+    topBinForest(int numBins) : bins(numBins){}
     void createForestFromCSV(const std::string& forestCSVFileName);
     void makePredictions(const std::string& testFile);
 };
