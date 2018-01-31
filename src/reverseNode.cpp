@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "reverseNode.h"
 
-void reverseNode::printReverseNode(){
+void reverseNode::printNode(){
     printf("cutVal %f, feat %d, l %d, r %d, depth %d, pn %d\n", returnCutValue(), returnFeature(), returnLeftNode(), returnRightNode(), returnDepthOfNode(), returnParentNode());
 }
 

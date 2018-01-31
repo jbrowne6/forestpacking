@@ -2,6 +2,7 @@
 #include <fstream>
 #include <queue>
 #include <stdlib.h>
+#include <string.h>
 #include "interleavedForest.h"
 
 void interleavedForest::makePredictions(const std::string& testFile){
@@ -37,9 +38,7 @@ void interleavedForest::makePredictions(const std::string& testFile){
             observationFeatures[j] = (int)currentNumberFromFile;
         }
 
-        for(int p= 0; p < numOfClasses; p++){
-            predictions[p]=0;
-        }
+            memset(predictions, 0, sizeof(predictions));
         ////////////////////////////////////////////////////////
         if(1){ // make predictions one tree at a time
             for(int k=0; k < numTreesInForest; k++){

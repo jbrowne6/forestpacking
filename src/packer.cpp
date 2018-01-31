@@ -25,6 +25,8 @@ int main(int argc, char* argv[]) {
 
     forestFactory FF;
     baseForest* forest = FF.makeForest(algorithmToRun);
+    //forest->turnDebugModeOn();
+    //forest->turnShowAllResultsOn();
 
     forest->createForestFromCSV(forestFileName);
 

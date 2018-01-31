@@ -10,7 +10,7 @@ class baseNode
 
     public:
     void setNode(double cVal, int feat, int l, int r);
-    void printNode();
+    void virtual printNode();
     double returnCutValue();
     int returnFeature();
     int returnLeftNode(); //should have been Value instead of Node

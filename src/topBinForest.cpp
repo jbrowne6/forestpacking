@@ -2,22 +2,25 @@
 #include <fstream>
 #include <queue>
 #include <stdlib.h>
+#include <cstring>
 #include "topBinForest.h"
 
+void topBinForest::printForest(){
+    baseForest::printForest();
+    printf("There are %d bins.  The first %d levels are interleaved.\n",numOfBins, treeTopDepth);  
+}
+
+
 void topBinForest::makePredictions(const std::string& testFile){
-/*
+
     int numObservations;
     int numCorrectPredictions = 0;
     int numFeatures;
-    int currentNode;
-    int predictions[numOfClasses];
-    int completedTrees;
+  //  int currentNode;
+    int predictions[numOfBins][numOfClasses];
     std::priority_queue<int, std::vector<int>, std::greater<int> > nodesToProcess;
     double currentNumberFromFile; 
     std::ifstream fin(testFile.c_str());
-    int *observationClasses;
-    int *predictionClasses;
-    int *observationFeatures;
 
     fin >> currentNumberFromFile;
     numObservations = (int) currentNumberFromFile;
@@ -26,68 +29,58 @@ void topBinForest::makePredictions(const std::string& testFile){
     printf("\nThere are %d observations to test\n", numObservations);
     printf("There are %d features in each observation\n", numFeatures);
 
-    observationClasses = new int[numObservations];
-    predictionClasses = new int[numObservations];
-    observationFeatures = new int[numFeatures];
+    int observationClasses[numObservations];
+    int predictionClasses[numObservations];
+    int observationFeatures[numFeatures] = {};
 
-    for(int i = 0; i < numObservations; i++){
-        fin >> currentNumberFromFile;
-        observationClasses[i] = (int)currentNumberFromFile;
-        for(int j=0; j < numFeatures; j++){
+    int treesPerBin = numTreesInForest / numOfBins;
+    int  binRemainder = numTreesInForest % numOfBins;
+//    int treesInBin;
+//#pragma omp parallel
+    {
+        
+        for(int i = 0; i < numObservations; i++){
+            memset(predictions, 0, sizeof(predictions));
             fin >> currentNumberFromFile;
-            observationFeatures[j] = (int)currentNumberFromFile;
-        }
+            observationClasses[i] = (int)currentNumberFromFile;
+            for(int j=0; j < numFeatures; j++){
+                fin >> currentNumberFromFile;
+                observationFeatures[j] = (int)currentNumberFromFile;
+            }
 
-        for(int p= 0; p < numOfClasses; p++){
-            predictions[p]=0;
-        }
-        ////////////////////////////////////////////////////////
-        if(1){ // make predictions one tree at a time
-            for(int k=0; k < numTreesInForest; k++){
-                currentNode = k;
-                while(forest[currentNode].isInternalNode()){
-                    if(forest[currentNode].goLeft(observationFeatures[forest[currentNode].returnFeature()])){
-                        currentNode = forest[currentNode].returnLeftNode(); 
-                    }else{
-                        currentNode = forest[currentNode].returnRightNode(); 
+            #pragma omp parallel for
+            for(int currBinNum = 0; currBinNum < numOfBins; currBinNum++){
+                int treesInBin = (currBinNum < binRemainder)? treesPerBin+1 : treesPerBin;
+                    int currentNode;
+                //    if(i < binRemainder){endTree++;}
+                ////////////////////////////////////////////////////////
+                // make predictions one tree at a time
+                for(int k=0; k < treesInBin; k++){
+                    currentNode = k;
+                    while(forest[currBinNum][currentNode].isInternalNode()){
+                        if(forest[currBinNum][currentNode].goLeft(observationFeatures[forest[currBinNum][currentNode].returnFeature()])){
+                            currentNode = forest[currBinNum][currentNode].returnLeftNode(); 
+                        }else{
+                            currentNode = forest[currBinNum][currentNode].returnRightNode(); 
+                        }
                     }
+                    predictions[currBinNum][forest[currBinNum][currentNode].returnRightNode()]++;
                 }
-                predictions[forest[currentNode].returnRightNode()]++;
             }
-
-        }else{// make predictions in order of memory access 
-            completedTrees = 0;
-            for(int k=0; k < numTreesInForest; k++){
-                nodesToProcess.push(k);
-            }
-            while(completedTrees < numTreesInForest){
-                currentNode = nodesToProcess.top();
-                nodesToProcess.pop();
-                if(forest[currentNode].isInternalNode()){
-                    if(forest[currentNode].goLeft(observationFeatures[forest[currentNode].returnFeature()])){
-                        nodesToProcess.push(forest[currentNode].returnLeftNode());
-                    }else{
-                        nodesToProcess.push(forest[currentNode].returnRightNode());
-                    }
-
-                }else{
-                    predictions[forest[currentNode].returnRightNode()]++;
-                    completedTrees++;
+            ///////////////////////////////////////////////////////
+            for(int p=1; p < numOfBins; p++){//TODO this should be SIMD
+//#pragma omp simd
+                for(int q=0; q < numOfClasses; q++){
+                    predictions[0][q] += predictions[p][q];
                 }
-
             }
-            if(!nodesToProcess.empty()){
-                printf("the priority queue was not emptied.\n");
-                exit(1);
+            predictionClasses[i] = returnClassPrediction(predictions[0]);
+            if(showAllResults){
+                printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
             }
-        }
-        ///////////////////////////////////////////////////////
-        predictionClasses[i] = returnClassPrediction(predictions);
-        if(showAllResults){
-            printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
-        }
-        if(observationClasses[i] == predictionClasses[i]){
-            numCorrectPredictions++;
+            if(observationClasses[i] == predictionClasses[i]){
+                numCorrectPredictions++;
+            }
         }
     }
 
@@ -98,14 +91,15 @@ void topBinForest::makePredictions(const std::string& testFile){
         exit(1);
     }else{
         fin.close();
-    }
+    }   
+
     printf("%f%% of the predictions were correct\n",100.0*(float)numCorrectPredictions/(float)numObservations);
 
-*/
 }
 
 void topBinForest::createForestFromCSV(const std::string& forestCSVFileName){
-std::ifstream fin(forestCSVFileName.c_str());
+
+    std::ifstream fin(forestCSVFileName.c_str());
     int numValuesForTree;
     int numInnerNodes;
     totalNumberOfNodes = 0;
@@ -120,7 +114,7 @@ std::ifstream fin(forestCSVFileName.c_str());
     int* startLocationOfEachTree = NULL;
     reverseNode * tempForest = NULL;
 
-//First pass through the csv file tells how much memory is needed.
+    //First pass through the csv file tells how much memory is needed.
     //First number in csv is the number of trees
     fin >> numFromCSV;
     numTreesInForest = (int)numFromCSV;
@@ -147,8 +141,8 @@ std::ifstream fin(forestCSVFileName.c_str());
     }
     fin.clear();
     fin.seekg(0, std::ios::beg);
-    
-//starting second pass to load data contiguously
+
+    //starting second pass to load data contiguously
     tempForest = new reverseNode[firstPassNumberOfNodes];
     if(tempForest == NULL){
         printf("memory for temp forest was not allocated");
@@ -192,8 +186,8 @@ std::ifstream fin(forestCSVFileName.c_str());
                 //set parent and depth of left node
                 tempForest[startLocationOfEachTree[i]+ int(numbers[k])*2-1].setDepthOfNode(tempForest[k+startLocationOfEachTree[i]].returnDepthOfNode()+1);
                 tempForest[startLocationOfEachTree[i]+ int(numbers[k])*2-1].setParentNode(k+startLocationOfEachTree[i]);
-//set parent and depth of right node
-tempForest[startLocationOfEachTree[i]+ int(numbers[k])*2].setDepthOfNode(tempForest[k+startLocationOfEachTree[i]].returnDepthOfNode()+1);
+                //set parent and depth of right node
+                tempForest[startLocationOfEachTree[i]+ int(numbers[k])*2].setDepthOfNode(tempForest[k+startLocationOfEachTree[i]].returnDepthOfNode()+1);
                 tempForest[startLocationOfEachTree[i]+ int(numbers[k])*2].setParentNode(k+startLocationOfEachTree[i]);
 
             }else{
@@ -233,219 +227,161 @@ tempForest[startLocationOfEachTree[i]+ int(numbers[k])*2].setDepthOfNode(tempFor
     }else{
         fin.close();
     }
-    
 
+    //////////////////////////////////////////////////////////////////////////////////
+    //At this point all nodes are in one contiguous data structure.
+    //Start binning and rearranging trees
+    forest = new baseNode*[numOfBins];
+    treesPerBin = numTreesInForest / numOfBins;
+    binRemainder = numTreesInForest % numOfBins;
 
-
-//First number in csv is the number of trees
-    fin >> numFromCSV;
-    numTreesInForest = (int)numFromCSV;
-    //Second number in csv is the number of classes
-    fin >> numFromCSV;
-    numOfClasses = (int)numFromCSV;
-
-    forest = new reverseNode*[bins];
-treesPerBin = numTreesInForest / bins;
- binRemainder = numTreesInForest % bins;
-
-
-
-
-    /*
-
-//Create each tree one at a time.
-    for(int i =0; i < bins; i++){
-        std::vector<double> numbers;
-
-        //First number in each tree is the number of nodes 
-        //in the current tree * 2 (map and nodes)
-        fin >> num;
-        numNodesInTree = (int)num;
-        numInnerNodes = (numNodesInTree-1)/2;
-        numValuesForTree = numNodesInTree*2+numInnerNodes;
-        totalNumberOfNodes += numNodesInTree; 
-
-        if(numNodesInTree%2 == 0){
-            printf("num of nodes is even"); 
-            exit(1);
-        }
-        //Put all values pertaining to current tree in a vector
-        for(int j = 0; j < numValuesForTree; j++){
-            fin >> num;
-            numbers.push_back(num);  // store the number 
-        }
-        //Allocate space for this tree
-        forestRoots[i] = new baseNode[numNodesInTree];
-        if(forestRoots[i] == NULL){
-            printf("memory not allocated for tree");
-            exit(1);
-        }
-        for(int k = 0; k < numNodesInTree; k++){
-            if(numbers[k] > 0){
-                forestRoots[i][k].setNode(numbers[numNodesInTree+numbers[k]-1],
-                        int(numbers[numNodesInTree*2+numbers[k]-1]),
-                        int(numbers[k])*2-1,
-                        int(numbers[k])*2);
-            }else{
-                forestRoots[i][k].setNode(-1.0,
-                        int(-1),
-                        int(-1),
-                        int(numbers[numNodesInTree+ numInnerNodes +(-1*numbers[k])-1]));
-                numLeafNodesInForest++;
-            }
-        }
-
-        if(debugModeOn){
-            if(i == 0){
-                for(int p = 0; p < numNodesInTree; p++){
-                    forestRoots[i][p].printNode();
-                }
-            }
-        }
-
-        //Print current tree.  Just for checking.
-        if(debugModeOn){
-            printf("start of tree %d.\n", i);
-            for (unsigned int z=0; z<numbers.size(); z++)
-                std::cout << numbers[z] << '\n';
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //First pass through the csv file tells how much memory is needed.
-    //First number in csv is the number of trees
-    fin >> num;
-    numTreesInForest = (int)num;
-    numNodesInEachTree = new int[numTreesInForest];
-    startLocationOfEachTree = new int[numTreesInForest];
-    //Second number in csv is the number of classes
-    fin >> num;
-    numOfClasses = (int)num;
-
-    for(int i = 0; i < numTreesInForest;i++){
-        fin >> num;
-        numNodesInEachTree[i] = (int)num;
-        numInnerNodes = (numNodesInEachTree[i]-1)/2;
-        numValuesForTree = numNodesInEachTree[i]*2+numInnerNodes;
-        for(int j = 0; j < numValuesForTree;j++){
-            fin >> num;
-        }
-        firstPassNumberOfNodes+=numNodesInEachTree[i];
-    }
-    fin >> num;
-    if(!fin.eof()){
-        printf("csv not exausted during first pass %d\n", firstPassNumberOfNodes);
-        exit(1);
-    }
-    fin.clear();
-    fin.seekg(0, std::ios::beg);
-
-    forest = new baseNode[firstPassNumberOfNodes];
-    tempForest = new baseNode[firstPassNumberOfNodes];
-    if(forest == NULL || tempForest == NULL){
-        printf("memory for forest was not allocated");
+    if(treesPerBin*numOfBins + binRemainder != numTreesInForest){
+        printf("not all trees are binned.\n");
         exit(1);
     }
 
-    //Second pass over data
-    //read first and second values and ignore
-    fin >> num;
-    fin >> num;
+    int numOfNodesProcessed = 0;
+    int numOfNodesPlacedInBins = 0;
+    int startTree = 0;
+    int endTree = treesPerBin;
+    int nextUnusedNodeInBin;
+    int currentNodeToProcess;
+    int nodesInBin;
 
-    //Create each tree one at a time.
-    for(int i =0; i < numTreesInForest; i++){
-        std::vector<double> numbers;
-        //First number in each tree is the number of nodes 
-        //in the current tree * 2 (map and nodes)
-        fin >> num;
-        numInnerNodes = (numNodesInEachTree[i]-1)/2;
-        numValuesForTree = numNodesInEachTree[i]*2+numInnerNodes;
-        if(numNodesInEachTree[i]%2 == 0){
-            printf("num of nodes is even"); 
-            exit(1);
+    for(int i = 0; i < numOfBins;i++){
+        nextUnusedNodeInBin = 0;
+        currentNodeToProcess = 0;
+        if(i < binRemainder){endTree++;}
+
+        nodesInBin = 0;
+        for(int j = startTree; j < endTree; j++){
+            nodesInBin += numNodesInEachTree[j];
         }
-        startLocationOfEachTree[i] =totalNumberOfNodes; 
-        //Put all values pertaining to current tree in a vector
-        for(int j = 0; j < numValuesForTree; j++){
-            fin >> num;
-            numbers.push_back(num);  // store the number 
+        numOfNodesPlacedInBins += nodesInBin;
+        forest[i] = new baseNode[nodesInBin];
+
+        //until processed, left and right pertain to tempForest locations.  These need to be changed when processed.  left is location in temp forest
+        //start with all roots
+        for(int j = startTree; j < endTree; j++){
+            forest[i][nextUnusedNodeInBin++].setNode( 
+                    tempForest[startLocationOfEachTree[j]].returnCutValue(),
+                    tempForest[startLocationOfEachTree[j]].returnFeature(),
+                    startLocationOfEachTree[j],
+                    tempForest[startLocationOfEachTree[j]].returnRightNode());
         }
-        for(int k = 0; k < numNodesInEachTree[i]; k++){
-            if(numbers[k] > 0){
-                tempForest[k+startLocationOfEachTree[i]].setNode(numbers[numNodesInEachTree[i]+numbers[k]-1],
-                        int(numbers[numNodesInEachTree[i]*2+numbers[k]-1]),
-                        startLocationOfEachTree[i] + int(numbers[k])*2-1,
-                        startLocationOfEachTree[i] + int(numbers[k])*2);
+        while( tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnDepthOfNode() < treeTopDepth && currentNodeToProcess <= nextUnusedNodeInBin){
+            if(tempForest[forest[i][currentNodeToProcess].returnLeftNode()].isInternalNode()){
+                //create left node
+                forest[i][nextUnusedNodeInBin].setNode(
+                        tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnLeftNode()].returnCutValue(),
+                        tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnLeftNode()].returnFeature(),
+                        tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnLeftNode(),
+                        0);
+                //create right node
+                forest[i][nextUnusedNodeInBin+1].setNode(
+                        tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode()].returnCutValue(),
+                        tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode()].returnFeature(),
+                        tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode(),
+                        0);
+
+                forest[i][currentNodeToProcess].setLeftValue(nextUnusedNodeInBin++);
+                forest[i][currentNodeToProcess].setRightValue(nextUnusedNodeInBin++);
             }else{
-                tempForest[k+startLocationOfEachTree[i]].setNode(-1.0,
+                forest[i][currentNodeToProcess].setNode(
                         -1,
                         -1,
-                        int(numbers[numNodesInEachTree[i]+ numInnerNodes +(-1*numbers[k])-1]));
-                numLeafNodesInForest++;
+                        -1,
+                        tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode());
             }
+            currentNodeToProcess++;
         }
-        if(debugModeOn){
-            if(i == 0){
-                for(int p = 0; p < numNodesInEachTree[i]; p++){
-                    tempForest[p+totalNumberOfNodes].printNode();
+
+        int startOfDepthFirst = currentNodeToProcess;
+        int endOfDepthFirst = nextUnusedNodeInBin;
+
+        for(int j = startOfDepthFirst; j < endOfDepthFirst; j++){
+            //check to make sure the depth of each node at this stage is less greater than top depth.
+            if(tempForest[forest[i][j].returnLeftNode()].returnDepthOfNode() < treeTopDepth){
+                printf("A top level node is being processed where it shouldn't be.\n");
+                printf("node depth: %d\nmin depth: %d\n", tempForest[forest[i][j].returnLeftNode()].returnDepthOfNode(), treeTopDepth);
+                exit(1);
+            }
+            if(tempForest[forest[i][j].returnLeftNode()].isInternalNode()){
+                //create left node
+                forest[i][nextUnusedNodeInBin].setNode(
+                        tempForest[tempForest[forest[i][j].returnLeftNode()].returnLeftNode()].returnCutValue(),
+                        tempForest[tempForest[forest[i][j].returnLeftNode()].returnLeftNode()].returnFeature(),
+                        tempForest[forest[i][j].returnLeftNode()].returnLeftNode(),
+                        0);
+                //create right node
+                forest[i][nextUnusedNodeInBin+1].setNode(
+                        tempForest[tempForest[forest[i][j].returnLeftNode()].returnRightNode()].returnCutValue(),
+                        tempForest[tempForest[forest[i][j].returnLeftNode()].returnRightNode()].returnFeature(),
+                        tempForest[forest[i][j].returnLeftNode()].returnRightNode(),
+                        0);
+
+                currentNodeToProcess = nextUnusedNodeInBin;
+                forest[i][j].setLeftValue(nextUnusedNodeInBin++);
+                forest[i][j].setRightValue(nextUnusedNodeInBin++);
+            }else{
+                forest[i][j].setNode(
+                        -1,
+                        -1,
+                        -1,
+                        tempForest[forest[i][j].returnLeftNode()].returnRightNode());
+                continue;
+            }
+
+            while(currentNodeToProcess < nextUnusedNodeInBin){
+                if(tempForest[forest[i][currentNodeToProcess].returnLeftNode()].isInternalNode()){
+                    //create left node
+                    forest[i][nextUnusedNodeInBin].setNode(
+                            tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnLeftNode()].returnCutValue(),
+                            tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnLeftNode()].returnFeature(),
+                            tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnLeftNode(),
+                            0);
+                    //create right node
+                    forest[i][nextUnusedNodeInBin+1].setNode(
+                            tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode()].returnCutValue(),
+                            tempForest[tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode()].returnFeature(),
+                            tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode(),
+                            0);
+
+                    forest[i][currentNodeToProcess].setLeftValue(nextUnusedNodeInBin++);
+                    forest[i][currentNodeToProcess].setRightValue(nextUnusedNodeInBin++);
+                }else{
+                    forest[i][currentNodeToProcess].setNode(
+                            -1,
+                            -1,
+                            -1,
+                            tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnRightNode());
                 }
+                currentNodeToProcess++;
             }
         }
-        //Print current tree.  Just for checking.
-        if(debugModeOn && 0){
-            printf("start of tree %d.\n", i);
-            for (unsigned int z=0; z<numbers.size(); z++)
-                std::cout << numbers[z] << '\n';
+        if(nextUnusedNodeInBin != nodesInBin){
+            printf("Not all nodes were processed for this bin.\n");
+            printf("nodes in bins: %d\nnodes processed: %d\n", nodesInBin, nextUnusedNodeInBin);
+            printf("This is bin #%d\n", i);
+            exit(1);
         }
-
-        totalNumberOfNodes += numNodesInEachTree[i]; 
+        numOfNodesProcessed += nextUnusedNodeInBin;
+        startTree= endTree;
+        endTree= startTree+treesPerBin;
     }
-    if(totalNumberOfNodes != firstPassNumberOfNodes){
-        printf("number of nodes differs between passes.\n");
-        printf("First pass: %d\nSecond pass: %d\n", firstPassNumberOfNodes, totalNumberOfNodes);
+
+
+    if(numOfNodesPlacedInBins != firstPassNumberOfNodes){
+        printf("all nodes were not placed in bins.\n");
+        printf("nodes in bins: %d\ntotal number of nodes: %d\n", numOfNodesPlacedInBins, firstPassNumberOfNodes);
         exit(1);
     }
-    //Pull one more float so that eof is TRUE.
-    fin >> num;
-    if(!fin.eof()){
-        printf("csv not exausted during second pass");
+
+    if(numOfNodesProcessed != firstPassNumberOfNodes){
+        printf("all nodes were not processed in final forest.\n");
+        printf("nodes used: %d\nfirst pass: %d\n", numOfNodesProcessed, firstPassNumberOfNodes);
         exit(1);
-    }else{
-        fin.close();
     }
 
-    //Now the entire forest is in forestTemp.  Reorganize for locality.
-    int nextUnusedNodeInForest = 0;
-    int currentNodeToProcess = 0;
-    //until processed, left denotes origional tree and right denotes location in tree
-
-    //start with all the roots
-    for(int i = 0; i < numTreesInForest; i++){
-        forest[nextUnusedNodeInForest++] = tempForest[startLocationOfEachTree[i]];
-    }
-
-    //loop through each of the trees interleaving the nodes
-    while(currentNodeToProcess < firstPassNumberOfNodes){
-        if(forest[currentNodeToProcess].isInternalNode()){//current node is interior node
-            forest[nextUnusedNodeInForest] = tempForest[forest[currentNodeToProcess].returnLeftNode()];
-            forest[currentNodeToProcess].setLeftValue(nextUnusedNodeInForest++);
-            forest[nextUnusedNodeInForest] = tempForest[forest[currentNodeToProcess].returnRightNode()];
-            forest[currentNodeToProcess].setRightValue(nextUnusedNodeInForest++);
-        }
-        currentNodeToProcess++;
-    }
-    */
 }
 

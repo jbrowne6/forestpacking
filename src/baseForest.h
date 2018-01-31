@@ -15,7 +15,7 @@ class baseForest
     int returnClassPrediction(int *classTotals);
 
     baseForest() : debugModeOn(false), showAllResults(false){}
-    void printForest();
+    void virtual printForest();
     void virtual createForestFromCSV(const std::string& forestCSVFileName);
     void virtual makePredictions(const std::string& testFile);
     void turnDebugModeOn();

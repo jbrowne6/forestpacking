@@ -13,6 +13,6 @@ class reverseNode : public baseNode
     int returnParentNode();
     void setDepthOfNode(int depth);
     void setParentNode(int parentNodeIndex);
-    void printReverseNode();
+    void printNode();
 };
 #endif //reverseNode_h
