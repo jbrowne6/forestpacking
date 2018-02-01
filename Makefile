@@ -16,8 +16,9 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -O3 -g
-LIB         := -fopenmp -lm 
+CFLAGS      := -fopenmp -Wall -O3
+#LIB         := -fopenmp -lm 
+LIB         := -fopenmp 
 INC         := -I$(INCDIR) -I/usr/local/include
 INCDEP      := -I$(INCDIR)
 
@@ -66,6 +67,12 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@sed -e 's|.*:|$(BUILDDIR)/$*.$(OBJEXT):|' < $(BUILDDIR)/$*.$(DEPEXT).tmp > $(BUILDDIR)/$*.$(DEPEXT)
 	@sed -e 's/.*://' -e 's/\\$$//' < $(BUILDDIR)/$*.$(DEPEXT).tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(BUILDDIR)/$*.$(DEPEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
+
+#Debug
+debug: CFLAGS := -fopenmp -Wall -Og -g -ggdb
+debug: LIB := -fopenmp -ggdb
+debug: cleaner all
+ 
 
 #Non-File Targets
 .PHONY: all remake clean cleaner resources

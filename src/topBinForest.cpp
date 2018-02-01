@@ -17,6 +17,7 @@ void topBinForest::makePredictions(const std::string& testFile){
     int numCorrectPredictions = 0;
     int numFeatures;
   //  int currentNode;
+  int treesInBin;
     int predictions[numOfBins][numOfClasses];
     std::priority_queue<int, std::vector<int>, std::greater<int> > nodesToProcess;
     double currentNumberFromFile; 
@@ -35,52 +36,57 @@ void topBinForest::makePredictions(const std::string& testFile){
 
     int treesPerBin = numTreesInForest / numOfBins;
     int  binRemainder = numTreesInForest % numOfBins;
-//    int treesInBin;
-//#pragma omp parallel
-    {
-        
-        for(int i = 0; i < numObservations; i++){
-            memset(predictions, 0, sizeof(predictions));
-            fin >> currentNumberFromFile;
-            observationClasses[i] = (int)currentNumberFromFile;
-            for(int j=0; j < numFeatures; j++){
-                fin >> currentNumberFromFile;
-                observationFeatures[j] = (int)currentNumberFromFile;
-            }
+            int multiCurrentNode[treesPerBin+1];
 
-            #pragma omp parallel for
-            for(int currBinNum = 0; currBinNum < numOfBins; currBinNum++){
-                int treesInBin = (currBinNum < binRemainder)? treesPerBin+1 : treesPerBin;
-                    int currentNode;
-                //    if(i < binRemainder){endTree++;}
-                ////////////////////////////////////////////////////////
-                // make predictions one tree at a time
-                for(int k=0; k < treesInBin; k++){
-                    currentNode = k;
-                    while(forest[currBinNum][currentNode].isInternalNode()){
-                        if(forest[currBinNum][currentNode].goLeft(observationFeatures[forest[currBinNum][currentNode].returnFeature()])){
-                            currentNode = forest[currBinNum][currentNode].returnLeftNode(); 
-                        }else{
-                            currentNode = forest[currBinNum][currentNode].returnRightNode(); 
-                        }
+    for(int i = 0; i < numObservations; i++){
+        memset(predictions, 0, sizeof(predictions));
+        fin >> currentNumberFromFile;
+        observationClasses[i] = (int)currentNumberFromFile;
+        for(int j=0; j < numFeatures; j++){
+            fin >> currentNumberFromFile;
+            observationFeatures[j] = (int)currentNumberFromFile;
+        }
+
+        for(int currBinNum = 0; currBinNum < numOfBins; currBinNum++){
+            treesInBin = (currBinNum < binRemainder)? treesPerBin+1 : treesPerBin;
+            for(int q = 0; q < treesInBin; q++){multiCurrentNode[q] = q;}
+            for(int m = 0; m < treeTopDepth; m++){
+                for(int n = 0; n < treesInBin; n++){
+if(forest[currBinNum][multiCurrentNode[n]].isInternalNode()){
+if(forest[currBinNum][multiCurrentNode[n]].goLeft(observationFeatures[forest[currBinNum][multiCurrentNode[n]].returnFeature()])){
+                        multiCurrentNode[n] = forest[currBinNum][multiCurrentNode[n]].returnLeftNode(); 
+                    }else{
+                        multiCurrentNode[n] = forest[currBinNum][multiCurrentNode[n]].returnRightNode(); 
                     }
-                    predictions[currBinNum][forest[currBinNum][currentNode].returnRightNode()]++;
+}
                 }
             }
-            ///////////////////////////////////////////////////////
-            for(int p=1; p < numOfBins; p++){//TODO this should be SIMD
-//#pragma omp simd
-                for(int q=0; q < numOfClasses; q++){
-                    predictions[0][q] += predictions[p][q];
+            // make predictions one tree at a time
+            for(int k=0; k < treesInBin; k++){
+               // currentNode = k;
+                while(forest[currBinNum][multiCurrentNode[k]].isInternalNode()){
+                    if(forest[currBinNum][multiCurrentNode[k]].goLeft(observationFeatures[forest[currBinNum][multiCurrentNode[k]].returnFeature()])){
+                        multiCurrentNode[k] = forest[currBinNum][multiCurrentNode[k]].returnLeftNode(); 
+                    }else{
+                        multiCurrentNode[k] = forest[currBinNum][multiCurrentNode[k]].returnRightNode(); 
+                    }
                 }
+                predictions[currBinNum][forest[currBinNum][multiCurrentNode[k]].returnRightNode()]++;
             }
-            predictionClasses[i] = returnClassPrediction(predictions[0]);
-            if(showAllResults){
-                printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
+        }
+        ///////////////////////////////////////////////////////
+        for(int p=1; p < numOfBins; p++){//TODO this should be SIMD
+            //#pragma omp simd
+            for(int q=0; q < numOfClasses; q++){
+                predictions[0][q] += predictions[p][q];
             }
-            if(observationClasses[i] == predictionClasses[i]){
-                numCorrectPredictions++;
-            }
+        }
+        predictionClasses[i] = returnClassPrediction(predictions[0]);
+        if(showAllResults){
+            printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictionClasses[i]);
+        }
+        if(observationClasses[i] == predictionClasses[i]){
+            numCorrectPredictions++;
         }
     }
 
@@ -105,6 +111,7 @@ void topBinForest::createForestFromCSV(const std::string& forestCSVFileName){
     totalNumberOfNodes = 0;
     numLeafNodesInForest = 0;
     double numFromCSV;
+    int maxDepth = 0;
 
     int treesPerBin;
     int binRemainder;
@@ -306,6 +313,7 @@ void topBinForest::createForestFromCSV(const std::string& forestCSVFileName){
                 printf("node depth: %d\nmin depth: %d\n", tempForest[forest[i][j].returnLeftNode()].returnDepthOfNode(), treeTopDepth);
                 exit(1);
             }
+            
             if(tempForest[forest[i][j].returnLeftNode()].isInternalNode()){
                 //create left node
                 forest[i][nextUnusedNodeInBin].setNode(
@@ -333,6 +341,9 @@ void topBinForest::createForestFromCSV(const std::string& forestCSVFileName){
             }
 
             while(currentNodeToProcess < nextUnusedNodeInBin){
+if(maxDepth < tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnDepthOfNode()){
+maxDepth = tempForest[forest[i][currentNodeToProcess].returnLeftNode()].returnDepthOfNode();
+            }
                 if(tempForest[forest[i][currentNodeToProcess].returnLeftNode()].isInternalNode()){
                     //create left node
                     forest[i][nextUnusedNodeInBin].setNode(
@@ -382,6 +393,7 @@ void topBinForest::createForestFromCSV(const std::string& forestCSVFileName){
         printf("nodes used: %d\nfirst pass: %d\n", numOfNodesProcessed, firstPassNumberOfNodes);
         exit(1);
     }
+    printf("the maximum depth in this forest is %d.\n", maxDepth);
 
 }
 
