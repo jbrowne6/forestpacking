@@ -18,9 +18,12 @@ void topBinForest::makePredictions(const std::string& testFile){
     int numFeatures;
   //  int currentNode;
   int treesInBin;
+  int i,j,currBinNum,q,m,n,k,p;
     int predictions[numOfBins][numOfClasses];
     std::priority_queue<int, std::vector<int>, std::greater<int> > nodesToProcess;
     double currentNumberFromFile; 
+    int nodeFeature,leftNode,rightNode;
+    double cutValueCurr;
     std::ifstream fin(testFile.c_str());
 
     fin >> currentNumberFromFile;
@@ -32,52 +35,65 @@ void topBinForest::makePredictions(const std::string& testFile){
 
     int observationClasses[numObservations];
     int predictionClasses[numObservations];
-    int observationFeatures[numFeatures] = {};
+    //TODO this was an int.  Should be doubles
+    double observationFeatures[numFeatures] = {};
 
     int treesPerBin = numTreesInForest / numOfBins;
     int  binRemainder = numTreesInForest % numOfBins;
             int multiCurrentNode[treesPerBin+1];
 
-    for(int i = 0; i < numObservations; i++){
+    for( i = 0; i < numObservations; i++){
         memset(predictions, 0, sizeof(predictions));
         fin >> currentNumberFromFile;
         observationClasses[i] = (int)currentNumberFromFile;
-        for(int j=0; j < numFeatures; j++){
+        for( j=0; j < numFeatures; j++){
             fin >> currentNumberFromFile;
-            observationFeatures[j] = (int)currentNumberFromFile;
+            observationFeatures[j] = currentNumberFromFile;
         }
 
-        for(int currBinNum = 0; currBinNum < numOfBins; currBinNum++){
+        for( currBinNum = 0; currBinNum < numOfBins; currBinNum++){
             treesInBin = (currBinNum < binRemainder)? treesPerBin+1 : treesPerBin;
-            for(int q = 0; q < treesInBin; q++){multiCurrentNode[q] = q;}
-            for(int m = 0; m < treeTopDepth; m++){
-                for(int n = 0; n < treesInBin; n++){
-if(forest[currBinNum][multiCurrentNode[n]].isInternalNode()){
-if(forest[currBinNum][multiCurrentNode[n]].goLeft(observationFeatures[forest[currBinNum][multiCurrentNode[n]].returnFeature()])){
-                        multiCurrentNode[n] = forest[currBinNum][multiCurrentNode[n]].returnLeftNode(); 
+            for( q = 0; q < treesInBin; q++){multiCurrentNode[q] = q;}
+            for( m = 0; m < treeTopDepth; m++){
+                for( n = 0; n < treesInBin; n++){
+nodeFeature=forest[currBinNum][multiCurrentNode[n]].returnFeature();
+leftNode=forest[currBinNum][multiCurrentNode[n]].returnLeftNode();
+    rightNode=forest[currBinNum][multiCurrentNode[n]].returnRightNode();
+     cutValueCurr=forest[currBinNum][multiCurrentNode[n]].returnCutValue();
+if(leftNode>0){
+if(observationFeatures[nodeFeature]<cutValueCurr){
+                        multiCurrentNode[n] =leftNode;
                     }else{
-                        multiCurrentNode[n] = forest[currBinNum][multiCurrentNode[n]].returnRightNode(); 
+                        multiCurrentNode[n] =rightNode;
                     }
 }
                 }
             }
             // make predictions one tree at a time
-            for(int k=0; k < treesInBin; k++){
+            for( k=0; k < treesInBin; k++){
                // currentNode = k;
-                while(forest[currBinNum][multiCurrentNode[k]].isInternalNode()){
-                    if(forest[currBinNum][multiCurrentNode[k]].goLeft(observationFeatures[forest[currBinNum][multiCurrentNode[k]].returnFeature()])){
-                        multiCurrentNode[k] = forest[currBinNum][multiCurrentNode[k]].returnLeftNode(); 
+               nodeFeature=forest[currBinNum][multiCurrentNode[k]].returnFeature();
+leftNode=forest[currBinNum][multiCurrentNode[k]].returnLeftNode();
+    rightNode=forest[currBinNum][multiCurrentNode[k]].returnRightNode();
+     cutValueCurr=forest[currBinNum][multiCurrentNode[k]].returnCutValue();
+                while(leftNode>0){
+                    if(observationFeatures[nodeFeature]<cutValueCurr){
+                        multiCurrentNode[k] =leftNode;
                     }else{
-                        multiCurrentNode[k] = forest[currBinNum][multiCurrentNode[k]].returnRightNode(); 
+                        multiCurrentNode[k] =rightNode;
                     }
+nodeFeature=forest[currBinNum][multiCurrentNode[k]].returnFeature();
+leftNode=forest[currBinNum][multiCurrentNode[k]].returnLeftNode();
+    rightNode=forest[currBinNum][multiCurrentNode[k]].returnRightNode();
+     cutValueCurr=forest[currBinNum][multiCurrentNode[k]].returnCutValue();
                 }
-                predictions[currBinNum][forest[currBinNum][multiCurrentNode[k]].returnRightNode()]++;
+                predictions[currBinNum][rightNode]++;
             }
         }
         ///////////////////////////////////////////////////////
-        for(int p=1; p < numOfBins; p++){//TODO this should be SIMD
+        for( p=1; p < numOfBins; p++){//TODO this should be SIMD
             //#pragma omp simd
-            for(int q=0; q < numOfClasses; q++){
+            for( q=0; q < numOfClasses; q++){
                 predictions[0][q] += predictions[p][q];
             }
         }
