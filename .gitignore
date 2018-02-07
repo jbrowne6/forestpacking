@@ -39,5 +39,8 @@ packer
 # R functions
 rerf/
 
+# generic don't upload
+*.ignore
+
 # The forest in csv form
 *.csv*
