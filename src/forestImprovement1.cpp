@@ -1,5 +1,5 @@
 #include <queue>
-#include "naiveForest.h"
+#include "forestImprovement1.h"
 
 namespace {
 
@@ -16,7 +16,7 @@ namespace {
     }
 } //namespace
 
-naiveForest::naiveForest(const std::string& forestCSVFileName, int source){
+forestImprovement1::forestImprovement1(const std::string& forestCSVFileName, int source){
     if(source == 1){ //source==1 is csv
         std::ifstream fin(forestCSVFileName.c_str());
         int numNodesInTree;
@@ -114,7 +114,7 @@ naiveForest::naiveForest(const std::string& forestCSVFileName, int source){
 
 }
 
-naiveForest::~naiveForest(){
+forestImprovement1::~forestImprovement1(){
     for(int i = 0; i < numTreesInForest; i++){
         delete[] forestRoots[i];
     }
@@ -122,7 +122,7 @@ naiveForest::~naiveForest(){
 }
 
 
-void naiveForest::makePredictions(const inferenceSamples& observations, int batchSize, int startPosition){
+void forestImprovement1::makePredictions(const inferenceSamples& observations, int batchSize, int startPosition){
 
     int currentNode;
     int predictions[numOfClasses];
@@ -156,3 +156,37 @@ void naiveForest::makePredictions(const inferenceSamples& observations, int batc
     // printf("%f%% of the predictions were correct\n", 100.0*(float)numCorrectPredictions/(float)numObservations);
 }
 
+void forestImprovement1::makePredictions(const inferenceSamples& observations, int batchSize){
+    batchPredictions bPreds(batchSize,numOfClasses);
+    int currentNode;
+    int observationNum; 
+    int stopPosition = batchSize;
+
+    for(int startPosition = 0; startPosition < observations.numObservations;){
+        if(stopPosition > observations.numObservations){
+            stopPosition = observations.numObservations;
+        }
+        bPreds.zeroizePredictions();
+        for(int k=0; k < numTreesInForest; k++){
+            observationNum = -1;
+            for(int i = startPosition; i < stopPosition; i++){
+                currentNode = 0;
+                while(forestRoots[k][currentNode].isInternalNode()){
+                    if(forestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()])){
+                        currentNode = forestRoots[k][currentNode].returnLeftNode(); 
+                    }else{
+                        currentNode = forestRoots[k][currentNode].returnRightNode(); 
+                    }
+                }
+                ++bPreds.predictions[++observationNum][forestRoots[k][currentNode].returnRightNode()];
+            }
+        }
+
+        observationNum = -1;
+        for(int i = startPosition; i < stopPosition; i++){
+            observations.predictedClasses[i] = returnClassPrediction(bPreds.predictions[++observationNum], numOfClasses);
+        }
+        startPosition += batchSize;
+        stopPosition += batchSize;
+    }
+}

@@ -18,6 +18,7 @@ class padNode
     int returnFeature();
     int returnLeftNode(); //should have been Value instead of Node
     int returnRightNode();//should have been Value instead of Node
+    int returnClass();//should have been Value instead of Node
     void setLeftValue(uint32_t LVal);
     void setRightValue(uint32_t RVal); 
     bool isInternalNode();

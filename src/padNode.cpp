@@ -21,6 +21,9 @@ int padNode::returnFeature(){
 int padNode::returnLeftNode(){
     return left;
 }
+int padNode::returnClass(){
+    return right;
+}
 int padNode::returnRightNode(){
     return right;
 }
