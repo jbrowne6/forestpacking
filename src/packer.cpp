@@ -26,15 +26,18 @@ int main(int argc, char* argv[]) {
     //naiveForest tester(forestFileName);
     forestImprovement2 tester(forestFileName,2);
     tester.printForest();
+    printf("size of a node is %d\n.",(int) sizeof(padNode));
 
+    printf("starting run\n");
     start = std::clock();
 
    // tester.makePredictions(observations, observations.numObservations);
-    tester.makePredictions(observations,200);
+    tester.makePredictions(observations,1000);
 
 std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 
     observations.percentRight();
+    /*
     printf("starting run\n");
 
     start = std::clock();
@@ -53,6 +56,6 @@ std::cout << "Time to test observations: " << (std::clock() - start) / (double)(
     start = std::clock();
     forest->makePredictions(testFileName);
     std::cout << "Time to make predictions: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
-
+*/
     return 0;
 }

@@ -4,14 +4,15 @@
 
 class padNode
 {
+    public:
     uint32_t feature;
     uint32_t left;
     uint32_t right;
-    uint32_t pad1;
+   // uint32_t pad1;
     double cutValue;
-    double pad2;
+  //  double pad2;
 
-    public:
+//    public:
     void setNode(double cVal, uint32_t feat, uint32_t l, uint32_t r);
     void virtual printNode();
     double returnCutValue();

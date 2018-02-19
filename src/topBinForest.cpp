@@ -61,12 +61,16 @@ leftNode=forest[currBinNum][multiCurrentNode[n]].returnLeftNode();
     rightNode=forest[currBinNum][multiCurrentNode[n]].returnRightNode();
      cutValueCurr=forest[currBinNum][multiCurrentNode[n]].returnCutValue();
 if(leftNode>0){
+    /*
 if(observationFeatures[nodeFeature]<cutValueCurr){
                         multiCurrentNode[n] =leftNode;
                     }else{
                         multiCurrentNode[n] =rightNode;
                     }
+*/
+multiCurrentNode[n] =leftNode*(observationFeatures[nodeFeature]<cutValueCurr)+rightNode*!(observationFeatures[nodeFeature]<cutValueCurr);
 }
+
                 }
             }
             // make predictions one tree at a time
@@ -77,11 +81,14 @@ leftNode=forest[currBinNum][multiCurrentNode[k]].returnLeftNode();
     rightNode=forest[currBinNum][multiCurrentNode[k]].returnRightNode();
      cutValueCurr=forest[currBinNum][multiCurrentNode[k]].returnCutValue();
                 while(leftNode>0){
+multiCurrentNode[k] =leftNode*(observationFeatures[nodeFeature]<cutValueCurr)+rightNode*!(observationFeatures[nodeFeature]<cutValueCurr);
+/*
                     if(observationFeatures[nodeFeature]<cutValueCurr){
                         multiCurrentNode[k] =leftNode;
                     }else{
                         multiCurrentNode[k] =rightNode;
                     }
+                    */
 nodeFeature=forest[currBinNum][multiCurrentNode[k]].returnFeature();
 leftNode=forest[currBinNum][multiCurrentNode[k]].returnLeftNode();
     rightNode=forest[currBinNum][multiCurrentNode[k]].returnRightNode();

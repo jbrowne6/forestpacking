@@ -17,10 +17,11 @@
 
 class forestImprovement2 : public padForest 
 {
-    private:
+ //   private:
+    public:
     padNode ** forestRoots = NULL;
 
-    public:
+//    public:
 forestImprovement2(const std::string& forestCSVFileName, int source);
 ~forestImprovement2();
     void makePredictions(const inferenceSamples& observations, int batchSize, int startPosition);

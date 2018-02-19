@@ -40,7 +40,6 @@ printf("Moving into class node area\nendP:%d\n", endPosition);
                     repackTree(tree[workingNode].returnLeftNode()),
                     repackTree(tree[workingNode].returnRightNode()));
 
-        //printf("%d ", thisNodesLocation);
             return(thisNodesLocation);
 
         }else{
@@ -244,7 +243,6 @@ forestImprovement2::forestImprovement2(const std::string& forestCSVFileName, int
 
         for(int i = 0; i < numTreesInForest; i++){
 
-printf("Repacking tree %d\n", i);
             forestRoots[i] = new padNode[numOfClasses+(numNodesInTree[i]-1)/2];
 
             for(int j = 0; j < numOfClasses; j++){
@@ -326,7 +324,8 @@ void forestImprovement2::makePredictions(const inferenceSamples& observations, i
                     if(forestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()])){
                         currentNode = forestRoots[k][currentNode].returnLeftNode(); 
                     }else{
-                        currentNode = forestRoots[k][currentNode].returnRightNode(); 
+                       // currentNode = forestRoots[k][currentNode].returnRightNode(); 
+                        currentNode = forestRoots[k][currentNode].right; 
                     }
                 }
                 ++bPreds.predictions[++observationNum][forestRoots[k][currentNode].returnClass()];
