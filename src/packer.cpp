@@ -9,7 +9,11 @@
 #include "forestFactory.h"
 #include "inferenceSamples.h"
 //#include "naiveForest.h"
-#include "forestImprovement2.h"
+#include "improv1.h"
+#include "improv3.h"
+#include "improv4.h"
+#include "improv2.h"
+#include "naive.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2){
@@ -24,15 +28,19 @@ int main(int argc, char* argv[]) {
     
     inferenceSamples observations(testFileName);
     //naiveForest tester(forestFileName);
-    forestImprovement2 tester(forestFileName,2);
+    //improv4 tester(forestFileName,1, observations);
+    improv3 tester(forestFileName,1, observations);
+    //improv2 tester(forestFileName,1);
+    //improv1 tester(forestFileName,1);
+    //naive tester(forestFileName,1);
     tester.printForest();
-    printf("size of a node is %d\n.",(int) sizeof(padNode));
+    printf("size of a node is %d\n",(int) sizeof(padNode));
 
     printf("starting run\n");
     start = std::clock();
 
    // tester.makePredictions(observations, observations.numObservations);
-    tester.makePredictions(observations,1000);
+    tester.makePredictions(observations);
 
 std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 

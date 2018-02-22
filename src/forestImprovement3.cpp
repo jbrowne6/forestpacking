@@ -1,5 +1,5 @@
 #include <queue>
-#include "forestImprovement2.h"
+#include "forestImprovement3.h"
 
 namespace {
 
@@ -27,14 +27,14 @@ namespace {
     };
 
     int repack::repackTree(int workingNode){
-        
+
         if(tree[workingNode].isInternalNode()){
 
-        int thisNodesLocation = ++currentNode;
-if(thisNodesLocation > endPosition){
-printf("Moving into class node area\nendP:%d\n", endPosition);
-            exit(1);
-        }
+            int thisNodesLocation = ++currentNode;
+            if(thisNodesLocation > endPosition){
+                printf("Moving into class node area\nendP:%d\n", endPosition);
+                exit(1);
+            }
             realTree[thisNodesLocation].setNode(tree[workingNode].returnCutValue(),
                     tree[workingNode].returnFeature(),
                     repackTree(tree[workingNode].returnLeftNode()),
@@ -47,9 +47,77 @@ printf("Moving into class node area\nendP:%d\n", endPosition);
         }
     }
 
+class batch {
+    private:
+        int batchSize;
+        int lastRight;
+        int firstRight;
+        int currentObs;
+        int* batchNums;
+        int tempMover;
+
+    public:
+    batch(int bSize) {
+    batchSize = bSize;
+    lastRight = bSize -1;
+    firstRight = bSize - 1;
+    batchNums = new int[batchSize];
+}
+~batch(){
+delete[] batchNums;
+}
+void moveRight(int nodeToMove){
+    
+    
+};
+void moveLeaf(int nodeToMove){
+   int tempMover = batchNums[lastRight];
+   batchNums[lastRight] = batchNums[nodeToMove];
+batchNums[nodeToMove] = tempMover;
+   --lastRight;
+};
+void moveLeft(){
+++currentObs;    
+};
+};
+
 } //namespace
 
-forestImprovement2::forestImprovement2(const std::string& forestCSVFileName, int source){
+void forestImprovement3::traverseTree(std::vector<int>& obsInNode, const inferenceSamples3& obsMatrix, batchPredictions& batchPreds, int treeNum, int nodeNum, int startPos){
+    std::vector<int> leftObs(obsInNode.size());
+    std::vector<int> rightObs(obsInNode.size());
+
+    
+    //if its a leaf node
+    if(!forestRoots[treeNum][nodeNum].isInternalNode()){
+        for(unsigned int i = 0; i < obsInNode.size(); i++){
+            ++batchPreds.predictions[obsInNode[i]-startPos][forestRoots[treeNum][nodeNum].returnClass()];
+        }
+        return;
+    }
+    //if its an internal node
+    for(unsigned int i = 0; i < obsInNode.size(); i++){
+        if(forestRoots[treeNum][nodeNum].goLeft(obsMatrix.samplesMatrix[forestRoots[treeNum][nodeNum].returnFeature()][obsInNode[i]])){
+            leftObs.push_back(obsInNode[i]);
+        }else{
+            rightObs.push_back(obsInNode[i]);
+        }
+    }
+
+   /* while(!leftObs.empty()){
+printf("%d ", leftObs.back());
+leftObs.pop_back();
+        }
+     while(!rightObs.empty()){
+printf("%d ", rightObs.back());
+rightObs.pop_back();
+        }
+  */ 
+    traverseTree(leftObs, obsMatrix, batchPreds, treeNum, forestRoots[treeNum][nodeNum].returnLeftNode(), startPos);
+        traverseTree(rightObs, obsMatrix, batchPreds, treeNum, forestRoots[treeNum][nodeNum].returnRightNode(), startPos);
+}
+
+forestImprovement3::forestImprovement3(const std::string& forestCSVFileName, int source){
     if(source == 1){ //source==1 is csv
         std::ifstream fin(forestCSVFileName.c_str());
         int numNodesInTree;
@@ -257,10 +325,10 @@ forestImprovement2::forestImprovement2(const std::string& forestCSVFileName, int
 
             delete[] tempForestRoots[i];
         }
-       
-            delete[] numNodesInTree;
-         delete[] tempForestRoots;
-       // forestRoots = tempForestRoots;
+
+        delete[] numNodesInTree;
+        delete[] tempForestRoots;
+        // forestRoots = tempForestRoots;
     }
 
     if(forestRoots == NULL){
@@ -270,7 +338,7 @@ forestImprovement2::forestImprovement2(const std::string& forestCSVFileName, int
 
 }
 
-forestImprovement2::~forestImprovement2(){
+forestImprovement3::~forestImprovement3(){
     for(int i = 0; i < numTreesInForest; i++){
         delete[] forestRoots[i];
     }
@@ -278,36 +346,8 @@ forestImprovement2::~forestImprovement2(){
 }
 
 
-void forestImprovement2::makePredictions(const inferenceSamples& observations, int batchSize, int startPosition){
-
-    int currentNode;
-    int predictions[numOfClasses];
-
-    for(int i = 0; i < batchSize; i++){
-
-        for(int p= 0; p < numOfClasses; p++){
-            predictions[p]=0;
-        }
-        for(int k=0; k < numTreesInForest; k++){
-            currentNode = 0;
-            while(forestRoots[k][currentNode].isInternalNode()){
-                if(forestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()])){
-                    currentNode = forestRoots[k][currentNode].returnLeftNode(); 
-                }else{
-                    currentNode = forestRoots[k][currentNode].returnRightNode(); 
-                }
-            }
-
-            predictions[forestRoots[k][currentNode].returnRightNode()]++;
-        }
-        observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
-    }
-
-}
-
-void forestImprovement2::makePredictions(const inferenceSamples& observations, int batchSize){
+void forestImprovement3::makePredictions(const inferenceSamples3& observations, int batchSize){
     batchPredictions bPreds(batchSize,numOfClasses);
-    int currentNode;
     int observationNum; 
     int stopPosition = batchSize;
 
@@ -316,19 +356,13 @@ void forestImprovement2::makePredictions(const inferenceSamples& observations, i
             stopPosition = observations.numObservations;
         }
         bPreds.zeroizePredictions();
+        std::vector<int> initialSamples (stopPosition-startPosition);
+        for(int p =0; p < (stopPosition-startPosition); p++){
+initialSamples[p] = p + startPosition;
+        }
+        
         for(int k=0; k < numTreesInForest; k++){
-            observationNum = -1;
-            for(int i = startPosition; i < stopPosition; i++){
-                currentNode = 0;
-                while(forestRoots[k][currentNode].isInternalNode()){
-                    if(forestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()])){
-                        currentNode = forestRoots[k][currentNode].returnLeftNode(); 
-                    }else{
-                        currentNode = forestRoots[k][currentNode].returnRightNode(); 
-                    }
-                }
-                ++bPreds.predictions[++observationNum][forestRoots[k][currentNode].returnClass()];
-            }
+            traverseTree(initialSamples, observations, bPreds, k,0, startPosition);
         }
 
         observationNum = -1;
