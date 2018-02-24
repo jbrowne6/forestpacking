@@ -69,7 +69,7 @@ improv5::improv5(const std::string& forestCSVFileName, int source, const inferen
         int numLeafNodesInForest = 0;
         double num;
         padNodeStat ** tempForestRoots;
-        int numOfBins = numberBins;
+        numOfBins = numberBins;
 
         //First number in csv is the number of trees
         fin >> num;
@@ -175,34 +175,35 @@ improv5::improv5(const std::string& forestCSVFileName, int source, const inferen
             }
         }
 
-forestRoots =  new treeBin*[numOfBins]; 
+        forestRoots =  new treeBin*[numOfBins]; 
         printf("starting binning\n");
         int finalTree;
         int startTree=0;
         int binSize = numTreesInForest/numberBins;
         int binRemainder = numTreesInForest%numberBins;
         for(int q = 0; q < numberBins; q++){
-finalTree = startTree+binSize;
-if(q < binRemainder){
-    finalTree++;
-}
+            finalTree = startTree+binSize;
+            if(q < binRemainder){
+                finalTree++;
+            }
 
-if(finalTree > numTreesInForest){
-finalTree = numTreesInForest;
-}
-        forestRoots[q] = new treeBin(tempForestRoots, numNodesInTree, startTree, finalTree, 3);
-startTree = finalTree;
+            if(finalTree > numTreesInForest){
+                finalTree = numTreesInForest;
+            }
+            forestRoots[q] = new treeBin(tempForestRoots, numNodesInTree, startTree, finalTree, 3);
+            startTree = finalTree;
         }
 
+        printf("finished binning\n");
         //TODO create new data structure and delete tempForest.
-//        forestRoots = new padNode*[numTreesInForest];
+        //        forestRoots = new padNode*[numTreesInForest];
 
         for(int i = 0; i < numTreesInForest; i++){
 
- //           forestRoots[i] = new padNode[numNodesInTree[i]];
+            //           forestRoots[i] = new padNode[numNodesInTree[i]];
 
-   //         repack pack(tempForestRoots[i],forestRoots[i] );
-  //          pack.repackTree(0);
+            //         repack pack(tempForestRoots[i],forestRoots[i] );
+            //          pack.repackTree(0);
 
             delete[] tempForestRoots[i];
         }
@@ -217,11 +218,12 @@ startTree = finalTree;
         exit(1);
     }
 
+    printf("finished all\n");
 }
 
 improv5::~improv5(){
-    for(int i = 0; i < numTreesInForest; i++){
-        delete[] forestRoots[i];
+    for(int i = 0; i < numOfBins; i++){
+       // delete[] forestRoots[i];
     }
     delete[] forestRoots;
 }
@@ -231,15 +233,20 @@ void improv5::makePredictions(const inferenceSamples& observations){
 
     int currentNode;
     int predictions[numOfClasses];
-
     for(int i = 0; i < observations.numObservations; i++){
-printf("starting observation %d", i);
         for(int p= 0; p < numOfClasses; p++){
             predictions[p]=0;
         }
+
         for(int k=0; k < numOfBins; k++){
+
+
+//printf("working on bin %d, of sample %d\n", k,i); 
             for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
                 currentNode = q;
+//forestRoots[k]->bin[currentNode].printNode();
+
+
                 while(forestRoots[k]->bin[currentNode].isInternalNode()){
                     if(forestRoots[k]->bin[currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()])){
                         currentNode = forestRoots[k]->bin[currentNode].returnLeftNode(); 
@@ -247,13 +254,20 @@ printf("starting observation %d", i);
                     }
                     currentNode = forestRoots[k]->bin[currentNode].returnRightNode(); 
                 }
+if(forestRoots[k]->bin[currentNode].returnRightNode()>9 || forestRoots[k]->bin[currentNode].returnRightNode()<0){
+printf("class out of bounds: %d\n", forestRoots[k]->bin[currentNode].returnRightNode());
+            exit(1);
+}
 
                 ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
+
             }
+//printf("finished bin %d of sample %d\n", kt, i);
+
         }
-
+//printf("finished for sample %d\n", i);
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
-    }
 
+    }
 }
 
