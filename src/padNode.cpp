@@ -21,6 +21,11 @@ int padNode::returnFeature(){
 int padNode::returnLeftNode(){
     return left;
 }
+void padNode::setClass(int classNum){
+right = classNum;
+left = 0;
+}
+
 int padNode::returnClass(){
     return right;
 }
