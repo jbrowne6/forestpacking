@@ -12,6 +12,7 @@
 #include "improv1.h"
 #include "improv3.h"
 #include "improv4.h"
+#include "improv5.h"
 #include "improv2.h"
 #include "naive.h"
 
@@ -29,7 +30,8 @@ int main(int argc, char* argv[]) {
     inferenceSamples observations(testFileName);
     //naiveForest tester(forestFileName);
     //improv4 tester(forestFileName,1, observations);
-    improv3 tester(forestFileName,1, observations);
+    improv5 tester(forestFileName,1, observations,200);
+    //improv3 tester(forestFileName,1, observations);
     //improv2 tester(forestFileName,1);
     //improv1 tester(forestFileName,1);
     //naive tester(forestFileName,1);

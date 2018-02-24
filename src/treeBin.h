@@ -10,14 +10,16 @@
 
 class treeBin   
 {
-    private:
-    padNode * bin = NULL;
+ //   private:
+    public:
+    padNode* bin = NULL;
     int numOfTreesInBin;
     int depth;
     int firstFreeNode = -1;
     int currProcess = -1;
+    void repackTree(padNodeStat* tree, int workingNode);
 
-    public:
+//    public:
 treeBin(padNodeStat**& forest, int*& treeLength, int startTree, int finalTree, int headDepth);
 ~treeBin();
 };

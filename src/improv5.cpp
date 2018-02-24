@@ -1,6 +1,6 @@
 #include <queue>
 #include "improv5.h"
-#include "treeBin.h"
+//#include "treeBin.h"
 
 namespace {
 
@@ -58,7 +58,7 @@ namespace {
     }
 } //namespace
 
-improv5::improv5(const std::string& forestCSVFileName, int source, const inferenceSamples& observations){
+improv5::improv5(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins){
     if(source == 1){
         std::ifstream fin(forestCSVFileName.c_str());
         //int numNodesInTree;
@@ -69,6 +69,7 @@ improv5::improv5(const std::string& forestCSVFileName, int source, const inferen
         int numLeafNodesInForest = 0;
         double num;
         padNodeStat ** tempForestRoots;
+        int numOfBins = numberBins;
 
         //First number in csv is the number of trees
         fin >> num;
@@ -159,37 +160,49 @@ improv5::improv5(const std::string& forestCSVFileName, int source, const inferen
             fin.close();
         }
 
-        for(int q = 0; q < 10; q++){
-treeBin* X = new treeBin(tempForestRoots, numNodesInTree, q*200, (q+1)*200, 3);
-delete[] X;
-        }
+        int currentNode = 0;
+        for(int i = 0; i < observations.numObservations; i++){
 
-            int currentNode = 0;
-for(int i = 0; i < observations.numObservations; i++){
-
-        for(int k=0; k < numTreesInForest; k++){
-            currentNode = 0;
-            while(tempForestRoots[k][currentNode].isInternalNode()){
-                if(tempForestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][tempForestRoots[k][currentNode].returnFeature()])){
-                    currentNode = tempForestRoots[k][currentNode].returnLeftNode(); 
-                    continue;
-                }
+            for(int k=0; k < numTreesInForest; k++){
+                currentNode = 0;
+                while(tempForestRoots[k][currentNode].isInternalNode()){
+                    if(tempForestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][tempForestRoots[k][currentNode].returnFeature()])){
+                        currentNode = tempForestRoots[k][currentNode].returnLeftNode(); 
+                        continue;
+                    }
                     currentNode = tempForestRoots[k][currentNode].returnRightNode(); 
+                }
             }
-
         }
-    }
 
+forestRoots =  new treeBin*[numOfBins]; 
+        printf("starting binning\n");
+        int finalTree;
+        int startTree=0;
+        int binSize = numTreesInForest/numberBins;
+        int binRemainder = numTreesInForest%numberBins;
+        for(int q = 0; q < numberBins; q++){
+finalTree = startTree+binSize;
+if(q < binRemainder){
+    finalTree++;
+}
+
+if(finalTree > numTreesInForest){
+finalTree = numTreesInForest;
+}
+        forestRoots[q] = new treeBin(tempForestRoots, numNodesInTree, startTree, finalTree, 3);
+startTree = finalTree;
+        }
 
         //TODO create new data structure and delete tempForest.
-        forestRoots = new padNode*[numTreesInForest];
+//        forestRoots = new padNode*[numTreesInForest];
 
         for(int i = 0; i < numTreesInForest; i++){
 
-            forestRoots[i] = new padNode[numNodesInTree[i]];
+ //           forestRoots[i] = new padNode[numNodesInTree[i]];
 
-            repack pack(tempForestRoots[i],forestRoots[i] );
-            pack.repackTree(0);
+   //         repack pack(tempForestRoots[i],forestRoots[i] );
+  //          pack.repackTree(0);
 
             delete[] tempForestRoots[i];
         }
@@ -220,22 +233,25 @@ void improv5::makePredictions(const inferenceSamples& observations){
     int predictions[numOfClasses];
 
     for(int i = 0; i < observations.numObservations; i++){
-
+printf("starting observation %d", i);
         for(int p= 0; p < numOfClasses; p++){
             predictions[p]=0;
         }
-        for(int k=0; k < numTreesInForest; k++){
-            currentNode = 0;
-            while(forestRoots[k][currentNode].isInternalNode()){
-                if(forestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()])){
-                    currentNode = forestRoots[k][currentNode].returnLeftNode(); 
-                    continue;
+        for(int k=0; k < numOfBins; k++){
+            for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+                currentNode = q;
+                while(forestRoots[k]->bin[currentNode].isInternalNode()){
+                    if(forestRoots[k]->bin[currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()])){
+                        currentNode = forestRoots[k]->bin[currentNode].returnLeftNode(); 
+                        continue;
+                    }
+                    currentNode = forestRoots[k]->bin[currentNode].returnRightNode(); 
                 }
-                    currentNode = forestRoots[k][currentNode].returnRightNode(); 
-            }
 
-            ++predictions[forestRoots[k][currentNode].returnRightNode()];
+                ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
+            }
         }
+
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
     }
 
