@@ -2,22 +2,18 @@
 #include "perTreeForest.h"
 #include "topBinForest.h"
 #include "topBinForestWBatch.h"
+#include "improv1.h"
+#include "naive.h"
 
 class forestFactory
 {
     public:
-       baseForest* makeForest(int choice){
-if(choice == 1){
-    return new perTreeForest();
-}else if(choice == 2){
-    return new interleavedForest();
-}else if(choice == 3){
-    return new topBinForest(16);
-}else if(choice == 4){
-    return new topBinForestWBatch(16);
+       padForest* makeForest(int choice, const std::string& forestFileName){
+if(choice == 0){
+    return new naive(forestFileName,1);
+}else if(choice == 1){
+    return new naive(forestFileName,1);
 }
-
-
 return NULL;
        }
 };

@@ -57,7 +57,8 @@ namespace {
     }
 } //namespace
 
-improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins){
+//improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins){
+improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
     if(source == 1){
         std::ifstream fin(forestCSVFileName.c_str());
         //int numNodesInTree;
@@ -69,6 +70,7 @@ improv6::improv6(const std::string& forestCSVFileName, int source, const inferen
         double num;
         padNodeStat ** tempForestRoots;
         numOfBins = numberBins;
+       // intDepth = depthIntertwined;
 
         //First number in csv is the number of trees
         fin >> num;
@@ -189,7 +191,7 @@ improv6::improv6(const std::string& forestCSVFileName, int source, const inferen
             if(finalTree > numTreesInForest){
                 finalTree = numTreesInForest;
             }
-            forestRoots[q] = new treeBin2(tempForestRoots, numNodesInTree, startTree, finalTree, 3, numOfClasses);
+            forestRoots[q] = new treeBin2(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined, numOfClasses);
             startTree = finalTree;
         }
 

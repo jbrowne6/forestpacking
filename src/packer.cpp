@@ -6,9 +6,7 @@
 #include <string>
 #include <typeinfo>
 #include <ctime>
-#include "forestFactory.h"
 #include "inferenceSamples.h"
-//#include "naiveForest.h"
 #include "improv1.h"
 #include "improv3.h"
 #include "improv4.h"
@@ -18,56 +16,112 @@
 #include "naive.h"
 
 int main(int argc, char* argv[]) {
-    if (argc != 2){
-        printf("packer requires 1 argument: 1 or 2\n");
+    if (argc < 3){
+        printf("packer requires at least 2 arguments.\n");
         return -1;
+    }
+    int numOfBatches;
+    int depthIntertwined;
+    if (argc < 5){
+        numOfBatches =0;
+        depthIntertwined =0;
+    }else{
+        numOfBatches =atoi(argv[3]);
+        depthIntertwined =atoi(argv[4]);
     }
 
     int algorithmToRun = atoi(argv[1]);
+    int runPrediction = atoi(argv[2]);
     const std::string forestFileName = "res/forest.csv";
     const std::string testFileName = "res/testObservations.csv";
     std::clock_t    start;
-    
+
     inferenceSamples observations(testFileName);
-    //naiveForest tester(forestFileName);
+
+    if(algorithmToRun == 0){
+        printf("running naive src=csv, pred=%d\n",runPrediction);
+        naive tester(forestFileName,1);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+
+    }else if(algorithmToRun ==1){
+        printf("running improv1 src=csv, pred=%d\n",runPrediction);
+        improv1 tester(forestFileName,1);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+
+    }else if(algorithmToRun ==2){
+        printf("running improv2 src=csv, pred=%d\n",runPrediction);
+    improv2 tester(forestFileName,1);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+
+    }else if(algorithmToRun ==3){
+        printf("running improv3 src=csv, pred=%d\n",runPrediction);
+    improv3 tester(forestFileName,1, observations);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+
+    }else if(algorithmToRun ==4){
+        printf("running improv4 src=csv, pred=%d\n",runPrediction);
     improv4 tester(forestFileName,1, observations);
-    //improv6 tester(forestFileName,1, observations,200);
-    //improv5 tester(forestFileName,1, observations,200);
-    //improv3 tester(forestFileName,1, observations);
-    //improv2 tester(forestFileName,1);
-    //improv1 tester(forestFileName,1);
-    //naive tester(forestFileName,1);
-    tester.printForest();
-    printf("size of a node is %d\n",(int) sizeof(padNode));
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 
-    printf("starting run\n");
-    start = std::clock();
+    }else if(algorithmToRun ==5){
+        printf("running improv5 src=csv, pred=%d, batches=%d, head=3\n",runPrediction,numOfBatches );
+    improv5 tester(forestFileName,1, observations,numOfBatches);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 
-   // tester.makePredictions(observations, observations.numObservations);
-    tester.makePredictions(observations);
-
-std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
-
-    observations.percentRight();
-    /*
-    printf("starting run\n");
-
-    start = std::clock();
-
-    forestFactory FF;
-    baseForest* forest = FF.makeForest(algorithmToRun);
-    //forest->turnDebugModeOn();
-    //forest->turnShowAllResultsOn();
-
-    forest->createForestFromCSV(forestFileName);
-
-    std::cout << "Time to read and manipulate the tree: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
-
-    forest->printForest();
-
-    start = std::clock();
-    forest->makePredictions(testFileName);
-    std::cout << "Time to make predictions: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
-*/
+    }else if(algorithmToRun ==6){
+        printf("running improv5 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+      improv6 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+    }
+        observations.percentRight();
     return 0;
 }
