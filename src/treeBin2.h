@@ -24,6 +24,7 @@ class treeBin2
 //    public:
 treeBin2(padNodeStat**& forest, int*& treeLength, int startTree, int finalTree, int headDepth, int numClasses);
 ~treeBin2();
+bool isInternalNode(int currentNodeNum);
 };
 
 

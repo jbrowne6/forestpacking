@@ -234,7 +234,15 @@ void improv6::makePredictions(const inferenceSamples& observations){
 
     int currentNode;
     int predictions[numOfClasses];
+    int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
+    volatile char temp;
+    int numNodeTraversals = 0;
     for(int i = 0; i < observations.numObservations; i++){
+       /* char *tptr = (char*)&observations.samplesMatrix[i][0];
+        for(int m= 0; m < memSizeOfOneObservation; m+=64){
+temp = tptr[m];
+        }*/
+
         for(int p= 0; p < numOfClasses; p++){
             predictions[p]=0;
         }
@@ -245,17 +253,12 @@ void improv6::makePredictions(const inferenceSamples& observations){
             for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
                 currentNode = q;
 
-                while(forestRoots[k]->bin[currentNode].isInternalNode()){
-                    if(forestRoots[k]->bin[currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()])){
-                        currentNode = forestRoots[k]->bin[currentNode].returnLeftNode(); 
-                        continue;
-                    }
-                    currentNode = forestRoots[k]->bin[currentNode].returnRightNode(); 
+               while(forestRoots[k]->isInternalNode(currentNode)){
+             //   while(forestRoots[k]->bin[currentNode].isInternalNode()){
+                    currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
+++numNodeTraversals;
+             //       currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[0][forestRoots[k]->bin[currentNode].returnFeature()]);
                 }
-if(forestRoots[k]->bin[currentNode].returnRightNode()>9 || forestRoots[k]->bin[currentNode].returnRightNode()<0){
-printf("class out of bounds: %d\n", forestRoots[k]->bin[currentNode].returnRightNode());
-            exit(1);
-}
 
                 ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
 
@@ -264,5 +267,6 @@ printf("class out of bounds: %d\n", forestRoots[k]->bin[currentNode].returnRight
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 
     }
+        printf("there were %d nodes traversed.\n", numNodeTraversals);
 }
 

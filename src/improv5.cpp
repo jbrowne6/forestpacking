@@ -254,10 +254,10 @@ void improv5::makePredictions(const inferenceSamples& observations){
                     }
                     currentNode = forestRoots[k]->bin[currentNode].returnRightNode(); 
                 }
-if(forestRoots[k]->bin[currentNode].returnRightNode()>9 || forestRoots[k]->bin[currentNode].returnRightNode()<0){
-printf("class out of bounds: %d\n", forestRoots[k]->bin[currentNode].returnRightNode());
-            exit(1);
-}
+//if(forestRoots[k]->bin[currentNode].returnRightNode()>9 || forestRoots[k]->bin[currentNode].returnRightNode()<0){
+//printf("class out of bounds: %d\n", forestRoots[k]->bin[currentNode].returnRightNode());
+ //           exit(1);
+//}
 
                 ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
 

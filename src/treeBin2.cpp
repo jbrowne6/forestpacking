@@ -158,3 +158,7 @@ treeBin2::~treeBin2(){
     delete[] bin;    
 }
 
+
+bool treeBin2::isInternalNode(int currentNodeNum){
+   return numOfNodes > currentNodeNum;
+}

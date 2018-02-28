@@ -22,9 +22,12 @@ int main(int argc, char* argv[]) {
     }
     int numOfBatches;
     int depthIntertwined;
-    if (argc < 5){
+    if (argc < 4){
         numOfBatches =0;
         depthIntertwined =0;
+    }else if(argc <5){
+numOfBatches =atoi(argv[3]);
+        depthIntertwined = 0;
     }else{
         numOfBatches =atoi(argv[3]);
         depthIntertwined =atoi(argv[4]);
@@ -111,7 +114,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
 
     }else if(algorithmToRun ==6){
-        printf("running improv5 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+        printf("running improv6 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
       improv6 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));

@@ -69,7 +69,7 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
 #Debug
-debug: CFLAGS := -fopenmp -Wall -Og -g -ggdb
+debug: CFLAGS := -fopenmp -Wall -O3 -g -ggdb
 debug: LIB := -fopenmp -ggdb
 debug: cleaner all
  

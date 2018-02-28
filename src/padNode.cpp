@@ -38,6 +38,11 @@ bool padNode::isInternalNode(){
 bool padNode::goLeft(double featureValue){
     return featureValue < cutValue;
 }
+
+int padNode::nextNode(double featureValue){
+    return (featureValue < cutValue) ? left : right;
+}
+
 void padNode::setLeftValue(uint32_t LVal){
     left = LVal;
 }

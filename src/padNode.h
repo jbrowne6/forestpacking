@@ -23,5 +23,6 @@ class alignas(32) padNode
     void setRightValue(uint32_t RVal); 
     bool isInternalNode();
     bool goLeft(double featureValue);
+    int nextNode(double featureValue);
 };
 #endif //padNode_h

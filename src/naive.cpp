@@ -132,7 +132,7 @@ void naive::makePredictions(const inferenceSamples& observations){
         for(int p= 0; p < numOfClasses; p++){
             predictions[p]=0;
         }
-        bool leftGo;
+
         for(int k=0; k < numTreesInForest; k++){
             currentNode = 0;
             while(forestRoots[k][currentNode].isInternalNode()){
