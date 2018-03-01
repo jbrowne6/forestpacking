@@ -241,31 +241,19 @@ void improv5::makePredictions(const inferenceSamples& observations){
         for(int k=0; k < numOfBins; k++){
 
 
-//printf("working on bin %d, of sample %d\n", k,i); 
             for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
                 currentNode = q;
-//forestRoots[k]->bin[currentNode].printNode();
 
 
                 while(forestRoots[k]->bin[currentNode].isInternalNode()){
-                    if(forestRoots[k]->bin[currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()])){
-                        currentNode = forestRoots[k]->bin[currentNode].returnLeftNode(); 
-                        continue;
-                    }
-                    currentNode = forestRoots[k]->bin[currentNode].returnRightNode(); 
-                }
-//if(forestRoots[k]->bin[currentNode].returnRightNode()>9 || forestRoots[k]->bin[currentNode].returnRightNode()<0){
-//printf("class out of bounds: %d\n", forestRoots[k]->bin[currentNode].returnRightNode());
- //           exit(1);
-//}
+       currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
+               }
 
                 ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
 
             }
-//printf("finished bin %d of sample %d\n", kt, i);
 
         }
-//printf("finished for sample %d\n", i);
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 
     }

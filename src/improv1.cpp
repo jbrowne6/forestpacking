@@ -197,14 +197,8 @@ void improv1::makePredictions(const inferenceSamples& observations){
         for(int k=0; k < numTreesInForest; k++){
             currentNode = 0;
             while(forestRoots[k][currentNode].isInternalNode()){
-                if(forestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()])){
-                    currentNode = forestRoots[k][currentNode].returnLeftNode(); 
-                    continue;
-                }//
-               // }else{
-                    currentNode = forestRoots[k][currentNode].returnRightNode(); 
-               // }
-            }
+                    currentNode = forestRoots[k][currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()]);
+                            }
 
             ++predictions[forestRoots[k][currentNode].returnRightNode()];
         }

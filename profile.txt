@@ -1,3 +1,4 @@
-sudo perf record -e cpu-clock ./bin/packer 1
-sudo perf annotate --stdio --symbol=forestImprovement2::makePredictions
+#!/bin/bash
 
+sudo perf record ./bin/packer 6 1 16 3
+sudo perf report --stdio --dsos=improv6::makePredictions

@@ -236,7 +236,7 @@ void improv6::makePredictions(const inferenceSamples& observations){
     int predictions[numOfClasses];
     int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
     volatile char temp;
-    int numNodeTraversals = 0;
+   // int numNodeTraversals = 0;
     for(int i = 0; i < observations.numObservations; i++){
        /* char *tptr = (char*)&observations.samplesMatrix[i][0];
         for(int m= 0; m < memSizeOfOneObservation; m+=64){
@@ -253,11 +253,11 @@ temp = tptr[m];
             for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
                 currentNode = q;
 
-               while(forestRoots[k]->isInternalNode(currentNode)){
-             //   while(forestRoots[k]->bin[currentNode].isInternalNode()){
+             //  while(forestRoots[k]->isInternalNode(currentNode)){
+                while(forestRoots[k]->bin[currentNode].isInternalNode()){
                     currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
-++numNodeTraversals;
-             //       currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[0][forestRoots[k]->bin[currentNode].returnFeature()]);
+//++numNodeTraversals;
+               //     currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[0][forestRoots[k]->bin[currentNode].returnFeature()]);
                 }
 
                 ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
@@ -267,6 +267,6 @@ temp = tptr[m];
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 
     }
-        printf("there were %d nodes traversed.\n", numNodeTraversals);
+      //  printf("there were %d nodes traversed.\n", numNodeTraversals);
 }
 
