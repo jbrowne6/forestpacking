@@ -1,5 +1,5 @@
 #include <queue>
-#include "improv6.h"
+#include "improv7.h"
 
 namespace {
 
@@ -58,7 +58,7 @@ namespace {
 } //namespace
 
 //improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins){
-improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
+improv7::improv7(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
     if(source == 1){
         std::ifstream fin(forestCSVFileName.c_str());
         //int numNodesInTree;
@@ -222,7 +222,7 @@ improv6::improv6(const std::string& forestCSVFileName, int source, const inferen
     printf("finished all\n");
 }
 
-improv6::~improv6(){
+improv7::~improv7(){
     for(int i = 0; i < numOfBins; i++){
         // delete[] forestRoots[i];
     }
@@ -230,34 +230,54 @@ improv6::~improv6(){
 }
 
 
-void improv6::makePredictions(const inferenceSamples& observations){
+void improv7::makePredictions(const inferenceSamples& observations){
 
-    int currentNode;
+  //  int currentNode;
     int predictions[numOfClasses];
     //int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
     // volatile char temp;
     // int numNodeTraversals = 0;
-    for(int i = 0; i < observations.numObservations; i++){
+    int* currentNode = new int[forestRoots[0]->numOfTreesInBin];
+    int numberNotInLeaf;
+    int i, p, k, q;
+    for(i = 0; i < observations.numObservations; i++){
         /* char *tptr = (char*)&observations.samplesMatrix[i][0];
            for(int m= 0; m < memSizeOfOneObservation; m+=64){
            temp = tptr[m];
            }*/
 
-        for(int p= 0; p < numOfClasses; p++){
+        for( p= 0; p < numOfClasses; p++){
             predictions[p]=0;
         }
 
-        for(int k=0; k < numOfBins; k++){
+        for( k=0; k < numOfBins; k++){
 
 
-            for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
-currentNode = q;
-                    while(forestRoots[k]->bin[currentNode].isInternalNode()){
-                        currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
-                    }
-
-                ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
+            for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+                currentNode[q] = q;
+            }
+            numberNotInLeaf = 1;
+            while(numberNotInLeaf > 0){
+                numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+                for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
                 }
+                for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+
+                    if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+                        currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+                        continue;
+                    }
+                    --numberNotInLeaf;
+                }
+            }
+
+            for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+                ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+            }
+
+
+
         }
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 

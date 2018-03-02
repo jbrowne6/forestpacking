@@ -9,6 +9,7 @@
 #include "inferenceSamples.h"
 #include "improv1.h"
 #include "improv3.h"
+#include "improv7.h"
 #include "improv4.h"
 #include "improv5.h"
 #include "improv6.h"
@@ -124,7 +125,19 @@ numOfBatches =atoi(argv[3]);
             tester.makePredictions(observations);
         }
         std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+    }else if(algorithmToRun ==7){
+        printf("running improv7 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+      improv7 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+        start = std::clock();
+        if(runPrediction){
+            tester.makePredictions(observations);
+        }
+        std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
     }
+
         observations.percentRight();
     return 0;
 }
