@@ -234,49 +234,37 @@ improv7::~improv7(){
 
 void improv7::makePredictions(const inferenceSamples& observations){
 
-  //  int currentNode;
     int predictions[numOfClasses];
-    //int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
-    // volatile char temp;
+    int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
     // int numNodeTraversals = 0;
     int* currentNode = new int[forestRoots[0]->numOfTreesInBin];
     int numberNotInLeaf;
     int i, p, k, q;
+    int increment = 64/sizeof(observations.samplesMatrix[0][0]);
     for(i = 0; i < observations.numObservations; i++){
+        for(p = 0; p < memSizeOfOneObservation; p+=increment){
+__builtin_prefetch(&observations.samplesMatrix[i][p], 0);
+        }
+        
 
-//_mm_prefetch((char*)(&forestRoots[0]->bin[currentNode[0]]), _MM_HINT_T2);
-////__builtin_prefetch(&forestRoots[0]->bin[0], 0);
-//__builtin_prefetch(&observations.predictedClasses[i], 1);
-        /* char *tptr = (char*)&observations.samplesMatrix[i][0];
-           for(int m= 0; m < memSizeOfOneObservation; m+=64){
-           temp = tptr[m];
-           }*/
-
-        for( p= 0; p < numOfClasses; p++){
+        for( p= 0; p < numOfClasses;++p){
             predictions[p]=0;
         }
 
-        for( k=0; k < numOfBins; k++){
-//_mm_prefetch((char*)(&forestRoots[k]->bin[currentNode[0]]), _MM_HINT_T0);
-//__builtin_prefetch(&forestRoots[k]->bin[currentNode[k+1]], 1);
+        for( k=0; k < numOfBins;++k){
             for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
                 currentNode[q] = q;
-////__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0);
-//_mm_prefetch((char*)(&forestRoots[k]->bin[currentNode[0]]), _MM_HINT_T0);
+__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0);
             }
             numberNotInLeaf = 1;
             while(numberNotInLeaf > 0){
                 numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
-             //   for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
-//__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
-              //  }
-                for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+
+                for( q=0; q<forestRoots[k]->numOfTreesInBin; ++q){
 
                     if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
                         currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
-                       // currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[1][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
-//__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0);
-//_mm_prefetch((char*)(&forestRoots[k]->bin[currentNode[q]]), _MM_HINT_T0);
+__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0);
                         continue;
                     }
                     --numberNotInLeaf;

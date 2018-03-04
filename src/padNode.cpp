@@ -15,9 +15,9 @@ void padNode::printNode(){
 double padNode::returnCutValue(){
     return cutValue;
 }
-int padNode::returnFeature(){
-    return feature;
-}
+//int padNode::returnFeature(){
+ //   return feature;
+//}
 int padNode::returnLeftNode(){
     return left;
 }
@@ -29,19 +29,20 @@ left = 0;
 int padNode::returnClass(){
     return right;
 }
-int padNode::returnRightNode(){
-    return right;
-}
-bool padNode::isInternalNode(){
-    return left;
-}
+//int padNode::returnRightNode(){
+ //   return right;
+//}
+//bool padNode::isInternalNode(){
+//    return left;
+//}
 bool padNode::goLeft(double featureValue){
     return featureValue < cutValue;
 }
 
-int padNode::nextNode(double featureValue){
-    return (featureValue < cutValue) ? left : right;
-}
+//inline int padNode::nextNode(double featureValue){
+//int padNode::nextNode(double featureValue){
+ //   return (featureValue < cutValue) ? left : right;
+//}
 
 void padNode::setLeftValue(uint32_t LVal){
     left = LVal;

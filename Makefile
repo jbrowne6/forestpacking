@@ -16,7 +16,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -O3 
+CFLAGS      := -fopenmp -Wall -O3 -ffast-math
 #LIB         := -fopenmp -lm 
 LIB         := -fopenmp 
 INC         := -I$(INCDIR) -I/usr/local/include
@@ -69,7 +69,7 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
 #Debug
-debug: CFLAGS := -fopenmp -Wall -O3 -g -ggdb
+debug: CFLAGS := -fopenmp -Wall -O3 -g -ggdb -ffast-math
 debug: LIB := -fopenmp -ggdb
 debug: cleaner all
  
