@@ -6,10 +6,12 @@
 #include <string>
 #include <typeinfo>
 #include <ctime>
+#include <chrono>
 #include "inferenceSamples.h"
 #include "improv1.h"
 #include "improv3.h"
 #include "improv7.h"
+#include "improv8.h"
 #include "improv4.h"
 #include "improv5.h"
 #include "improv6.h"
@@ -27,7 +29,7 @@ int main(int argc, char* argv[]) {
         numOfBatches =0;
         depthIntertwined =0;
     }else if(argc <5){
-numOfBatches =atoi(argv[3]);
+        numOfBatches =atoi(argv[3]);
         depthIntertwined = 0;
     }else{
         numOfBatches =atoi(argv[3]);
@@ -68,7 +70,7 @@ numOfBatches =atoi(argv[3]);
 
     }else if(algorithmToRun ==2){
         printf("running improv2 src=csv, pred=%d\n",runPrediction);
-    improv2 tester(forestFileName,1);
+        improv2 tester(forestFileName,1);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
@@ -80,7 +82,7 @@ numOfBatches =atoi(argv[3]);
 
     }else if(algorithmToRun ==3){
         printf("running improv3 src=csv, pred=%d\n",runPrediction);
-    improv3 tester(forestFileName,1, observations);
+        improv3 tester(forestFileName,1, observations);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
@@ -92,7 +94,7 @@ numOfBatches =atoi(argv[3]);
 
     }else if(algorithmToRun ==4){
         printf("running improv4 src=csv, pred=%d\n",runPrediction);
-    improv4 tester(forestFileName,1, observations);
+        improv4 tester(forestFileName,1, observations);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
@@ -104,7 +106,7 @@ numOfBatches =atoi(argv[3]);
 
     }else if(algorithmToRun ==5){
         printf("running improv5 src=csv, pred=%d, batches=%d, head=3\n",runPrediction,numOfBatches );
-    improv5 tester(forestFileName,1, observations,numOfBatches);
+        improv5 tester(forestFileName,1, observations,numOfBatches);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
@@ -116,7 +118,7 @@ numOfBatches =atoi(argv[3]);
 
     }else if(algorithmToRun ==6){
         printf("running improv6 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
-      improv6 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+        improv6 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
@@ -127,7 +129,7 @@ numOfBatches =atoi(argv[3]);
         std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
     }else if(algorithmToRun ==7){
         printf("running improv7 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
-      improv7 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+        improv7 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
@@ -136,8 +138,23 @@ numOfBatches =atoi(argv[3]);
             tester.makePredictions(observations);
         }
         std::cout << "Time to test observations: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
-    }
+    }else if(algorithmToRun ==8){
+                printf("running improv8 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+                improv8 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+                tester.printForest();
+                printf("size of a node is %d\n",(int) sizeof(padNode));
+                printf("starting run\n");
+                auto startTime = std::chrono::steady_clock::now();
+                if(runPrediction){
+                    tester.makePredictions(observations);
+                }
+                auto stopTime = std::chrono::steady_clock::now();
+                std::chrono::duration<double> diff = stopTime - startTime;
+                printf("Time to test observations: %f s\n", diff);
+                
+            }
 
-        observations.percentRight();
+
+    observations.percentRight();
     return 0;
 }

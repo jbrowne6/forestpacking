@@ -1,5 +1,5 @@
 #include <queue>
-#include "improv7.h"
+#include "improv8.h"
 #include <emmintrin.h>
 
 
@@ -60,7 +60,7 @@ namespace {
 } //namespace
 
 //improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins){
-improv7::improv7(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
+improv8::improv8(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
     if(source == 1){
         std::ifstream fin(forestCSVFileName.c_str());
         //int numNodesInTree;
@@ -224,7 +224,7 @@ improv7::improv7(const std::string& forestCSVFileName, int source, const inferen
     printf("finished all\n");
 }
 
-improv7::~improv7(){
+improv8::~improv8(){
     for(int i = 0; i < numOfBins; i++){
         // delete[] forestRoots[i];
     }
@@ -232,24 +232,24 @@ improv7::~improv7(){
 }
 
 
-void improv7::makePredictions(const inferenceSamples& observations){
+void improv8::makePredictions(const inferenceSamples& observations){
 
     int predictions[numOfClasses];
-    int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
-    // int numNodeTraversals = 0;
-    int* currentNode = new int[forestRoots[0]->numOfTreesInBin];
+    int currentNode[forestRoots[0]->numOfTreesInBin];
     int numberNotInLeaf;
     int i, p, k, q;
-    int increment = 64/sizeof(observations.samplesMatrix[0][0]);
+
+        #pragma omp parallel for reduction(+:predictions[:numOfClasses]) private(q, p, k, numberNotInLeaf, currentNode)
     for(i = 0; i < observations.numObservations; i++){
-        for(p = 0; p < memSizeOfOneObservation; p+=increment){
-__builtin_prefetch(&observations.samplesMatrix[i][p], 0, 3);
-        }
+   //     for(p = 0; p < memSizeOfOneObservation; p+=increment){
+//__builtin_prefetch(&observations.samplesMatrix[i][p], 0, 3);
+ //       }
         
 
         for( p= 0; p < numOfClasses;++p){
             predictions[p]=0;
         }
+
 
         for( k=0; k < numOfBins;++k){
             for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
