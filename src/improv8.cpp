@@ -233,14 +233,17 @@ improv8::~improv8(){
 
 
 void improv8::makePredictions(const inferenceSamples& observations){
-
+//    omp_set_nested(1);
+//#pragma omp parallel
+ //   {
     int predictions[numOfClasses];
     int currentNode[forestRoots[0]->numOfTreesInBin];
     int numberNotInLeaf;
-    int i, p, k, q;
+    int  p, k, q;
 
-        #pragma omp parallel for reduction(+:predictions[:numOfClasses]) private(q, p, k, numberNotInLeaf, currentNode)
-    for(i = 0; i < observations.numObservations; i++){
+ //       #pragma omp parallel for reduction(+:predictions[:numOfClasses]) private(q, p, k, numberNotInLeaf, currentNode)
+        #pragma omp parallel for private(q, p, k, numberNotInLeaf, currentNode, predictions)
+    for(int i = 0; i < observations.numObservations; i++){
    //     for(p = 0; p < memSizeOfOneObservation; p+=increment){
 //__builtin_prefetch(&observations.samplesMatrix[i][p], 0, 3);
  //       }
@@ -279,6 +282,7 @@ __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 
     }
+    //}
     //  printf("there were %d nodes traversed.\n", numNodeTraversals);
 }
 
