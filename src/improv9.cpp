@@ -1,5 +1,8 @@
 #include <queue>
-#include "improv8.h"
+#include <iostream>
+#include <sstream>
+#include <omp.h>
+#include "improv9.h"
 //#include <emmintrin.h>
 
 
@@ -60,7 +63,7 @@ namespace {
 } //namespace
 
 //improv6::improv6(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins){
-improv8::improv8(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
+improv9::improv9(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
     if(source == 1){
         std::ifstream fin(forestCSVFileName.c_str());
         //int numNodesInTree;
@@ -184,7 +187,10 @@ improv8::improv8(const std::string& forestCSVFileName, int source, const inferen
         int startTree=0;
         int binSize = numTreesInForest/numberBins;
         int binRemainder = numTreesInForest%numberBins;
+        
+#pragma omp parallel for proc_bind(spread) schedule(static) private(startTree, finalTree)
         for(int q = 0; q < numberBins; q++){
+            startTree = q*binSize;
             finalTree = startTree+binSize;
             if(q < binRemainder){
                 finalTree++;
@@ -194,7 +200,6 @@ improv8::improv8(const std::string& forestCSVFileName, int source, const inferen
                 finalTree = numTreesInForest;
             }
             forestRoots[q] = new treeBin2(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined, numOfClasses);
-            startTree = finalTree;
         }
 
         printf("finished binning\n");
@@ -224,7 +229,7 @@ improv8::improv8(const std::string& forestCSVFileName, int source, const inferen
     printf("finished all\n");
 }
 
-improv8::~improv8(){
+improv9::~improv9(){
     for(int i = 0; i < numOfBins; i++){
         // delete[] forestRoots[i];
     }
@@ -232,33 +237,29 @@ improv8::~improv8(){
 }
 
 
-void improv8::makePredictions(const inferenceSamples& observations){
-//    omp_set_nested(1);
-//#pragma omp parallel
- //   {
+void improv9::makePredictions(const inferenceSamples& observations){
+    //    omp_set_nested(1);
+    //#pragma omp parallel
+    //   {
     int predictions[numOfClasses];
     int currentNode[forestRoots[0]->numOfTreesInBin];
     int numberNotInLeaf;
     int  p, k, q;
 
- //       #pragma omp parallel for reduction(+:predictions[:numOfClasses]) private(q, p, k, numberNotInLeaf, currentNode)
-        #pragma omp parallel for schedule (dynamic) private(q, p, k, numberNotInLeaf, currentNode, predictions)
+    //       #pragma omp parallel for reduction(+:predictions[:numOfClasses]) private(q, p, k, numberNotInLeaf, currentNode)
+#pragma omp parallel for schedule (dynamic) private(q, p, k, numberNotInLeaf, currentNode, predictions)
     for(int i = 0; i < observations.numObservations; i++){
-   //     for(p = 0; p < memSizeOfOneObservation; p+=increment){
-//__builtin_prefetch(&observations.samplesMatrix[i][p], 0, 3);
- //       }
-        
 
         for( p= 0; p < numOfClasses;++p){
             predictions[p]=0;
         }
 
-
         for( k=0; k < numOfBins;++k){
             for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
                 currentNode[q] = q;
-__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+                __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
             }
+
             numberNotInLeaf = 1;
             while(numberNotInLeaf > 0){
                 numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
@@ -267,7 +268,7 @@ __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
 
                     if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
                         currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
-__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+                        __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
                         continue;
                     }
                     --numberNotInLeaf;
@@ -279,10 +280,99 @@ __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
             }
 
         }
-//        observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
+        //        observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 
     }
     //}
     //  printf("there were %d nodes traversed.\n", numNodeTraversals);
 }
 
+
+
+
+int improv9::makePrediction(double*& observation){
+
+
+    int predictions[numOfClasses]={};
+    int currentNode[forestRoots[0]->numOfTreesInBin];
+    int numberNotInLeaf;
+    int k, q;
+
+#pragma omp parallel for proc_bind(spread) schedule(static) private(q, numberNotInLeaf, currentNode)
+//#pragma omp parallel for proc_bind(spread) schedule(static) private(q, numberNotInLeaf, currentNode, predictions)
+    for( k=0; k < numOfBins;++k){
+
+        for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+            currentNode[q] = q;
+            __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+        }
+
+        do{
+            numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+
+            for( q=0; q<forestRoots[k]->numOfTreesInBin; ++q){
+
+                if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+                    currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+                    __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+                    continue;
+                }
+                --numberNotInLeaf;
+            }
+        }while(numberNotInLeaf > 0);
+
+  //      for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+//#pragma omp atomic update
+ //           ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+   //     }
+
+    }
+    return returnClassPrediction(predictions, numOfClasses);
+
+}
+
+
+
+int improv9::makeTest(double*& observation){
+
+    int predictions[numOfClasses]={};
+    int currentNode[forestRoots[0]->numOfTreesInBin];
+    int numberNotInLeaf;
+    int k, q;
+
+#pragma omp parallel for proc_bind(close) schedule(static) private(q, numberNotInLeaf, currentNode, predictions)
+    for( k=0; k < numOfBins;++k){
+        //auto cpu = sched_getcpu();
+        std::ostringstream os;
+        os <<"\nThread "<<omp_get_thread_num()<<" on cpu "<<sched_getcpu()<<std::endl;
+        std::cout<<os.str()<<std::flush;
+
+
+        for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+            currentNode[q] = q;
+            __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+        }
+
+        do{
+            numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+
+            for( q=0; q<forestRoots[k]->numOfTreesInBin; ++q){
+
+                if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+                    currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+                    __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+                    continue;
+                }
+                --numberNotInLeaf;
+            }
+        }while(numberNotInLeaf > 0);
+
+  //      for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+//#pragma omp atomic update
+ //           ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+   //     }
+
+    }
+    return returnClassPrediction(predictions, numOfClasses);
+
+}

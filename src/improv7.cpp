@@ -184,7 +184,21 @@ improv7::improv7(const std::string& forestCSVFileName, int source, const inferen
         int startTree=0;
         int binSize = numTreesInForest/numberBins;
         int binRemainder = numTreesInForest%numberBins;
+#pragma omp parallel for proc_bind(spread) schedule(static) private(startTree, finalTree)
         for(int q = 0; q < numberBins; q++){
+            startTree = q*binSize;
+            finalTree = startTree+binSize;
+            if(q < binRemainder){
+                finalTree++;
+            }
+
+            if(finalTree > numTreesInForest){
+                finalTree = numTreesInForest;
+            }
+            forestRoots[q] = new treeBin2(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined, numOfClasses);
+        }
+
+       /* for(int q = 0; q < numberBins; q++){
             finalTree = startTree+binSize;
             if(q < binRemainder){
                 finalTree++;
@@ -195,7 +209,7 @@ improv7::improv7(const std::string& forestCSVFileName, int source, const inferen
             }
             forestRoots[q] = new treeBin2(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined, numOfClasses);
             startTree = finalTree;
-        }
+        }*/
 
         printf("finished binning\n");
         //TODO create new data structure and delete tempForest.

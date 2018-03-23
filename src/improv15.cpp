@@ -1,5 +1,5 @@
 #include <queue>
-#include "naive.h"
+#include "improv15.h"
 
 namespace {
 
@@ -16,7 +16,7 @@ namespace {
     }
 } //namespace
 
-naive::naive(const std::string& forestCSVFileName, int source){
+improv15::improv15(const std::string& forestCSVFileName, int source){
     if(source == 1){ //source==1 is csv
         std::ifstream fin(forestCSVFileName.c_str());
         int numNodesInTree;
@@ -100,7 +100,7 @@ naive::naive(const std::string& forestCSVFileName, int source){
         //Pull one more float so that eof is TRUE.
         fin >> num;
         if(!fin.eof()){
-            printf("csv not exausted, current num is %f\n", num);
+            printf("csv not exausted");
             exit(1);
         }else{
             fin.close();
@@ -114,7 +114,7 @@ naive::naive(const std::string& forestCSVFileName, int source){
 
 }
 
-naive::~naive(){
+improv15::~improv15(){
     for(int i = 0; i < numTreesInForest; i++){
         delete[] forestRoots[i];
     }
@@ -122,18 +122,20 @@ naive::~naive(){
 }
 
 
-void naive::makePredictions(const inferenceSamples& observations){
+void improv15::makePredictions(const inferenceSamples& observations){
 
     int currentNode;
     int predictions[numOfClasses];
+    int p, k;
 
+        #pragma omp parallel for private( p, k, currentNode, predictions)
     for(int i = 0; i < observations.numObservations; i++){
 
-        for(int p= 0; p < numOfClasses; p++){
+        for( p= 0; p < numOfClasses; p++){
             predictions[p]=0;
         }
 
-        for(int k=0; k < numTreesInForest; k++){
+        for( k=0; k < numTreesInForest; k++){
             currentNode = 0;
             while(forestRoots[k][currentNode].isInternalNode()){
                     currentNode = forestRoots[k][currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()]);
@@ -143,6 +145,5 @@ void naive::makePredictions(const inferenceSamples& observations){
         }
         observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
     }
-
 }
 

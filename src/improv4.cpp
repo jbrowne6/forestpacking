@@ -2,6 +2,12 @@
 #include "improv4.h"
 
 namespace {
+    int maxDepth = 0;
+    double bias = 0;
+    double numForBias = 0;
+
+
+
 
     inline int returnClassPrediction(int *classTotals, int numClasses){
         int predictMaxValue = -1;
@@ -15,36 +21,46 @@ namespace {
         return predictMaxClass;
     }
 
-class repack 
+    class repack 
     {
         public:
             int currentNode=-1;
             int endPosition;
+
             padNodeStat* tree;
             padNode* realTree;
-            int repackTree(int workingNode);
+            int repackTree(int workingNode, int depth);
             repack( int eP, padNodeStat* tTree, padNode* rTree): endPosition(eP), tree(tTree), realTree(rTree) {};
     };
 
-    int repack::repackTree(int workingNode){
-        
+    int repack::repackTree(int workingNode, int depth){
+
+        int currDepth = depth+1;
+        if(maxDepth < currDepth){
+            maxDepth = currDepth;
+        }
         if(tree[workingNode].isInternalNode()){
 
-        int thisNodesLocation = ++currentNode;
-if(thisNodesLocation > endPosition){
-printf("Moving into class node area\nendP:%d\n", endPosition);
-            exit(1);
-        }
-int leftFreq = tree[tree[workingNode].returnLeftNode()].returnFreq();
+            int thisNodesLocation = ++currentNode;
+            if(thisNodesLocation > endPosition){
+                printf("Moving into class node area\nendP:%d\n", endPosition);
+                exit(1);
+            }
+            int leftFreq = tree[tree[workingNode].returnLeftNode()].returnFreq();
             int rightFreq = tree[tree[workingNode].returnRightNode()].returnFreq();
             int leftNodeNum;
             int rightNodeNum;
             if(rightFreq > leftFreq){
-                rightNodeNum = repackTree(tree[workingNode].returnRightNode());
-                leftNodeNum = repackTree(tree[workingNode].returnLeftNode());
+                rightNodeNum = repackTree(tree[workingNode].returnRightNode(), currDepth);
+                leftNodeNum = repackTree(tree[workingNode].returnLeftNode(), currDepth);
             }else{
-                leftNodeNum = repackTree(tree[workingNode].returnLeftNode());
-                rightNodeNum = repackTree(tree[workingNode].returnRightNode());
+                leftNodeNum = repackTree(tree[workingNode].returnLeftNode(), currDepth);
+                rightNodeNum = repackTree(tree[workingNode].returnRightNode(), currDepth);
+            }
+
+                ++numForBias; 
+            if(!((rightFreq == 0) && (leftFreq == 0)) ){
+                bias += abs((double)(rightFreq - leftFreq)/(double)(rightFreq+leftFreq));
             }
 
             realTree[thisNodesLocation].setNode(tree[workingNode].returnCutValue(),
@@ -72,7 +88,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
         int numLeafNodesInForest = 0;
         double num;
         padNodeStat ** tempForestRoots;
-
+        double avgDepth = 0;
         //First number in csv is the number of trees
         fin >> num;
         numTreesInForest = (int)num;
@@ -162,21 +178,22 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
             fin.close();
         }
 
-int currentNode = 0;
-for(int i = 0; i < observations.numObservations; i++){
+        int currentNode = 0;
+        for(int i = 0; i < observations.numObservations; i++){
 
-        for(int k=0; k < numTreesInForest; k++){
-            currentNode = 0;
-            while(tempForestRoots[k][currentNode].isInternalNode()){
-                if(tempForestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][tempForestRoots[k][currentNode].returnFeature()])){
-                    currentNode = tempForestRoots[k][currentNode].returnLeftNode(); 
-                    continue;
-                }
+            for(int k=0; k < numTreesInForest; k++){
+                currentNode = 0;
+                while(tempForestRoots[k][currentNode].isInternalNode()){
+                    ++avgDepth;
+                    if(tempForestRoots[k][currentNode].goLeft(observations.samplesMatrix[i][tempForestRoots[k][currentNode].returnFeature()])){
+                        currentNode = tempForestRoots[k][currentNode].returnLeftNode(); 
+                        continue;
+                    }
                     currentNode = tempForestRoots[k][currentNode].returnRightNode(); 
-            }
+                }
 
+            }
         }
-    }
 
         //TODO create new data structure and delete tempForest.
         forestRoots = new padNode*[numTreesInForest];
@@ -193,14 +210,17 @@ for(int i = 0; i < observations.numObservations; i++){
             }
 
             repack pack((numNodesInTree[i]-1)/2, tempForestRoots[i],forestRoots[i] );
-            pack.repackTree(0);
+            pack.repackTree(0, 0);
 
             delete[] tempForestRoots[i];
         }
-       
-            delete[] numNodesInTree;
-         delete[] tempForestRoots;
-       // forestRoots = tempForestRoots;
+
+        delete[] numNodesInTree;
+        delete[] tempForestRoots;
+        // forestRoots = tempForestRoots;
+        printf("the average depth was %f; the average bias was %f\n", avgDepth/(double)(numTreesInForest*observations.numObservations),bias/(2*numForBias));
+        printf("the number of obs is %d\n", observations.numObservations);
+        printf("the max depth of any trees is %d\n", maxDepth);
     }
     if(forestRoots == NULL){
         printf("forest is empty\n");
@@ -231,8 +251,8 @@ void improv4::makePredictions(const inferenceSamples& observations){
             currentNode = 0;
             while(forestRoots[k][currentNode].isInternalNode()){
 
-                    currentNode = forestRoots[k][currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()]);
-                            }
+                currentNode = forestRoots[k][currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()]);
+            }
 
             ++predictions[forestRoots[k][currentNode].returnRightNode()];
         }

@@ -16,6 +16,7 @@
 #include "improv5.h"
 #include "improv6.h"
 #include "improv2.h"
+#include "improv15.h"
 #include "naive.h"
 
 int main(int argc, char* argv[]) {
@@ -150,9 +151,26 @@ int main(int argc, char* argv[]) {
                 }
                 auto stopTime = std::chrono::steady_clock::now();
                 std::chrono::duration<double> diff = stopTime - startTime;
-                printf("Time to test observations: %f s\n", diff);
+                //printf("Time to test observations: %f s\n", diff);
+                std::cout<<"Time to test observations: "<<diff.count()<<" s"<<std::endl;
+            }else if(algorithmToRun ==15){
+                printf("running improv15 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+                improv15 tester(forestFileName,1);
+                tester.printForest();
+                printf("size of a node is %d\n",(int) sizeof(padNode));
+                printf("starting run\n");
+                auto startTime = std::chrono::steady_clock::now();
+                if(runPrediction){
+                    tester.makePredictions(observations);
+                }
+                auto stopTime = std::chrono::steady_clock::now();
+                std::chrono::duration<double> diff = stopTime - startTime;
+                //printf("Time to test observations: %f s\n", diff);
+                std::cout<<"Time to test observations: "<<diff.count()<<" s"<<std::endl;
+
                 
             }
+
 
 
     observations.percentRight();

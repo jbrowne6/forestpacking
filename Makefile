@@ -1,10 +1,11 @@
 #Compiler and Linker
 #CC          := g++-mp-4.7
-#CC          := g++ -std=c++11
-CC          := g++-6 -std=c++11
+CC          := g++ -std=c++11
+#CC          := g++-6 -std=c++11
 
 #The Target Binary Program
-TARGET      := packer
+#TARGET      := packer
+TARGET      := packerWriteTime
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
@@ -17,9 +18,10 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -O3 -ffast-math
+CFLAGS      := -fopenmp -Wall -O3 -ffast-math 
 #LIB         := -fopenmp -lm 
-LIB         := -fopenmp 
+#LIB         := -fopenmp -lm -lnuma
+LIB         := -fopenmp -lm -O3 -ffast-math
 INC         := -I$(INCDIR) -I/usr/local/include
 INCDEP      := -I$(INCDIR)
 

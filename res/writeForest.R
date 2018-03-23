@@ -1,6 +1,7 @@
 
-trees <- 2000
-dataSetSelect <- "IRIS" #"MNIST" "IRIS"
+trees <- 16
+nCs <- 4 # this is the number of cores to use
+dataSetSelect <- "allstate" #"MNIST" "IRIS" "allstate" "higgs"
 
 wForest <- function(forest){
 
@@ -19,10 +20,10 @@ wForest <- function(forest){
         datWrite <- c(datWrite, treeSizes[i], forest$trees[[i]]$treeMap, forest$trees[[i]]$CutPoint, classProbs, features)
     }
 
-    write.table(datWrite, file = "forest.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ")
+    write.table(datWrite, file = "forest.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ", append=FALSE)
 }
 
-library(rerf, lib.loc="rerf")
+library(rerf)
 
 observedError <- FALSE
 
@@ -35,22 +36,25 @@ numberOfTestObservations <- 100
 numberOfTestObservations <- 10000
     #Size of the labels is 1 whereas everything else is 4
     #Open and position the image file
+image_block <- file("~/gitrepos/experiments/data/ubyte/train-images-idx3-ubyte", "rb")
+
     #image_block <- file("../gitRepos/R-RerF/data/ubyte/train-images-idx3-ubyte", "rb")
-    image_block <- file("~/dropbox/gitRepos/R-RerF/data/ubyte/train-images-idx3-ubyte", "rb")
+    #image_block <- file("~/dropbox/gitRepos/R-RerF/data/ubyte/train-images-idx3-ubyte", "rb")
     q <- readBin(image_block, integer(), n=1, endian="big")
     num_images <- readBin(image_block, integer(), n=1, endian="big")
     num_col <- readBin(image_block, integer(), n=1, endian="big")
     num_row <- readBin(image_block, integer(), n=1, endian="big")
 
     #Open and position the label file
+label_block <- file("~/gitrepos/experiments/data/ubyte/train-labels-idx1-ubyte", "rb")
     #label_block = file("../gitRepos/R-RerF/data/ubyte/train-labels-idx1-ubyte", "rb")
-    label_block = file("~/dropbox/gitRepos/R-RerF/data/ubyte/train-labels-idx1-ubyte", "rb")
     q <- readBin(label_block, integer(), n=1, endian="big")
     num_labels <- readBin(label_block, integer(), n=1, endian="big")
 
     X <- readBin(image_block, integer(), n=num_images*num_col*num_row, size=1, signed=FALSE)
     X <- matrix(X, ncol=num_col*num_row, byrow=TRUE)
-
+print(nrow(X))
+print(ncol(X))
     Y <- as.numeric(readBin(label_block, integer(), n=num_labels, size=1, signed=FALSE)+1)
 
     close(image_block)
@@ -60,6 +64,52 @@ numberOfTestObservations <- 10000
         print("MNIST not read properly")
         observedError <- TRUE
     }
+} else if(dataSetSelect == "allstate"){
+numberOfTestObservations <- 50000
+obsToUse <- 500000
+
+print("loading allstate")
+mydata <- read.csv(file="train_set.csv", header=TRUE, sep=",")
+mydata <- as.data.frame(lapply(mydata, as.numeric))
+X <- as.matrix(mydata[,2:34])
+Y <- as.numeric(mydata[,35])
+mydata <- NA
+notZeroes <- Y>0
+numOfZeroesToUse <- obsToUse-sum(notZeroes)
+
+cuts <- cut(Y[notZeroes], breaks=4,labels=2:5)
+Y[notZeroes] <- as.numeric(cuts)+1
+Y[!notZeroes] <- 1
+
+    print("allstate loaded")
+print("randomly choosing 500000 obs of allstate")
+m <- c(sample(which(!notZeroes), numOfZeroesToUse), which(notZeroes))
+
+    X <- X[m,]
+    Y <- Y[m]
+
+if(nrow(X) != obsToUse ){
+        print("allstate not read properly")
+        observedError <- TRUE
+    }
+
+}else if(dataSetSelect == "higgs"){
+    
+numberOfTestObservations <- 25000
+    print("loading higgs")
+mydata <- read.csv(file="training.csv", header=TRUE, sep=",")
+X <- as.matrix(mydata[,2:31])
+Y <- as.numeric(mydata[,33])
+mydata <- NA
+
+    print("higgs loaded")
+    gc()
+
+    if(nrow(X) != 250000){
+        print("higgs not read properly")
+        observedError <- TRUE
+    }
+
 } else{
     print("no dataset chosen")
     observedError <- TRUE
@@ -67,20 +117,29 @@ numberOfTestObservations <- 10000
 
 if(!observedError){
     print("growing forest")
-    forest <- RerF(X,Y,min.parent =1, max.depth=0, trees=trees, seed=sample(1:10000,1),mat.options = list(p = ncol(X), d =ceiling(sqrt(ncol(X))), random.matrix = "rf", rho = 1/ncol(X)))
+    forest <- RerF(X,Y,min.parent =1, max.depth=0, trees=trees, seed=sample(1:10000,1),mat.options = list(p = ncol(X), d =ceiling(sqrt(ncol(X))), random.matrix = "rf", rho = 1/ncol(X)), num.cores = nCs)
 
     print("Saving forest to CSV")
     wForest(forest)
+
+    print("saving traversal stats maker")
+numberOfFeatures <- ncol(X)
+    testObservations <- nrow(X)
+
+    write.table(c(numberOfTestObservations, numberOfFeatures), file = "traversal.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ", append=FALSE)
+    for(j in 1:numberOfTestObservations){
+    write.table(c(Y[testObservations[j]]-1, X[testObservations[j],]), file = "traversal.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ", append=TRUE)
+    }
+
 
     print("Saving test observations to CSV")
     numberOfFeatures <- ncol(X)
     testObservations <- sample(1:nrow(X), numberOfTestObservations)
 
-    testWrite <- c(numberOfTestObservations, numberOfFeatures)
+    write.table(c(numberOfTestObservations, numberOfFeatures), file = "testObservations.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ", append=FALSE)
     for(j in 1:numberOfTestObservations){
-        testWrite <- c(testWrite, Y[testObservations[j]]-1, X[testObservations[j],])
+    write.table(c(Y[testObservations[j]]-1, X[testObservations[j],]), file = "testObservations.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ", append=TRUE)
     }
-    write.table(testWrite, file = "testObservations.csv",row.names=FALSE, na="",col.names=FALSE, sep=" ")
 }else{
     print("forest not created because error observed")
 }

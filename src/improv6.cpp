@@ -176,13 +176,15 @@ improv6::improv6(const std::string& forestCSVFileName, int source, const inferen
             }
         }
 
-        forestRoots =  new treeBin2*[numOfBins]; 
+forestRoots =  new treeBin2*[numOfBins]; 
         printf("starting binning\n");
         int finalTree;
         int startTree=0;
         int binSize = numTreesInForest/numberBins;
         int binRemainder = numTreesInForest%numberBins;
+//#pragma omp parallel for proc_bind(spread) schedule(static) private(startTree, finalTree)
         for(int q = 0; q < numberBins; q++){
+            startTree = q*binSize;
             finalTree = startTree+binSize;
             if(q < binRemainder){
                 finalTree++;
@@ -192,26 +194,21 @@ improv6::improv6(const std::string& forestCSVFileName, int source, const inferen
                 finalTree = numTreesInForest;
             }
             forestRoots[q] = new treeBin2(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined, numOfClasses);
-            startTree = finalTree;
         }
+
+        
 
         printf("finished binning\n");
         //TODO create new data structure and delete tempForest.
         //        forestRoots = new padNode*[numTreesInForest];
 
         for(int i = 0; i < numTreesInForest; i++){
-
-            //           forestRoots[i] = new padNode[numNodesInTree[i]];
-
-            //         repack pack(tempForestRoots[i],forestRoots[i] );
-            //          pack.repackTree(0);
-
             delete[] tempForestRoots[i];
         }
 
         delete[] numNodesInTree;
         delete[] tempForestRoots;
-    }         //Pull one more float so that eof is TRUE.
+    }
 
 
     if(forestRoots == NULL){

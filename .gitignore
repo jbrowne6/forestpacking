@@ -30,7 +30,6 @@
 *.exe
 *.out
 *.app
-bin/
 packer
 
 # Valgrind
@@ -41,6 +40,10 @@ rerf/
 
 # generic don't upload
 *.ignore
+bin/
+res/allstate
+res/mnist
+res/higgs
 
 # The forest in csv form
 *.csv*
