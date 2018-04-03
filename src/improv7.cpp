@@ -203,8 +203,7 @@ improv7::improv7(const std::string& forestCSVFileName, int source, const inferen
 
     delete[] numNodesInTree;
     delete[] tempForestRoots;
-  }         //Pull one more float so that eof is TRUE.
-
+  }         
 
   if(forestRoots == NULL){
     printf("forest is empty\n");
@@ -216,7 +215,7 @@ improv7::improv7(const std::string& forestCSVFileName, int source, const inferen
 
 improv7::~improv7(){
   for(int i = 0; i < numOfBins; i++){
-    // delete[] forestRoots[i];
+     delete forestRoots[i];
   }
   delete[] forestRoots;
 }
@@ -226,7 +225,6 @@ void improv7::makePredictions(const inferenceSamples& observations){
 
   int predictions[numOfClasses];
   int memSizeOfOneObservation = observations.numFeatures * sizeof(observations.samplesMatrix[0][0]); 
-  // int numNodeTraversals = 0;
   int* currentNode = new int[forestRoots[0]->numOfTreesInBin];
   int numberNotInLeaf;
   int i, p, k, q;

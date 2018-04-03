@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
     numCores =  atoi(argv[5]);
   }
 
-
   int algorithmToRun = atoi(argv[1]);
   int runPrediction = atoi(argv[2]);
   const std::string forestFileName = "res/forest.csv";
@@ -184,11 +183,11 @@ int main(int argc, char* argv[]) {
 
 
   diffMilli = stop_time - start_time;
-  std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< "us" <<std::endl;
+  std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;
 
   std::ofstream outfile;
   outfile.open("runTimes.csv", std::ios_base::app);
-  outfile << algorithmToRun <<  " , " << diffMilli.count()<< std::endl;
+  outfile << std::fixed << algorithmToRun <<  " , " << diffMilli.count()<< std::endl;
 
   observations.percentRight();
   return 0;

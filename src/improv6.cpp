@@ -219,7 +219,7 @@ printf("final Tree greater than num trees in forest");
 
 improv6::~improv6(){
   for(int i = 0; i < numOfBins; i++){
-    // delete[] forestRoots[i];
+     delete forestRoots[i];
   }
   delete[] forestRoots;
 }

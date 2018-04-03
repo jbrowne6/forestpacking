@@ -202,8 +202,6 @@ improv8::improv8(const std::string& forestCSVFileName, int source, const inferen
 
     printf("finished binning\n");
 
-
-
     delete[] numNodesInTree;
     delete[] tempForestRoots;
   }         
@@ -219,7 +217,7 @@ improv8::improv8(const std::string& forestCSVFileName, int source, const inferen
 
 improv8::~improv8(){
   for(int i = 0; i < numOfBins; i++){
-    // delete[] forestRoots[i];
+     delete forestRoots[i];
   }
   delete[] forestRoots;
 }

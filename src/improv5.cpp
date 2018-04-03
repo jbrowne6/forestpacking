@@ -195,6 +195,7 @@ improv5::improv5(const std::string& forestCSVFileName, int source, const inferen
         exit(1);
       }
 
+      //forestRoots[q] = new treeBin(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined);
       forestRoots[q] = new treeBin(tempForestRoots, numNodesInTree, startTree, finalTree, depthIntertwined);
 
 for(int i = startTree; i < finalTree; i++){
@@ -219,7 +220,7 @@ for(int i = startTree; i < finalTree; i++){
 
   improv5::~improv5(){
     for(int i = 0; i < numOfBins; i++){
-      // delete[] forestRoots[i];
+       delete forestRoots[i];
     }
     delete[] forestRoots;
   }
