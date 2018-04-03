@@ -17,9 +17,17 @@ class improv8: public padForest
     int numOfBins;
 
     public:
-improv8(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined);
-~improv8();
+    improv8(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined);
+    ~improv8();
     void makePredictions(const inferenceSamples& observations);
+    int makePrediction(double*& observation);
+    int makePrediction(double*& observation, int numCore);
+    void changeNumBins(int newBinNum){
+        numOfBins = newBinNum;
+    }
+    int numbin(){
+        return numOfBins;
+    }
 };
 
 

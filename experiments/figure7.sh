@@ -19,8 +19,9 @@ do
         for i in `seq 1 $runTimes`;
         do
             echo -n "$dataset , $j , " >> runTimes.csv
-                ./bin/packerWriteTime 8 1 $numBins $iDepth $j
+            ./bin/packerWriteTime 8 1 $numBins $iDepth $j
         done
+        cp runTimes.csv results/figure7.csv
     done
 done
 

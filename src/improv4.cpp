@@ -80,7 +80,6 @@ namespace {
 improv4::improv4(const std::string& forestCSVFileName, int source, const inferenceSamples& observations){
     if(source == 1){
         std::ifstream fin(forestCSVFileName.c_str());
-        //int numNodesInTree;
         int numValuesForTree;
         int numInnerNodes;
         int numInnerNodesActual;
@@ -125,7 +124,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
             }
             //Allocate space for this tree
             tempForestRoots[i] = new padNodeStat[numNodesInTree[i]];
-            // forestRoots[i] = new padNode[numInnerNodes+numOfClasses];
+
             if(tempForestRoots[i] == NULL){
                 printf("memory not allocated for tree");
                 exit(1);
@@ -179,6 +178,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
         }
 
         int currentNode = 0;
+#pragma omp parallel for schedule(static) private(currentNode)
         for(int i = 0; i < observations.numObservations; i++){
 
             for(int k=0; k < numTreesInForest; k++){
@@ -198,6 +198,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
         //TODO create new data structure and delete tempForest.
         forestRoots = new padNode*[numTreesInForest];
 
+#pragma omp parallel for schedule(static)
         for(int i = 0; i < numTreesInForest; i++){
 
             forestRoots[i] = new padNode[numOfClasses+(numNodesInTree[i]-1)/2];

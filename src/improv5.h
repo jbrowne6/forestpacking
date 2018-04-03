@@ -6,7 +6,6 @@
 
 #include "padForest.h"
 #include "inferenceSamples.h"
-#include "batchPredictions.h"
 #include "padNodeStat.h"
 #include "treeBin.h"
 
@@ -18,7 +17,7 @@ class improv5: public padForest
     int numOfBins;
 
     public:
-improv5(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins);
+improv5(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined);
 ~improv5();
     void makePredictions(const inferenceSamples& observations);
 };

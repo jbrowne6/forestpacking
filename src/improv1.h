@@ -5,7 +5,6 @@
 
 #include "padForest.h"
 #include "inferenceSamples.h"
-#include "batchPredictions.h"
 
 
 class improv1: public padForest 

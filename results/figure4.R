@@ -28,6 +28,7 @@ mydata$V1 <- as.factor(mydata$V1)
 mydata$V2 <- as.character(mydata$V2)
 
 
+leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), plot.subtitle = element_text(size = 12),axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
 
 p <- ggplot(mydata, aes(x=V1, y=V4, fill=V2)) + 
        geom_bar(stat="identity", position=position_dodge()) +
@@ -36,9 +37,9 @@ p <- ggplot(mydata, aes(x=V1, y=V4, fill=V2)) +
   
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + guides(fill=guide_legend(title="Intertwined\nDepth"))
-p <- p + labs(title = "Effects of Bin Size and Intertwined Depth\non Prediction Time", subtitle = "2048 Trees and 25000 Higgs Observations")
+#p <- p + labs(title = "Effects of Bin Size and Intertwined Depth\non Prediction Time", subtitle = "2048 Trees and 25000 Higgs Observations")
 p <- p + labs(x = "Trees per Bin", y = "Test Set Prediction Time (s)")
-
+p <- p + leg
 
 
 

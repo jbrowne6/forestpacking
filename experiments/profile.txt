@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sudo perf record ./bin/packer 6 1 16 3
-sudo perf report --stdio --dsos=improv6::makePredictions

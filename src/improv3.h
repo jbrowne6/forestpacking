@@ -6,7 +6,6 @@
 
 #include "padForest.h"
 #include "inferenceSamples.h"
-#include "batchPredictions.h"
 #include "padNodeStat.h"
 
 

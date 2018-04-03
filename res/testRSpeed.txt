@@ -1,3 +1,0 @@
-[1] "growing forest"
-[1] "Just tested  10000  observations of the  MNIST  dataset"
-[1] "It took  99.4550000000008  seconds."

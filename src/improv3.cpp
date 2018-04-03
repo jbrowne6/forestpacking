@@ -160,6 +160,7 @@ improv3::improv3(const std::string& forestCSVFileName, int source, const inferen
 
 
         int currentNode = 0;
+#pragma omp parallel for schedule(static) private(currentNode)
         for(int i = 0; i < observations.numObservations; i++){
 
             for(int k=0; k < numTreesInForest; k++){
@@ -179,6 +180,7 @@ improv3::improv3(const std::string& forestCSVFileName, int source, const inferen
         //TODO create new data structure and delete tempForest.
         forestRoots = new padNode*[numTreesInForest];
 
+#pragma omp parallel for schedule(static) 
         for(int i = 0; i < numTreesInForest; i++){
 
             forestRoots[i] = new padNode[numNodesInTree[i]];
