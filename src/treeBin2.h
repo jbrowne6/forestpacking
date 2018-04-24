@@ -21,6 +21,7 @@ class treeBin2
     void repackTree(padNodeStat* tree, int workingNode);
 
 //    public:
+treeBin2(std::ifstream &in);
 treeBin2(padNodeStat**& forest, int*& treeLength, int startTree, int finalTree, int headDepth, int numClasses);
 ~treeBin2();
 bool isInternalNode(int currentNodeNum);

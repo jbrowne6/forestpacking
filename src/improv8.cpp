@@ -60,6 +60,32 @@ namespace {
   }
 } //namespace
 
+improv8::improv8(const std::string& forestFileName){
+	std::ifstream infile (forestFileName, std::ofstream::binary);
+
+	infile.read((char*)&numOfBins, sizeof(int));
+	infile.read((char*)&numTreesInForest, sizeof(int));
+	infile.read((char*)&totalNumberOfNodes, sizeof(int));
+	infile.read((char*)&numOfClasses, sizeof(int));
+	infile.read((char*)&debugModeOn, sizeof(bool));
+	infile.read((char*)&showAllResults, sizeof(bool));
+
+	forestRoots =  new treeBin2*[numOfBins]; 
+
+
+	for(int i = 0 ; i < numOfBins; i++){
+		forestRoots[i] = new treeBin2(infile);
+	}
+
+	int testEOF;
+	if(infile >> testEOF){
+		infile.close();
+		std::cout << "not end of file \n";
+		exit(1);
+	}
+	infile.close();
+}
+
 improv8::improv8(const std::string& forestCSVFileName, int source, const inferenceSamples& observations, int numberBins, int depthIntertwined){
   if(source == 1){
     std::ifstream fin(forestCSVFileName.c_str());
@@ -345,3 +371,29 @@ int improv8::makePrediction(double*& observation, int numCores){
   return returnClassPrediction(predictions, numOfClasses);
 }
 
+void improv8::writeForest(const std::string& forestFileName){
+	std::ofstream outfile (forestFileName, std::ofstream::binary);
+
+	outfile.write((char*)&numOfBins, sizeof(int));
+	outfile.write((char*)&numTreesInForest, sizeof(int));
+	outfile.write((char*)&totalNumberOfNodes, sizeof(int));
+	outfile.write((char*)&numOfClasses, sizeof(int));
+	outfile.write((char*)&debugModeOn, sizeof(bool));
+	outfile.write((char*)&showAllResults, sizeof(bool));
+	for(int i = 0 ; i < numOfBins; i++){
+
+		outfile.write((char*)&forestRoots[i]->numOfTreesInBin, sizeof(int));
+		outfile.write((char*)&forestRoots[i]->depth, sizeof(int));
+		outfile.write((char*)&forestRoots[i]->numOfClasses, sizeof(int));
+		outfile.write((char*)&forestRoots[i]->numOfNodes, sizeof(int));
+
+		for(int j = 0; j < (forestRoots[i]->numOfNodes+forestRoots[i]->numOfClasses); j++){
+
+			outfile.write((char*)&forestRoots[i]->bin[j].left, sizeof(uint32_t));
+			outfile.write((char*)&forestRoots[i]->bin[j].feature, sizeof(uint32_t));
+			outfile.write((char*)&forestRoots[i]->bin[j].cutValue, sizeof(double));
+			outfile.write((char*)&forestRoots[i]->bin[j].right, sizeof(uint32_t));
+		}
+	}
+	outfile.close();
+}

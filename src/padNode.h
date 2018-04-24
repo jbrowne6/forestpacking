@@ -4,20 +4,22 @@
 
 class alignas(32) padNode 
 {
-    private:
+	public:
+   // private:
         uint32_t left;
         uint32_t feature;
         double cutValue;
         uint32_t right;
 
-    public:
         inline bool isInternalNode(){
             return left;
         }
 
         void setNode(double cVal, uint32_t feat, uint32_t l, uint32_t r);
         void virtual printNode();
-        double returnCutValue();
+        inline double returnCutValue(){
+return cutValue;
+				}
         inline int returnFeature(){
             return feature;
         }
