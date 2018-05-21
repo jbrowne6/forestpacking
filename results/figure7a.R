@@ -55,11 +55,6 @@ p <- p + labs(x = "Number of Cores", y = expression(paste("Mean Prediction Time 
 
 p <- p +scale_color_discrete(name="Dataset")
 
-pWidth = 300
-pHeight = 300
-
-
-#png(file="figure7.png", width=pWidth, height=pHeight)
 png(file="figure7a.png")
 print(p)
 dev.off()

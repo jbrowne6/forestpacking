@@ -24,13 +24,13 @@ mydata <- read.csv(file="figure6.csv", header=FALSE)
 mydata$V1 <- as.character(mydata$V1)
 #normalize based on number of test observations
 z <- mydata$V1 == "mnist "
-mydata[z,]$V3 <- mydata[z,]$V3/10000*100000
+mydata[z,]$V3 <- mydata[z,]$V3/10000
 mydata[z,]$V1 <- "MNIST"
 z <- mydata$V1 == "higgs "
-mydata[z,]$V3 <- mydata[z,]$V3/25000*100000
+mydata[z,]$V3 <- mydata[z,]$V3/25000
 mydata[z,]$V1 <- "Higgs"
 z <- mydata$V1 == "allstate "
-mydata[z,]$V3 <- mydata[z,]$V3/50000*100000
+mydata[z,]$V3 <- mydata[z,]$V3/50000
 mydata[z,]$V1 <- "Allstate"
 
 mydata <- data_summary(mydata,varname="V3",groupnames=c("V1","V2"))
@@ -40,6 +40,8 @@ mydata$V2 <- as.character(mydata$V2)
 #just show 0,2,and7
 z <- mydata$V2 == "0" | mydata$V2 == "6" | mydata$V2 == "7"
 mydata <- mydata[z,]
+
+#mydata$V3 <- mydata$V3*1000000
 
 mydata$V2 <- revalue(mydata$V2, c("0"="BF", "1"="DF", "2"="DF-","4"="Stat", "6"="Bin", "7"="Bin+"))
 
@@ -55,8 +57,6 @@ p <- p + guides(fill=guide_legend(title="Layout Scheme"))
     p <- p + theme(legend.position = c(.8,.8))
 #p <- p + labs(title = "Memory Layout Prediction Time")
 p <- p + labs(x = "Dataset", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
-
-
 
 
 png(file="figure6.png")
