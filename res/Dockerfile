@@ -1,12 +1,12 @@
 # our base image
 FROM ubuntu:16.04
 
-RUN apt-get update
-RUN apt-get -y install git
-RUN apt-get -y install r-base
+RUN apt-get update && apt-get -y install git && apt-get -y install r-base
 RUN git clone https://github.com/jbrowne6/forestpacking.git
+RUN make -C forestpacking -f Makefile
 
 RUN Rscript -e "install.packages('rerf',repos='http://cran.rstudio.com/')"
+RUN Rscript -e "install.packages('ggplot2',repos='http://cran.rstudio.com/')"
 
 RUN mkdir forestpacking/res/allstate
 COPY allstate/forest.csv forestpacking/res/allstate/
@@ -23,4 +23,5 @@ COPY higgs/forest.csv forestpacking/res/higgs/
 COPY higgs/testObservations.csv forestpacking/res/higgs/
 COPY higgs/traversal.csv forestpacking/res/higgs/
 
-RUN make -C forestpacking -f Makefile
+COPY runAll.sh forestpacking/experiments/
+
