@@ -41,6 +41,18 @@ remake: cleaner all
 resources: directories
 #	@cp $(RESDIR)/* $(TARGETDIR)/
 
+###########################Experiment1####################
+experiment1: | experiment1Move all experiment1Remove
+
+experiment1Move:	TARGET := experiment1
+experiment1Move:	
+	cp experiments/experiment1/experiment1.cpp src/
+
+experiment1Remove: 
+	-rm src/experiment1.cpp
+
+
+
 #Make the Directories
 directories:
 	@mkdir -p $(TARGETDIR)
@@ -78,4 +90,4 @@ debug: cleaner all
  
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources
+.PHONY: all remake clean cleaner resources debug experiment1 experiment1Move 

@@ -16,6 +16,7 @@ class inferenceSamples
         int* predictedClasses = NULL;
         double** samplesMatrix = NULL;
 
+float returnPercentRight();
         void percentRight();
 
         inferenceSamples(const std::string& testFile);
