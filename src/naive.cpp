@@ -169,7 +169,7 @@ void naive::makePredictionsMultiObs(const inferenceSamples& observations, int nu
 			++predictions[forestRoots[k][currentNode].returnRightNode()];
 		}
 
-//#pragma omp atomic update
+		//#pragma omp atomic update
 		observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 	}
 }

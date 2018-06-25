@@ -11,13 +11,16 @@
 
 class improv4: public padForest 
 {
-    private:
-    padNode ** forestRoots = NULL;
+	private:
+		padNode ** forestRoots = NULL;
 
-    public:
-improv4(const std::string& forestCSVFileName, int source, const inferenceSamples& observations);
-~improv4();
-    void makePredictions(const inferenceSamples& observations);
+	public:
+		improv4(const std::string& forestCSVFileName, int source, const inferenceSamples& observations);
+		~improv4();
+		void makePredictions(const inferenceSamples& observations);
+		void makePredictionsMultiObs(const inferenceSamples& observations, int numCores);
+		void makePredictionsMultiTree(const inferenceSamples& observations, int numCores);
+
 };
 
 
