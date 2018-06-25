@@ -61,6 +61,7 @@ namespace {
                 ++numForBias; 
             if(!((rightFreq == 0) && (leftFreq == 0)) ){
                 bias += abs((double)(rightFreq - leftFreq)/(double)(rightFreq+leftFreq));
+                //bias += abs((double)(rightFreq - leftFreq));
             }
 
             realTree[thisNodesLocation].setNode(tree[workingNode].returnCutValue(),
@@ -178,7 +179,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
         }
 
         int currentNode = 0;
-#pragma omp parallel for schedule(static) private(currentNode)
+//#pragma omp parallel for schedule(static) private(currentNode)
         for(int i = 0; i < observations.numObservations; i++){
 
             for(int k=0; k < numTreesInForest; k++){
@@ -198,7 +199,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
         //TODO create new data structure and delete tempForest.
         forestRoots = new padNode*[numTreesInForest];
 
-#pragma omp parallel for schedule(static)
+//#pragma omp parallel for schedule(static)
         for(int i = 0; i < numTreesInForest; i++){
 
             forestRoots[i] = new padNode[numOfClasses+(numNodesInTree[i]-1)/2];
@@ -219,7 +220,7 @@ improv4::improv4(const std::string& forestCSVFileName, int source, const inferen
         delete[] numNodesInTree;
         delete[] tempForestRoots;
         // forestRoots = tempForestRoots;
-        printf("the average depth was %f; the average bias was %f\n", avgDepth/(double)(numTreesInForest*observations.numObservations),bias/(2*numForBias));
+        printf("the average depth was %f; the average bias was %f\n", avgDepth/(double)(numTreesInForest*observations.numObservations),bias/numForBias*1000000);
         printf("the number of obs is %d\n", observations.numObservations);
         printf("the max depth of any trees is %d\n", maxDepth);
     }

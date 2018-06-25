@@ -292,8 +292,7 @@ void improv8::makePredictions(const inferenceSamples& observations){
   }
 }
 
-
-
+/*
 
 int improv8::makePrediction(double*& observation){
 
@@ -302,6 +301,7 @@ int improv8::makePrediction(double*& observation){
   int numberNotInLeaf;
   int k, q;
 
+	//TODO if this doesn't work then remove parallel here.
   //#pragma omp parallel for proc_bind(spread) schedule(static) private(q, numberNotInLeaf, currentNode)
 #pragma omp parallel for schedule(static) private(q, numberNotInLeaf, currentNode)
   for( k=0; k < numOfBins;k++){
@@ -332,7 +332,7 @@ int improv8::makePrediction(double*& observation){
   }
   return returnClassPrediction(predictions, numOfClasses);
 }
-
+*/
 
 int improv8::makePrediction(double*& observation, int numCores){
 
@@ -365,6 +365,43 @@ int improv8::makePrediction(double*& observation, int numCores){
 
     for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
 #pragma omp atomic update
+      ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+    }
+  }
+  return returnClassPrediction(predictions, numOfClasses);
+}
+
+int improv8::makePrediction(double*& observation){
+
+  int predictions[numOfClasses]={};
+  int currentNode[forestRoots[0]->numOfTreesInBin];
+  int numberNotInLeaf;
+  int k, q;
+
+//#pragma omp parallel for num_threads(numCores) schedule(static) private(q, numberNotInLeaf, currentNode)
+  for( k=0; k < numOfBins;k++){
+
+    for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+      currentNode[q] = q;
+      __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+    }
+
+    do{
+      numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+
+      for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+
+        if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+          currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+          __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+          continue;
+        }
+        --numberNotInLeaf;
+      }
+    }while(numberNotInLeaf > 0);
+
+    for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+//#pragma omp atomic update
       ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
     }
   }

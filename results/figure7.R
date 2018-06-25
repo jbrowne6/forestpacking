@@ -77,7 +77,7 @@ leg <- theme(legend.text = element_text(size = 15), legend.title=element_blank()
 
 p <- ggplot(mydata,aes(x=V1, y=V5, group=V4, color=V4))+geom_line()
 
-#p <- p + labs(title = "Strong Scaling") 
+p <- p + labs(title = "Strong Scaling") 
 p <- p + theme_classic() + leg
 p <- p + labs(x = "Number of Cores", y = "Speed Up")
     p <- p + theme(legend.position = c(.8,.2))
@@ -86,11 +86,6 @@ p <- p + geom_text(x = 15, y =60 , color="black", size=5, label =paste("Amdahl N
 
 p <- p +scale_color_discrete(name="Dataset")
 
-pWidth = 300
-pHeight = 300
-
-
-#png(file="figure7.png", width=pWidth, height=pHeight)
 png(file="figure7.png")
 print(p)
 dev.off()

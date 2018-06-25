@@ -1,6 +1,6 @@
 #!/bin/bash
-runTimes=10
-binDepth=5
+runTimes=1
+binDepth=8
 #bExp=4
 numTrees=2048
 numLevels=5
@@ -22,7 +22,7 @@ cp res/mnist/traversal.csv res/
 rm runTimes.csv
 for i in `seq 1 $runTimes`;
 do
-    for q in 1 2 4 8 16 32
+    for q in 1 2 4 8 16 32 64 128
     do
         nbins=`expr $numTrees / $q`
         for j in `seq 0 $binDepth`;

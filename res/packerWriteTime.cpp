@@ -186,21 +186,35 @@ int main(int argc, char* argv[]) {
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		const std::string wRF = "res/forest.out";
 		tester.writeForest(wRF);
+		return 0;
+	}else if(algorithmToRun == 10){
 
+		const std::string wRF = "res/forest.out";
 		improv8 test2(wRF);
 		test2.printForest();
 
 		int currentPred;
-		std::cout<<"starting run with "<< numCores <<" cores and " << tester.numbin() << " bins."<<std::endl;
+		std::cout<<"starting run with "<< numCores <<" cores and " << test2.numbin() << " bins."<<std::endl;
+
+for(int q=0; q<observations.numObservations;q++){
+			currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
+			observations.predictedClasses[q] = currentPred;
+		}
 
 		start_time = std::chrono::high_resolution_clock::now();
 #pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
 		for(int q=0; q<observations.numObservations;q++){
-			//currentPred = tester.makePrediction(observations.samplesMatrix[q], 1);
 			currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
 			observations.predictedClasses[q] = currentPred;
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
+
+	diffMilli = stop_time - start_time;
+std::ofstream outfile;
+	outfile.open("runTimes10.csv", std::ios_base::app);
+	outfile << std::fixed << numCores <<  " , " << diffMilli.count()<< std::endl;
+
+return 0;
 
 	}
 
