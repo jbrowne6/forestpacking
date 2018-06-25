@@ -292,47 +292,95 @@ void improv8::makePredictions(const inferenceSamples& observations){
   }
 }
 
-/*
 
-int improv8::makePrediction(double*& observation){
-
-  int predictions[numOfClasses]={};
+//////////////////////////////////////////////////////
+void improv8::makePredictionsMultiObs(const inferenceSamples& observations, int numCores){
+  int predictions[numOfClasses];
   int currentNode[forestRoots[0]->numOfTreesInBin];
   int numberNotInLeaf;
-  int k, q;
+  int  p, k, q;
 
-	//TODO if this doesn't work then remove parallel here.
-  //#pragma omp parallel for proc_bind(spread) schedule(static) private(q, numberNotInLeaf, currentNode)
-#pragma omp parallel for schedule(static) private(q, numberNotInLeaf, currentNode)
-  for( k=0; k < numOfBins;k++){
+#pragma omp parallel for schedule (static) private(q, p, k, numberNotInLeaf, currentNode, predictions)
+  for(int i = 0; i < observations.numObservations; i++){
 
-    for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
-      currentNode[q] = q;
-      __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+    for( p= 0; p < numOfClasses;++p){
+      predictions[p]=0;
     }
 
-    do{
-      numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+    for( k=0; k < numOfBins;++k){
+      for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+        currentNode[q] = q;
+        __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+      }
+
+      numberNotInLeaf = 1;
+      while(numberNotInLeaf > 0){
+        numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+
+        for( q=0; q<forestRoots[k]->numOfTreesInBin; ++q){
+
+          if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+            currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+            __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+            continue;
+          }
+          --numberNotInLeaf;
+        }
+      }
 
       for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
-
-        if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
-          currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
-          __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
-          continue;
-        }
-        --numberNotInLeaf;
+        ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
       }
-    }while(numberNotInLeaf > 0);
 
-    for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
-#pragma omp atomic update
-      ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
     }
+
   }
-  return returnClassPrediction(predictions, numOfClasses);
 }
-*/
+
+//////////////////////////////////////////////////////
+void improv8::makePredictionsMultiTree(const inferenceSamples& observations, int numCores){
+  int predictions[numOfClasses];
+  int currentNode[forestRoots[0]->numOfTreesInBin];
+  int numberNotInLeaf;
+  int  p, k, q;
+
+  for(int i = 0; i < observations.numObservations; i++){
+
+    for( p= 0; p < numOfClasses;++p){
+      predictions[p]=0;
+    }
+
+#pragma omp parallel for schedule (static) private(q, numberNotInLeaf, currentNode)
+    for( k=0; k < numOfBins;++k){
+      for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+        currentNode[q] = q;
+        __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+      }
+
+      numberNotInLeaf = 1;
+      while(numberNotInLeaf > 0){
+        numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+
+        for( q=0; q<forestRoots[k]->numOfTreesInBin; ++q){
+
+          if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+            currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+            __builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+            continue;
+          }
+          --numberNotInLeaf;
+        }
+      }
+
+      for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+        ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+      }
+
+    }
+
+  }
+}
+/////////////////////////////////////////////////////////
 
 int improv8::makePrediction(double*& observation, int numCores){
 
@@ -370,6 +418,7 @@ int improv8::makePrediction(double*& observation, int numCores){
   }
   return returnClassPrediction(predictions, numOfClasses);
 }
+
 
 int improv8::makePrediction(double*& observation){
 

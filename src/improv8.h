@@ -29,6 +29,10 @@ class improv8: public padForest
 		int numbin(){
 			return numOfBins;
 		}
+		
+		void makePredictionsMultiObs(const inferenceSamples& observations, int numCores);
+		void makePredictionsMultiTree(const inferenceSamples& observations, int numCores);
+
 };
 
 

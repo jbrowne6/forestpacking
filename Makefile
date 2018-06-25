@@ -31,6 +31,15 @@ INCDEP      := -I$(INCDIR)
 SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
+packer: mvPacker all rmPacker
+
+mvPacker:
+	cp res/packerWriteTime.cpp src/
+
+rmPacker:
+	rm src/packerWriteTime.cpp
+
+
 #Defauilt Make
 all: resources $(TARGET)
 
