@@ -100,6 +100,7 @@ int main(int argc, char* argv[]) {
 
 		{//start improv1 namespace
 			//////improv1/////////
+			std::cout << "\n\n\n"; 
 			std::cout << "running improv1 Test"; 
 			improv1 tester(forestFileName1,1);
 			tester.printForest();
@@ -107,7 +108,6 @@ int main(int argc, char* argv[]) {
 			printf("starting run\n");
 
 			tester.makePredictionsMultiTree(observations,2);
-			percentRight = observations.returnPercentRight();
 
 			std::cout << "MultiTree\n"; 
 			for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
@@ -155,6 +155,7 @@ int main(int argc, char* argv[]) {
 
 {//start improv2 namespace
 			//////improv2/////////
+			std::cout << "\n\n\n"; 
 			std::cout << "running improv2 Test"; 
 			improv2 tester(forestFileName1,1);
 			tester.printForest();
@@ -162,7 +163,6 @@ int main(int argc, char* argv[]) {
 			printf("starting run\n");
 
 			tester.makePredictionsMultiTree(observations,3);
-			percentRight = observations.returnPercentRight();
 
 			std::cout << "MultiTree\n"; 
 			for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
@@ -210,6 +210,7 @@ int main(int argc, char* argv[]) {
 
 {//start improv4 namespace
 			//////improv4/////////
+			std::cout << "\n\n\n"; 
 			std::cout << "running improv4 Test"; 
 			improv4 tester(forestFileName1,1,travs);
 			tester.printForest();
@@ -217,7 +218,6 @@ int main(int argc, char* argv[]) {
 			printf("starting run\n");
 
 			tester.makePredictionsMultiTree(observations,3);
-			percentRight = observations.returnPercentRight();
 
 			std::cout << "MultiTree\n"; 
 			for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
@@ -265,6 +265,7 @@ int main(int argc, char* argv[]) {
 
 {//start improv6 namespace
 			//////improv6/////////
+			std::cout << "\n\n\n"; 
 			std::cout << "running improv6 Test"; 
 			improv6 tester(forestFileName1,1,travs, 16, 3);
 			tester.printForest();
@@ -272,7 +273,6 @@ int main(int argc, char* argv[]) {
 			printf("starting run\n");
 
 			tester.makePredictionsMultiTree(observations,3);
-			percentRight = observations.returnPercentRight();
 
 			std::cout << "MultiTree\n"; 
 			for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
@@ -322,14 +322,14 @@ int main(int argc, char* argv[]) {
 
 {//start improv8 namespace
 			//////improv8/////////
-			std::cout << "running improv6 Test"; 
+			std::cout << "\n\n\n"; 
+			std::cout << "running improv8 Test"; 
 			improv8 tester(forestFileName1,1,travs, 16, 3);
 			tester.printForest();
 			printf("size of a node is %d\n",(int) sizeof(padNode));
 			printf("starting run\n");
 
 			tester.makePredictionsMultiTree(observations,3);
-			percentRight = observations.returnPercentRight();
 
 			std::cout << "MultiTree\n"; 
 			for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
