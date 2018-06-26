@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 		maxCores = std::thread::hardware_concurrency();
 	}
 	std::ofstream outfile;
-	outfile.open("experiment1.csv");//, std::ios_base::app);
+	outfile.open("experiments/experiment1/experiment1.csv");//, std::ios_base::app);
 
 	auto start_time = std::chrono::high_resolution_clock::now();
 	auto stop_time = std::chrono::high_resolution_clock::now();
