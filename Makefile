@@ -51,15 +51,18 @@ resources: directories
 #	@cp $(RESDIR)/* $(TARGETDIR)/
 
 ###########################Experiment1####################
-experiment1: | experiment1Move all experiment1Remove
+experiment1: | experiment1Move resources experiment1Remove
 
-experiment1Move:	TARGET := experiment1
 experiment1Move:	
-	cp experiments/experiment1/experiment1.cpp src/
+	@cp experiments/experiment1/experiment1.cpp src/
+experiment1Move:	TARGET     := experiment1
+experiment1Move:	SOURCES    := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+experiment1Move:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
-experiment1Remove: 
-	-rm src/experiment1.cpp
-
+experiment1Remove: $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/experiment1 $^ $(LIB)
+	@rm src/experiment1.cpp
+###########################################################
 
 #Make the Directories
 directories:
@@ -98,4 +101,5 @@ debug: cleaner all
  
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources debug experiment1 experiment1Move 
+.PHONY: all remake clean cleaner resources debug experiment1Move experiment1Remove 
+

@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double, std::micro> diffMilli;
 
 	float percentRight;
-	int numTimes = 1;
+	int numTimes = 10;
 	{//begin higgs test namespace
 		const std::string forestFileName1 = "res/higgs/forest.csv";
 		const std::string testFileName1 = "res/higgs/testObservations.csv";
@@ -66,6 +66,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, BF, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -81,6 +82,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, BF, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -94,6 +96,7 @@ int main(int argc, char* argv[]) {
 				outfile << std::fixed << "experiment1, BF, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 				}
 			}
 		}//end naive test
@@ -120,6 +123,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, DF, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -135,6 +139,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, DF, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -148,6 +153,7 @@ int main(int argc, char* argv[]) {
 				outfile << std::fixed << "experiment1, DF, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 				}
 			}
 		}//end improv1 namespace
@@ -175,6 +181,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, DF-, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -190,6 +197,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, DF-, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -203,6 +211,7 @@ int main(int argc, char* argv[]) {
 				outfile << std::fixed << "experiment1, DF-, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 				}
 			}
 		}//end improv2 namespace
@@ -230,6 +239,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, Stat, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -245,6 +255,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, Stat, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -258,6 +269,7 @@ int main(int argc, char* argv[]) {
 				outfile << std::fixed << "experiment1, Stat, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 				}
 			}
 		}//end improv4 namespace
@@ -285,6 +297,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, Bin, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -300,6 +313,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, Bin, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -313,6 +327,7 @@ int main(int argc, char* argv[]) {
 				outfile << std::fixed << "experiment1, Bin, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 				}
 			}
 		}//end improv6 namespace
@@ -342,6 +357,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, Bin+, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -357,6 +373,7 @@ int main(int argc, char* argv[]) {
 					outfile << std::fixed << "experiment1, Bin+, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
 					if (observations.returnPercentRight() != percentRight){
 						std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					}
 				}
 			}
@@ -370,6 +387,7 @@ int main(int argc, char* argv[]) {
 				outfile << std::fixed << "experiment1, Bin+, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+						outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 				}
 			}
 		}//end improv8 namespace
