@@ -18,6 +18,7 @@
 #include "improv6.h"
 #include "improv2.h"
 #include "improv8.h"
+#include "testDepth.h"
 #include "naive.h"
 
 int main(int argc, char* argv[]) {
@@ -193,19 +194,27 @@ int main(int argc, char* argv[]) {
 		improv8 test2(wRF);
 		test2.printForest();
 
+for(int q=0; q<observations.numObservations;q++){
+			currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
+			observations.predictedClasses[q] = currentPred;
+		}
+
 		int currentPred;
 		std::cout<<"starting run with "<< numCores <<" cores and " << test2.numbin() << " bins."<<std::endl;
 
+#pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
 for(int q=0; q<observations.numObservations;q++){
-			currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
+		//	currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
+			currentPred = test2.makePrediction(observations.samplesMatrix[q]);
 			observations.predictedClasses[q] = currentPred;
 		}
 
 		start_time = std::chrono::high_resolution_clock::now();
 #pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
 		for(int q=0; q<observations.numObservations;q++){
-			currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
-			observations.predictedClasses[q] = currentPred;
+		//	currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
+			currentPred = test2.makePrediction(observations.samplesMatrix[q]);
+		//	observations.predictedClasses[q] = currentPred;
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 
@@ -216,6 +225,12 @@ std::ofstream outfile;
 
 return 0;
 
+	}else if(algorithmToRun ==14){
+		printf("running depthTest src=csv, pred=%d\n",runPrediction);
+		testDepth tester(forestFileName,1, travs);
+	//	tester.printForest();
+		printf("size of a node is %d\n",(int) sizeof(padNode));
+		return 0;
 	}
 
 

@@ -45,14 +45,17 @@ maxY <- max(mydata$time)
 
 leg <- theme(legend.text = element_text(size = 15), legend.title=element_blank(), plot.title = element_text(size = 16,  face="bold"), plot.subtitle = element_text(size = 12),axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
 
-p <- ggplot(mydata,aes(x=nodes, y=time, group=dataset, color=dataset))+geom_line()
+p <- ggplot(mydata,aes(x=nodes, y=time, group=dataset, color=dataset))+geom_line(size=1.5)
 
 p <- p + theme_classic() + leg
 p <- p + labs(x = "Number of Nodes", y = "Throughput (observations/s)")
 p <- p + theme(legend.position = c(.8,.2))
 p <- p +scale_x_continuous(limits=c(1, 16))
 p <- p +scale_y_continuous(limits=c(0, maxY))
-p <- p +scale_color_discrete(name="Dataset")
+
+
+cols <- c("Higgs"="gold3", "MNIST"="cyan3", "Allstate"="coral3", "Ideal"="olivedrab3" )
+p <- p + scale_color_manual(values=cols)
 
 png(file="figure10.png")
 print(p)

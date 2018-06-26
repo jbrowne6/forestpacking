@@ -10,7 +10,8 @@ library(plyr)
 data_summary <- function(data, varname, groupnames){
       require(plyr)
   summary_func <- function(x, col){
-          c(mean = mean(x[[col]], na.rm=TRUE),
+         # c(mean = median(x[[col]], na.rm=TRUE),
+          c(mean = min(x[[col]], na.rm=TRUE),
                   sd = sd(x[[col]], na.rm=TRUE))
     }
     data_sum<-ddply(data, groupnames, .fun=summary_func,
@@ -35,6 +36,7 @@ mydataallstate$V4 <- "Allstate"
 mydata <- rbind(mydatamnist, mydatahiggs, mydataallstate)
 
 mydata <- mydata[mydata$V1 != 64, ]
+mydata <- mydata[mydata$V1 != 48, ]
 
 mydata$V1 <- as.numeric(mydata$V1)
 mydata$V2 <- as.numeric(mydata$V2)
@@ -75,16 +77,20 @@ allstateAhm <- 2-2/(allstateAhmNum8/allstateAhmNum16)
 
 leg <- theme(legend.text = element_text(size = 15), legend.title=element_blank(), plot.title = element_text(size = 16,  face="bold"), plot.subtitle = element_text(size = 12),axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
 
-p <- ggplot(mydata,aes(x=V1, y=V5, group=V4, color=V4))+geom_line()
 
-p <- p + labs(title = "Strong Scaling") 
+p <- ggplot(mydata,aes(x=V1, y=V5, group=V4, color=V4))+geom_line(size=1.5)
+
+
+#p <- p + labs(title = "Strong Scaling") 
 p <- p + theme_classic() + leg
 p <- p + labs(x = "Number of Cores", y = "Speed Up")
     p <- p + theme(legend.position = c(.8,.2))
 
 p <- p + geom_text(x = 15, y =60 , color="black", size=5, label =paste("Amdahl Number(c=8to16)\nMNIST: ",signif(mnistAhm, digits=2),"\nAllstate: ", signif(allstateAhm, digits=2), "\nHiggs: ", signif(higgsAhm,digits=2)))
 
-p <- p +scale_color_discrete(name="Dataset")
+ cols <- c("Higgs"="gold3", "MNIST"="cyan3", "Allstate"="coral3", "Ideal"="olivedrab3" )
+p <- p + scale_color_manual(values=cols)
+#p <- p +scale_color_discrete(name="Dataset")
 
 png(file="figure7.png")
 print(p)

@@ -402,7 +402,7 @@ int improv8::makePrediction(double*& observation){
 
     for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
 //#pragma omp atomic update
-      ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+//      ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
     }
   }
   return returnClassPrediction(predictions, numOfClasses);

@@ -21,8 +21,9 @@ data_summary <- function(data, varname, groupnames){
 
 intertwinedDepth <- 4
 
+if(FALSE){
 mydataMnist <- read.csv(file="figure5mnist.csv", header=FALSE)
-mydataMnist$V4 <- mydataMnist$V4/10000
+mydataMnist$V4 <- mydataMnist$V4/10000/1000
 mydataMnist$V2 <- "measured"
 mydataMnist <- data_summary(mydataMnist,varname="V4",groupnames=c("V1", "V2", "V3"))
 mydataMnist$V2 <- as.character(mydataMnist$V2)
@@ -59,7 +60,7 @@ mydataMnist$V4 <- as.numeric(mydataMnist$V4)
 
 
 mydataAllstate <- read.csv(file="figure5allstate.csv", header=FALSE)
-mydataAllstate$V4 <- mydataAllstate$V4/50000
+mydataAllstate$V4 <- mydataAllstate$V4/50000/1000
 mydataAllstate$V2 <- "measured"
 mydataAllstate <- data_summary(mydataAllstate, varname="V4",groupnames=c("V1", "V2", "V3"))
 mydataAllstate$V2 <- as.character(mydataAllstate$V2)
@@ -93,14 +94,14 @@ mydataAllstate$V3 <- as.factor(mydataAllstate$V3)
 
 mydataAllstate$sd <- as.numeric(mydataAllstate$sd)
 mydataAllstate$V4 <- as.numeric(mydataAllstate$V4)
-
+}
 
 
 
 
 
 mydataHiggs <- read.csv(file="figure5higgs.csv", header=FALSE)
-mydataHiggs$V4 <- mydataHiggs$V4/25000
+mydataHiggs$V4 <- mydataHiggs$V4/25000/1000
 mydataHiggs$V2 <- "measured"
 mydataHiggs <- data_summary(mydataHiggs, varname="V4",groupnames=c("V1", "V2", "V3"))
 mydataHiggs$V2 <- as.character(mydataHiggs$V2)
@@ -135,7 +136,8 @@ mydataHiggs$sd <- as.numeric(mydataHiggs$sd)
 mydataHiggs$V4 <- as.numeric(mydataHiggs$V4)
 
 
-mydata <- rbind(mydataAllstate, mydataHiggs, mydataMnist)
+#mydata <- rbind(mydataAllstate, mydataHiggs, mydataMnist)
+mydata <- mydataHiggs
 mydata$V3 <- revalue(mydata$V3, c("0"="BF", "1"="DF", "2"="DF-", "4"="Stat", "6"="Bin"))
 
 
@@ -148,13 +150,13 @@ p <- ggplot(mydata, aes(x=V3, y=V4, fill=V2)) +
     p <- p + scale_fill_brewer(palette="Paired") + theme_minimal() + leg
     p <- p + scale_fill_brewer(palette="Paired") + theme_classic() + leg
     p <- p + guides(fill=guide_legend(title=" "))
-    p <- p + theme(legend.position = c(.8,.7))
+    p <- p + theme(legend.position = c(.8,.85))
 #    p <- p + labs(title = "Measured Speed vs Calculated")
-    p <- p + labs(x = "Memory Layout", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
-p <- p + facet_grid(. ~ V1)
+    p <- p + labs(x = "Memory Layout", y =expression(paste("Mean Prediction Time per Observation (ms)")))
+#p <- p + facet_grid(. ~ V1)
 p <- p + theme(strip.text.x = element_text(size=15, face="bold"))
 
-png(file="figure5.png")
+png(file="figure5b.png")
 print(p)
 dev.off()
 
