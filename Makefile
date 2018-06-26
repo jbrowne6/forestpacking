@@ -31,6 +31,15 @@ INCDEP      := -I$(INCDIR)
 SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
+packer: mvPacker all rmPacker
+
+mvPacker:
+	cp res/packerWriteTime.cpp src/
+
+rmPacker:
+	rm src/packerWriteTime.cpp
+
+
 #Defauilt Make
 all: resources $(TARGET)
 
@@ -40,6 +49,20 @@ remake: cleaner all
 #Copy Resources from Resources Directory to Target Directory
 resources: directories
 #	@cp $(RESDIR)/* $(TARGETDIR)/
+
+###########################Experiment1####################
+experiment1: | experiment1Move resources experiment1Remove
+
+experiment1Move:	
+	@cp experiments/experiment1/experiment1.cpp src/
+experiment1Move:	TARGET     := experiment1
+experiment1Move:	SOURCES    := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+experiment1Move:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+
+experiment1Remove: $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/experiment1 $^ $(LIB)
+	@rm src/experiment1.cpp
+###########################################################
 
 #Make the Directories
 directories:
@@ -78,4 +101,5 @@ debug: cleaner all
  
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources
+.PHONY: all remake clean cleaner resources debug experiment1Move experiment1Remove 
+

@@ -10,7 +10,11 @@ library(plyr)
 data_summary <- function(data, varname, groupnames){
       require(plyr)
   summary_func <- function(x, col){
+<<<<<<< HEAD
           c(mean = median(x[[col]], na.rm=TRUE),
+=======
+          c(mean = mean(x[[col]], na.rm=TRUE),
+>>>>>>> 388dad3d7cc5d2664fb551a6dea44c123aed931b
                   sd = sd(x[[col]], na.rm=TRUE))
     }
     data_sum<-ddply(data, groupnames, .fun=summary_func,

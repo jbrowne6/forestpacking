@@ -215,3 +215,56 @@ void improv2::makePredictions(const inferenceSamples& observations){
 
 }
 
+
+void improv2::makePredictionsMultiObs(const inferenceSamples& observations, int numCores){
+
+	int currentNode;
+	int predictions[numOfClasses];
+
+#pragma omp parallel for num_threads(numCores) schedule(static) private(predictions, currentNode)
+	for(int i = 0; i < observations.numObservations; i++){
+
+		for(int p= 0; p < numOfClasses; p++){
+			predictions[p]=0;
+		}
+
+		for(int k=0; k < numTreesInForest; k++){
+			currentNode = 0;
+			while(forestRoots[k][currentNode].isInternalNode()){
+				currentNode = forestRoots[k][currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()]);
+			}
+
+			++predictions[forestRoots[k][currentNode].returnRightNode()];
+		}
+
+		//#pragma omp atomic update
+		observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
+	}
+}
+
+
+void improv2::makePredictionsMultiTree(const inferenceSamples& observations, int numCores){
+
+	int currentNode;
+	int predictions[numOfClasses];
+
+	for(int i = 0; i < observations.numObservations; i++){
+
+		for(int p= 0; p < numOfClasses; p++){
+			predictions[p]=0;
+		}
+
+#pragma omp parallel for num_threads(numCores) schedule(static) private(currentNode)
+		for(int k=0; k < numTreesInForest; k++){
+			currentNode = 0;
+			while(forestRoots[k][currentNode].isInternalNode()){
+				currentNode = forestRoots[k][currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k][currentNode].returnFeature()]);
+			}
+
+#pragma omp atomic update
+			++predictions[forestRoots[k][currentNode].returnRightNode()];
+		}
+
+		observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
+	}
+}

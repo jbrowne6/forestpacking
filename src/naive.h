@@ -16,6 +16,8 @@ class naive: public padForest
 naive(const std::string& forestCSVFileName, int source);
 ~naive();
     void makePredictions(const inferenceSamples& observations);
+    void makePredictionsMultiObs(const inferenceSamples& observations, int numCores);
+    void makePredictionsMultiTree(const inferenceSamples& observations, int numCores);
 };
 
 

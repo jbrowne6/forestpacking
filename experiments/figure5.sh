@@ -1,5 +1,5 @@
 #!/bin/bash
-runTimes=10
+runTimes=2
 numInBin=16
 numTrees=2048
 numBins=`expr $numTrees / $numInBin`
@@ -7,7 +7,8 @@ iDepth=3
 
 cd ../
 
-for dataset in "mnist" "allstate" "higgs"
+	# "higgs"
+for dataset in "mnist" "allstate"
 do
 
     rm runTimes.csv

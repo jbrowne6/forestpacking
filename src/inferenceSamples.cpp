@@ -15,6 +15,19 @@ if(0){
 
 }
 
+float inferenceSamples::returnPercentRight(){
+    int numCorrectPredictions = 0;
+    for(int i = 0; i < numObservations; i++){
+if(0){
+           printf("observation%d actual %d predicted %d\n", i, observationClasses[i],predictedClasses[i]);
+           }
+           if(observationClasses[i] == predictedClasses[i]){
+           numCorrectPredictions++;
+           }
+    }
+return (float)numCorrectPredictions/(float)numObservations;
+}
+
 inferenceSamples::inferenceSamples(const std::string& testFile){
     std::ifstream fin(testFile.c_str());
 

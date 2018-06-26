@@ -181,7 +181,8 @@ improv7::improv7(const std::string& forestCSVFileName, int source, const inferen
     int startTree=0;
     int binSize = numTreesInForest/numberBins;
     int binRemainder = numTreesInForest%numberBins;
-#pragma omp parallel for proc_bind(spread) schedule(static) private(startTree, finalTree)
+#pragma omp parallel for schedule(static) private(startTree, finalTree)
+//#pragma omp parallel for proc_bind(spread) schedule(static) private(startTree, finalTree)
     for(int q = 0; q < numberBins; q++){
       startTree = q*binSize;
       finalTree = startTree+binSize;

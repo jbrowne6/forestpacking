@@ -253,3 +253,59 @@ void improv6::makePredictions(const inferenceSamples& observations){
   //  printf("there were %d nodes traversed.\n", numNodeTraversals);
 }
 
+
+void improv6::makePredictionsMultiObs(const inferenceSamples& observations, int numCores){
+
+  int currentNode;
+  int predictions[numOfClasses];
+
+#pragma omp parallel for num_threads(numCores) schedule(static) private(predictions, currentNode)
+  for(int i = 0; i < observations.numObservations; i++){
+
+    for(int p= 0; p < numOfClasses; p++){
+      predictions[p]=0;
+    }
+
+    for(int k=0; k < numOfBins; k++){
+      for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+        currentNode = q;
+        while(forestRoots[k]->bin[currentNode].isInternalNode()){
+          currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
+        }
+
+        ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
+      }
+    }
+    observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
+
+  }
+  //  printf("there were %d nodes traversed.\n", numNodeTraversals);
+}
+
+
+void improv6::makePredictionsMultiTree(const inferenceSamples& observations, int numCores){
+  int currentNode;
+  int predictions[numOfClasses];
+  for(int i = 0; i < observations.numObservations; i++){
+
+    for(int p= 0; p < numOfClasses; p++){
+      predictions[p]=0;
+    }
+
+#pragma omp parallel for num_threads(numCores) schedule(static) private(currentNode)
+    for(int k=0; k < numOfBins; k++){
+      for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+        currentNode = q;
+        while(forestRoots[k]->bin[currentNode].isInternalNode()){
+          currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
+        }
+
+        ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
+      }
+    }
+    observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
+
+  }
+  //  printf("there were %d nodes traversed.\n", numNodeTraversals);
+}
+
