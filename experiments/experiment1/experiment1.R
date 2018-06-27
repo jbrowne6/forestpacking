@@ -30,7 +30,7 @@ mydata$V6 <- mydata$V6/1000000
 
 sCore <- mydata$V4==" SingleCore"
 mydata <- rbind(mydata, mydata[sCore,])
-mydata$V5[(length(mydata$V5)-sum(sCore)):length(mydata$V5)] <- 64
+mydata$V5[(length(mydata$V5)-sum(sCore)+1):length(mydata$V5)] <- max(mydata$V5)
 
 leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
 

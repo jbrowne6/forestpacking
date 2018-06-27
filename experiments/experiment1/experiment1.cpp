@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
 	auto stop_time = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, std::micro> diffMilli;
 
-	float percentRight;
-	int numTimes = 10;
+	float percentRight = 0;
+	int numTimes = 1;
 	{//begin higgs test namespace
 		const std::string forestFileName1 = "res/higgs/forest.csv";
 		const std::string testFileName1 = "res/higgs/testObservations.csv";
