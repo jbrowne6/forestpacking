@@ -194,12 +194,13 @@ int main(int argc, char* argv[]) {
 		improv8 test2(wRF);
 		test2.printForest();
 
+    int currentPred;
+
 for(int q=0; q<observations.numObservations;q++){
 			currentPred = test2.makePrediction(observations.samplesMatrix[q], 1);
 			observations.predictedClasses[q] = currentPred;
 		}
 
-		int currentPred;
 		std::cout<<"starting run with "<< numCores <<" cores and " << test2.numbin() << " bins."<<std::endl;
 
 #pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)

@@ -255,7 +255,6 @@ void improv8::makePredictions(const inferenceSamples& observations){
   int numberNotInLeaf;
   int  p, k, q;
 
-#pragma omp parallel for schedule (dynamic) private(q, p, k, numberNotInLeaf, currentNode, predictions)
   for(int i = 0; i < observations.numObservations; i++){
 
     for( p= 0; p < numOfClasses;++p){

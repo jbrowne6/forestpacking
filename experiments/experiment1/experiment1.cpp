@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double, std::micro> diffMilli;
 
 	float percentRight = 0;
-	int numTimes = 1;
+	int numTimes = 3;
 	{//begin higgs test namespace
 		const std::string forestFileName1 = "res/higgs/forest.csv";
 		const std::string testFileName1 = "res/higgs/testObservations.csv";
@@ -100,6 +100,8 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		}//end naive test
+
+    if(false){
 
 		{//start improv1 namespace
 			//////improv1/////////
@@ -274,7 +276,7 @@ int main(int argc, char* argv[]) {
 			}
 		}//end improv4 namespace
 
-
+}
 {//start improv6 namespace
 			//////improv6/////////
 			std::cout << "\n\n\n"; 
