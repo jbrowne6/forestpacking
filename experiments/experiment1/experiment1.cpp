@@ -406,8 +406,8 @@ const std::string forestFileName2 = "res/mnist/forest.csv";
 	const std::string testFileName2 = "res/mnist/testObservations.csv";
 	const std::string traversalFileName2 = "res/mnist/traversal.csv";
 
-		inferenceSamples travs(traversalFileName1);
-		inferenceSamples observations(testFileName1);
+		inferenceSamples travs(traversalFileName2);
+		inferenceSamples observations(testFileName2);
 
 
 		{//start naive namespace
