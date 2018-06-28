@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double, std::micro> diffMilli;
 
 	float percentRight = 0;
-	int numTimes = 1;
+	int numTimes = 5;
 	{//begin higgs test namespace
 		const std::string forestFileName1 = "res/higgs/forest.csv";
 		const std::string testFileName1 = "res/higgs/testObservations.csv";
@@ -101,7 +101,6 @@ int main(int argc, char* argv[]) {
 			}
 		}//end naive test
 
-    if(false){
 
 		{//start improv1 namespace
 			//////improv1/////////
@@ -276,7 +275,7 @@ int main(int argc, char* argv[]) {
 			}
 		}//end improv4 namespace
 
-}
+
 {//start improv6 namespace
 			//////improv6/////////
 			std::cout << "\n\n\n"; 
@@ -402,7 +401,7 @@ int main(int argc, char* argv[]) {
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-{//begin higgs test namespace
+{//begin mnist test namespace
 const std::string forestFileName2 = "res/mnist/forest.csv";
 	const std::string testFileName2 = "res/mnist/testObservations.csv";
 	const std::string traversalFileName2 = "res/mnist/traversal.csv";
@@ -468,7 +467,6 @@ const std::string forestFileName2 = "res/mnist/forest.csv";
 			}
 		}//end naive test
 
-    if(false){
 
 		{//start improv1 namespace
 			//////improv1/////////
@@ -643,7 +641,7 @@ const std::string forestFileName2 = "res/mnist/forest.csv";
 			}
 		}//end improv4 namespace
 
-}
+
 {//start improv6 namespace
 			//////improv6/////////
 			std::cout << "\n\n\n"; 
@@ -762,9 +760,7 @@ const std::string forestFileName2 = "res/mnist/forest.csv";
 		}//end improv8 namespace
 
 
-	}//end higgs test namespace
-
-
+	}//end mnist test namespace
 	
 
 	outfile.close();
