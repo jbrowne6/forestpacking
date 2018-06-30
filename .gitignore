@@ -40,6 +40,7 @@ rerf/
 
 # generic don't upload
 *.ignore
+*.swp
 bin/
 res/allstate
 res/mnist
