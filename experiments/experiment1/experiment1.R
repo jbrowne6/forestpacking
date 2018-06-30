@@ -22,9 +22,10 @@ data_summary <- function(data, varname, groupnames){
 
 mydata <- read.csv(file="experiment1.csv", header=FALSE)
 
-mydata <- data_summary(mydata,varname="V6",groupnames=c("V2","V4","V5"))
+mydata <- data_summary(mydata,varname="V6",groupnames=c("V2","V3","V4","V5"))
 mydata$V4 <- as.factor(mydata$V4)
 mydata$V2 <- as.factor(mydata$V2)
+mydata$V3 <- as.factor(mydata$V3)
 mydata$V5 <- as.numeric(mydata$V5)
 mydata$V6 <- mydata$V6/1000000
 
@@ -39,8 +40,12 @@ p <- ggplot(mydata, aes(x=V5, y=V6, group=V2, color=V2)) + geom_line()
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + guides(fill=guide_legend(title="Technique"))
 p <- p + labs(x = "Cores Used", y = "Test Set Prediction Time (s)")
+p <- p + scale_colour_manual(values=c("red2", "blue2", "orange2", "green2", "purple2", "cyan2"), 
+														 name="Encoding", 
+														 breaks=c(" BF"," DF"," DF-"," Stat"," Bin"," Bin+"), 
+														 labels=c("BF","DF","DF-","Stat","Bin","Bin+"))
 p <- p + leg
-p <- p + facet_grid(V4 ~ .)
+p <- p + facet_grid(V4 ~ V3)
 
 
 png(file="experiment1.png")

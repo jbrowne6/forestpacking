@@ -299,7 +299,7 @@ void improv8::makePredictionsMultiObs(const inferenceSamples& observations, int 
   int numberNotInLeaf;
   int  p, k, q;
 
-#pragma omp parallel for schedule (static) private(q, p, k, numberNotInLeaf, currentNode, predictions)
+#pragma omp parallel for num_threads(numCores) schedule (static) private(q, p, k, numberNotInLeaf, currentNode, predictions)
   for(int i = 0; i < observations.numObservations; i++){
 
     for( p= 0; p < numOfClasses;++p){
@@ -349,7 +349,7 @@ void improv8::makePredictionsMultiTree(const inferenceSamples& observations, int
       predictions[p]=0;
     }
 
-#pragma omp parallel for schedule (static) private(q, numberNotInLeaf, currentNode)
+#pragma omp parallel for num_threads(numCores) schedule (static) private(q, numberNotInLeaf, currentNode)
     for( k=0; k < numOfBins;++k){
       for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
         currentNode[q] = q;
