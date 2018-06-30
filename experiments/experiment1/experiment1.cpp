@@ -436,7 +436,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, BF, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, BF, mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -452,7 +452,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiObs(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, BF, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, BF, mnist, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -466,7 +466,7 @@ int main(int argc, char* argv[]) {
         tester.makePredictions(observations);
         stop_time = std::chrono::high_resolution_clock::now();
         diffMilli = stop_time - start_time;
-        outfile << std::fixed << "experiment1, BF, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
+        outfile << std::fixed << "experiment1, BF, mnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
         if (observations.returnPercentRight() != percentRight){
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
           outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -494,7 +494,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, DF, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, DF, mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -510,7 +510,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiObs(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, DF, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, DF, mnist, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -524,7 +524,7 @@ int main(int argc, char* argv[]) {
         tester.makePredictions(observations);
         stop_time = std::chrono::high_resolution_clock::now();
         diffMilli = stop_time - start_time;
-        outfile << std::fixed << "experiment1, DF, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
+        outfile << std::fixed << "experiment1, DF, mnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
         if (observations.returnPercentRight() != percentRight){
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
           outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -552,7 +552,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, DF-, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, DF-, mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -568,7 +568,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiObs(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, DF-, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, DF-, mnist, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -582,7 +582,7 @@ int main(int argc, char* argv[]) {
         tester.makePredictions(observations);
         stop_time = std::chrono::high_resolution_clock::now();
         diffMilli = stop_time - start_time;
-        outfile << std::fixed << "experiment1, DF-, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
+        outfile << std::fixed << "experiment1, DF-, mnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
         if (observations.returnPercentRight() != percentRight){
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
           outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -610,7 +610,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, Stat, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, Stat, mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -626,7 +626,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiObs(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, Stat, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, Stat, mnist, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -640,7 +640,7 @@ int main(int argc, char* argv[]) {
         tester.makePredictions(observations);
         stop_time = std::chrono::high_resolution_clock::now();
         diffMilli = stop_time - start_time;
-        outfile << std::fixed << "experiment1, Stat, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
+        outfile << std::fixed << "experiment1, Stat, mnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
         if (observations.returnPercentRight() != percentRight){
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
           outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -668,7 +668,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, Bin, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, Bin, mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -684,7 +684,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiObs(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, Bin, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, Bin, mnist, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -698,7 +698,7 @@ int main(int argc, char* argv[]) {
         tester.makePredictions(observations);
         stop_time = std::chrono::high_resolution_clock::now();
         diffMilli = stop_time - start_time;
-        outfile << std::fixed << "experiment1, Bin, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
+        outfile << std::fixed << "experiment1, Bin, mnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
         if (observations.returnPercentRight() != percentRight){
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
           outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -728,7 +728,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, Bin+, higgs, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, Bin+, mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -744,7 +744,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiObs(observations,numCores);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "experiment1, Bin+, higgs, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "experiment1, Bin+, mnist, MultiObs, " << numCores << ", " << diffMilli.count()<< std::endl;
           if (observations.returnPercentRight() != percentRight){
             std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
             outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -758,7 +758,7 @@ int main(int argc, char* argv[]) {
         tester.makePredictions(observations);
         stop_time = std::chrono::high_resolution_clock::now();
         diffMilli = stop_time - start_time;
-        outfile << std::fixed << "experiment1, Bin+, higgs, SingleCore, 1, " << diffMilli.count()<< std::endl;
+        outfile << std::fixed << "experiment1, Bin+, mnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
         if (observations.returnPercentRight() != percentRight){
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
           outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
