@@ -32,6 +32,8 @@ class improv8: public padForest
 		
 		void makePredictionsMultiObs(const inferenceSamples& observations, int numCores);
 		void makePredictionsMultiTree(const inferenceSamples& observations, int numCores);
+void makePredictionsMultiTreeAndObs(const inferenceSamples& observations, int numCores);
+
 
 };
 
