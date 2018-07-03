@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
 
 std::cout << "ObsAndTree\n"; 
       for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
-        std::cout << "MultiObs, numCores=" << numCores << "\n"; 
+        std::cout << "ObsAndTree, numCores=" << numCores << "\n"; 
         for(int runNum = 0; runNum < numTimes; ++runNum){
           start_time = std::chrono::high_resolution_clock::now();
           tester.makePredictionsMultiTreeAndObs(observations,numCores);
@@ -199,7 +199,7 @@ std::cout << "ObsAndTree\n";
 
 std::cout << "ObsAndTree\n"; 
       for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
-        std::cout << "MultiObs, numCores=" << numCores << "\n"; 
+        std::cout << "ObsAndTree, numCores=" << numCores << "\n"; 
         for(int runNum = 0; runNum < numTimes; ++runNum){
           start_time = std::chrono::high_resolution_clock::now();
           tester.makePredictionsMultiTreeAndObs(observations,numCores);
@@ -286,7 +286,7 @@ std::cout << "ObsAndTree\n";
 
 std::cout << "ObsAndTree\n"; 
       for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
-        std::cout << "MultiObs, numCores=" << numCores << "\n"; 
+        std::cout << "ObsAndTree, numCores=" << numCores << "\n"; 
         for(int runNum = 0; runNum < numTimes; ++runNum){
           start_time = std::chrono::high_resolution_clock::now();
           tester.makePredictionsMultiTreeAndObs(observations,numCores);
