@@ -232,6 +232,65 @@ return 0;
 	//	tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		return 0;
+	}else if(algorithmToRun ==15){
+		//test without prefetching
+		printf("running improv8 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+		improv8 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+		tester.printForest();
+		printf("size of a node is %d\n",(int) sizeof(padNode));
+		printf("starting run\n");
+		int currentPred;
+		std::cout<<"starting run with "<< numCores <<" cores and " << tester.numbin() << " bins."<<std::endl;
+		//one time to warm cache
+		for(int q=0; q<observations.numObservations;q++){
+			currentPred = tester.makePrediction(observations.samplesMatrix[q],1);
+			observations.predictedClasses[q] = currentPred;
+		}
+		start_time = std::chrono::high_resolution_clock::now();
+		for(int q=0; q<observations.numObservations;q++){
+			currentPred = tester.makePrediction(observations.samplesMatrix[q]);
+			observations.predictedClasses[q] = currentPred;
+		}
+		stop_time = std::chrono::high_resolution_clock::now();
+
+  diffMilli = stop_time - start_time;
+	std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;
+		observations.percentRight();
+
+start_time = std::chrono::high_resolution_clock::now();
+		for(int q=0; q<observations.numObservations;q++){
+			currentPred = tester.makePrediction2(observations.samplesMatrix[q]);
+			observations.predictedClasses[q] = currentPred;
+		}
+		stop_time = std::chrono::high_resolution_clock::now();
+
+  diffMilli = stop_time - start_time;
+	std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;
+		observations.percentRight();
+
+start_time = std::chrono::high_resolution_clock::now();
+		for(int q=0; q<observations.numObservations;q++){
+			currentPred = tester.makePrediction3(observations.samplesMatrix[q]);
+			observations.predictedClasses[q] = currentPred;
+		}
+		stop_time = std::chrono::high_resolution_clock::now();
+
+  diffMilli = stop_time - start_time;
+	std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;
+		observations.percentRight();
+
+start_time = std::chrono::high_resolution_clock::now();
+		for(int q=0; q<observations.numObservations;q++){
+			currentPred = tester.makePrediction4(observations.samplesMatrix[q]);
+			observations.predictedClasses[q] = currentPred;
+		}
+		stop_time = std::chrono::high_resolution_clock::now();
+
+  diffMilli = stop_time - start_time;
+	std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;
+		observations.percentRight();
+
+
 	}
 
 

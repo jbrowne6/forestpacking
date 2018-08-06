@@ -82,7 +82,8 @@ treeBin2::treeBin2(std::ifstream &in){
 	in.read((char*)&numOfClasses, sizeof(int));
 	in.read((char*)&numOfNodes, sizeof(int));
 
-	bin = new padNode [numOfNodes+numOfClasses];
+//	bin = new padNode [numOfNodes+numOfClasses];
+bin.resize(numOfNodes+numOfClasses);
 	for(int i = 0; i < (numOfNodes+numOfClasses); i++){
 		in.read((char*)&bin[i].left, sizeof(uint32_t));
 		in.read((char*)&bin[i].feature, sizeof(uint32_t));
@@ -102,7 +103,8 @@ treeBin2::treeBin2(padNodeStat**& forest, int*& treeLength, int startTree, int f
         binSize += treeLength[i];
     }
     numOfNodes = (binSize-numOfTreesInBin)/2;
-    bin = new padNode [numOfNodes+numOfClasses];
+bin.resize(numOfNodes+numOfClasses);
+//    bin = new padNode [numOfNodes+numOfClasses];
 
     for(int j = 0; j < numOfClasses; j++){
 bin[j+numOfNodes].setClass(j);
@@ -170,7 +172,7 @@ bin[j+numOfNodes].setClass(j);
 }
 
 treeBin2::~treeBin2(){
-    delete[] bin;    
+ //   delete[] bin;    
 }
 
 

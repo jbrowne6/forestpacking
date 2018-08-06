@@ -5,13 +5,16 @@
 #include "inferenceSamples.h"
 #include "padNodeStat.h"
 #include "padNode.h"
+#include <vector>
 
 
 class treeBin2   
 {
  //   private:
     public:
-    padNode* bin = NULL;
+    //padNode* bin = NULL;
+		std::vector<padNode> bin;
+
     int numOfTreesInBin;
     int depth;
     int firstFreeNode = -1;
