@@ -531,11 +531,137 @@ int improv8::makePrediction(double*& observation){
 
 		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
 			//#pragma omp atomic update
-			//      ++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+			++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
 		}
 	}
 	return returnClassPrediction(predictions, numOfClasses);
 }
+
+
+int improv8::makePrediction2(double*& observation){
+
+	int predictions[numOfClasses];
+	int currentNode[forestRoots[0]->numOfTreesInBin];
+	bool isInternal[forestRoots[0]->numOfTreesInBin];
+	int numberNotInLeaf;
+	int k, q;
+
+	for(int p= 0; p < numOfClasses;++p){
+		predictions[p]=0;
+	}
+
+	//#pragma omp parallel for num_threads(numCores) schedule(static) private(q, numberNotInLeaf, currentNode)
+	for( k=0; k < numOfBins;k++){
+
+		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+			currentNode[q] = q;
+			isInternal[q] = true;
+		}
+
+		do{
+			numberNotInLeaf = 0;
+
+			for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+				if(isInternal[q]){
+					++numberNotInLeaf;
+					currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+	isInternal[q] = forestRoots[k]->bin[currentNode[q]].isInternalNode();
+				}
+			}
+		}while(numberNotInLeaf > 0);
+
+		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+			//#pragma omp atomic update
+			++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+		}
+	}
+	return returnClassPrediction(predictions, numOfClasses);
+}
+
+
+int improv8::makePrediction3(double*& observation){
+
+	int predictions[numOfClasses];
+	int currentNode[forestRoots[0]->numOfTreesInBin];
+	bool isInternal[forestRoots[0]->numOfTreesInBin];
+	int numberNotInLeaf;
+	int k, q;
+
+	for(int p= 0; p < numOfClasses;++p){
+		predictions[p]=0;
+	}
+
+	//#pragma omp parallel for num_threads(numCores) schedule(static) private(q, numberNotInLeaf, currentNode)
+	for( k=0; k < numOfBins;k++){
+
+		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+			currentNode[q] = q;
+			isInternal[q] = true;
+		//	__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+		}
+
+		do{
+			numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+
+			for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+				if(isInternal[q]){
+					currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+	isInternal[q] = forestRoots[k]->bin[currentNode[q]].isInternalNode();
+	continue;
+				}
+				--numberNotInLeaf;
+			}
+		}while(numberNotInLeaf > 0);
+
+		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+			//#pragma omp atomic update
+			++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+		}
+	}
+	return returnClassPrediction(predictions, numOfClasses);
+}
+
+
+int improv8::makePrediction4(double*& observation){
+
+	int predictions[numOfClasses];
+	int currentNode[forestRoots[0]->numOfTreesInBin];
+	int numberNotInLeaf;
+	int k, q;
+
+	for(int p= 0; p < numOfClasses;++p){
+		predictions[p]=0;
+	}
+
+	//#pragma omp parallel for num_threads(numCores) schedule(static) private(q, numberNotInLeaf, currentNode)
+	for( k=0; k < numOfBins;k++){
+
+		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+			currentNode[q] = q;
+			__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+		}
+
+		do{
+			numberNotInLeaf = 0; 
+
+			for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+
+				if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
+					currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observation[forestRoots[k]->bin[currentNode[q]].returnFeature()]);
+					__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
+				++numberNotInLeaf;
+				}
+			}
+		}while(numberNotInLeaf != 0);
+
+		for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+			//#pragma omp atomic update
+			++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
+		}
+	}
+	return returnClassPrediction(predictions, numOfClasses);
+}
+
 
 void improv8::writeForest(const std::string& forestFileName){
 	std::ofstream outfile (forestFileName, std::ofstream::binary);
