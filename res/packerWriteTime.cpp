@@ -20,6 +20,8 @@
 #include "improv8.h"
 #include "testDepth.h"
 #include "naive.h"
+#include <likwid.h>
+
 
 int main(int argc, char* argv[]) {
 	if (argc < 3){
@@ -29,7 +31,7 @@ int main(int argc, char* argv[]) {
 	int numOfBatches;
 	int depthIntertwined;
 	int numCores=0;
-
+LIKWID_MARKER_INIT;
 	unsigned numThreadsPossible = std::thread::hardware_concurrency();
 	omp_set_num_threads(numThreadsPossible/2);
 
@@ -70,7 +72,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg0");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg0");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==1){
@@ -82,7 +86,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg1");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg1");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==2){
@@ -94,7 +100,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg2");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg2");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==3){
@@ -106,7 +114,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg3");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg3");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==4){
@@ -118,7 +128,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg4");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg4");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 
@@ -131,7 +143,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg5");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg5");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==6){
@@ -143,7 +157,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg6");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg6");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==7){
@@ -155,7 +171,9 @@ int main(int argc, char* argv[]) {
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
+      LIKWID_MARKER_START("alg7");
 			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg7");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 
@@ -232,8 +250,30 @@ return 0;
 	//	tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		return 0;
+	}else if(algorithmToRun ==15){
+	printf("running improv8 src=csv, pred=%d, batches=%d, head=%d\n",runPrediction,numOfBatches,depthIntertwined );
+		improv8 tester(forestFileName,1, observations,numOfBatches,depthIntertwined);
+		tester.printForest();
+		printf("size of a node is %d\n",(int) sizeof(padNode));
+		printf("starting run\n");
+		std::cout<<"starting run with "<< numCores <<" cores and " << tester.numbin() << " bins."<<std::endl;
+
+LIKWID_MARKER_START("alg8");
+			tester.makePredictions(observations);
+      LIKWID_MARKER_STOP("alg8");
+
+		//one time to warm cache
+    /*
+		for(int q=0; q<observations.numObservations;q++){
+			currentPred = tester.makePrediction(observations.samplesMatrix[q],1);
+			observations.predictedClasses[q] = currentPred;
+		}
+    */
+
 	}
 
+
+      LIKWID_MARKER_CLOSE;
 
 	diffMilli = stop_time - start_time;
 	std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;
