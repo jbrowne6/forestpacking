@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
   std::chrono::duration<double, std::micro> diffMilli;
 
   float percentRight = 0;
-  int numTimes = 3;
+  int numTimes = 2;
   if(doesExist("res/higgs/forest.csv") && true){//begin higgs test namespace
     const std::string forestFileName1 = "res/higgs/forest.csv";
     const std::string testFileName1 = "res/higgs/testObservations.csv";

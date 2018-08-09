@@ -21,6 +21,9 @@ class improv8: public padForest
 		~improv8();
 		void makePredictions(const inferenceSamples& observations);
 		int makePrediction(double*& observation);
+		int makePrediction2(double*& observation);
+		int makePrediction3(double*& observation);
+		int makePrediction4(double*& observation);
 		int makePrediction(double*& observation, int numCore);
 		void writeForest(const std::string& forestFileName);
 		void changeNumBins(int newBinNum){
