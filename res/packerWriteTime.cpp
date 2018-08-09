@@ -186,15 +186,17 @@ LIKWID_MARKER_INIT;
 		int currentPred;
 		std::cout<<"starting run with "<< numCores <<" cores and " << tester.numbin() << " bins."<<std::endl;
 		//one time to warm cache
-#pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
+//#pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
 		for(int q=0; q<observations.numObservations;q++){
-			currentPred = tester.makePrediction(observations.samplesMatrix[q],1);
+			currentPred = tester.makePrediction(observations.samplesMatrix[q]);
+			//currentPred = tester.makePrediction(observations.samplesMatrix[q],1);
 			observations.predictedClasses[q] = currentPred;
 		}
 		start_time = std::chrono::high_resolution_clock::now();
-#pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
+//#pragma omp parallel for num_threads(numCores) schedule(static) private(currentPred)
 		for(int q=0; q<observations.numObservations;q++){
-			currentPred = tester.makePrediction(observations.samplesMatrix[q], 1);
+			currentPred = tester.makePrediction(observations.samplesMatrix[q]);
+			//currentPred = tester.makePrediction(observations.samplesMatrix[q], 1);
 			observations.predictedClasses[q] = currentPred;
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
