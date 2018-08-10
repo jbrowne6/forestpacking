@@ -292,14 +292,15 @@ void improv6::makePredictionsMultiTree(const inferenceSamples& observations, int
       predictions[p]=0;
     }
 
-#pragma omp parallel for num_threads(numCores) schedule(static) private(currentNode)
     for(int k=0; k < numOfBins; k++){
+#pragma omp parallel for num_threads(numCores) schedule(static) private(currentNode)
       for(int q=0; q<forestRoots[k]->numOfTreesInBin; q++){
         currentNode = q;
         while(forestRoots[k]->bin[currentNode].isInternalNode()){
           currentNode = forestRoots[k]->bin[currentNode].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode].returnFeature()]);
         }
 
+#pragma omp atomic update
         ++predictions[forestRoots[k]->bin[currentNode].returnRightNode()];
       }
     }

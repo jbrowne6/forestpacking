@@ -20,7 +20,7 @@
 #include "improv8.h"
 #include "testDepth.h"
 #include "naive.h"
-#include <likwid.h>
+//#include <likwid.h>
 
 
 int main(int argc, char* argv[]) {
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 	int numOfBatches;
 	int depthIntertwined;
 	int numCores=0;
-LIKWID_MARKER_INIT;
+//LIKWID_MARKER_INIT;
 	unsigned numThreadsPossible = std::thread::hardware_concurrency();
 	omp_set_num_threads(numThreadsPossible/2);
 
@@ -72,9 +72,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg0");
+      //LIKWID_MARKER_START("alg0");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg0");
+      //LIKWID_MARKER_STOP("alg0");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==1){
@@ -86,9 +86,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg1");
+      //LIKWID_MARKER_START("alg1");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg1");
+      //LIKWID_MARKER_STOP("alg1");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==2){
@@ -100,9 +100,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg2");
+      //LIKWID_MARKER_START("alg2");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg2");
+      //LIKWID_MARKER_STOP("alg2");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==3){
@@ -114,9 +114,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg3");
+      //LIKWID_MARKER_START("alg3");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg3");
+      //LIKWID_MARKER_STOP("alg3");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==4){
@@ -128,9 +128,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg4");
+      //LIKWID_MARKER_START("alg4");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg4");
+      //LIKWID_MARKER_STOP("alg4");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 
@@ -143,9 +143,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg5");
+      //LIKWID_MARKER_START("alg5");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg5");
+      //LIKWID_MARKER_STOP("alg5");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==6){
@@ -157,9 +157,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg6");
+      //LIKWID_MARKER_START("alg6");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg6");
+      //LIKWID_MARKER_STOP("alg6");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 	}else if(algorithmToRun ==7){
@@ -171,9 +171,9 @@ LIKWID_MARKER_INIT;
 		tester.makePredictions(observations);
 		start_time = std::chrono::high_resolution_clock::now();
 		if(runPrediction){
-      LIKWID_MARKER_START("alg7");
+      //LIKWID_MARKER_START("alg7");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg7");
+      //LIKWID_MARKER_STOP("alg7");
 		}
 		stop_time = std::chrono::high_resolution_clock::now();
 
@@ -262,9 +262,9 @@ return 0;
 		printf("starting run\n");
 		std::cout<<"starting run with "<< numCores <<" cores and " << tester.numbin() << " bins."<<std::endl;
 
-LIKWID_MARKER_START("alg8");
+//LIKWID_MARKER_START("alg8");
 			tester.makePredictions(observations);
-      LIKWID_MARKER_STOP("alg8");
+      //LIKWID_MARKER_STOP("alg8");
 
 		//one time to warm cache
     /*
@@ -325,10 +325,41 @@ start_time = std::chrono::high_resolution_clock::now();
 		observations.percentRight();
 */
 
+	}else if(algorithmToRun ==101){
+const std::string forestFileName1 = "res/mnist/forest.csv";
+	const std::string testFileName1 = "res/mnist/testObservations.csv";
+	const std::string traversalFileName1 = "res/mnist/traversal.csv";
+	inferenceSamples travs(traversalFileName1);
+	inferenceSamples observations(testFileName1);
+
+int numTimes =2;
+		int maxCores = 4;
+std::cout << "\n\n\n"; 
+	std::cout << "running improv8 Test"; 
+
+	std::cout << "MultiTree\n"; 
+	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
+		std::cout << "MultiTree, numCores=" << numCores << "\n"; 
+	//	int treesPerBin = 2048/numCores;
+		improv8 tester(forestFileName1,1,travs,numCores, 3);
+		tester.printForest();
+		printf("size of a node is %d\n",(int) sizeof(padNode));
+		printf("starting run\n");
+
+		for(int runNum = 0; runNum < numTimes; ++runNum){
+			start_time = std::chrono::high_resolution_clock::now();
+			tester.makePredictionsMultiTree(observations,numCores);
+			stop_time = std::chrono::high_resolution_clock::now();
+			diffMilli = stop_time - start_time;
+			std::cout << std::fixed << "mnist, MultiTree, " << numCores << ", " << diffMilli.count()<< std::endl;
+				std::cout << "percentRight does not match: " <<  observations.returnPercentRight() << "\n";
+		}
+	}
+
 	}
 
 
-      LIKWID_MARKER_CLOSE;
+      //LIKWID_MARKER_CLOSE;
 
 	diffMilli = stop_time - start_time;
 	std::cout<< std::fixed << "Time to test observations: "<< diffMilli.count()<< " us" <<std::endl;

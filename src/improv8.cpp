@@ -1,6 +1,7 @@
 #include <queue>
 #include <iostream>
 #include <sstream>
+#include <cstring>
 #include <omp.h>
 #include "improv8.h"
 
@@ -341,42 +342,40 @@ void improv8::makePredictionsMultiTree(const inferenceSamples& observations, int
 	int predictions[numOfClasses];
 	int currentNode[forestRoots[0]->numOfTreesInBin];
 	int numberNotInLeaf;
-	int  p, k, q;
+	int k, q;
+	int predictionByteSize = numOfClasses*sizeof(int);
 
 	for(int i = 0; i < observations.numObservations; i++){
+		memset(predictions, 0, predictionByteSize);
 
-		for( p= 0; p < numOfClasses;++p){
-			predictions[p]=0;
-		}
-
-#pragma omp parallel for num_threads(numCores) schedule (static) private(q, numberNotInLeaf, currentNode)
+		#pragma omp parallel for num_threads(numCores) schedule (static) private(q, numberNotInLeaf, currentNode)
 		for( k=0; k < numOfBins;++k){
 			for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
 				currentNode[q] = q;
 				__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
 			}
 
-			numberNotInLeaf = 1;
-			while(numberNotInLeaf > 0){
-				numberNotInLeaf = forestRoots[k]->numOfTreesInBin;
+			do{
+				numberNotInLeaf = 0;
 
 				for( q=0; q<forestRoots[k]->numOfTreesInBin; ++q){
 
 					if(forestRoots[k]->bin[currentNode[q]].isInternalNode()){
 						currentNode[q] = forestRoots[k]->bin[currentNode[q]].nextNode(observations.samplesMatrix[i][forestRoots[k]->bin[currentNode[q]].returnFeature()]);
 						__builtin_prefetch(&forestRoots[k]->bin[currentNode[q]], 0, 3);
-						continue;
+					++numberNotInLeaf;
 					}
-					--numberNotInLeaf;
 				}
-			}
+				
+			}while(numberNotInLeaf);
 
 			for( q=0; q<forestRoots[k]->numOfTreesInBin; q++){
+#pragma omp atomic update
 				++predictions[forestRoots[k]->bin[currentNode[q]].returnRightNode()];
 			}
-
 		}
 
+		observations.predictedClasses[i] = returnClassPrediction(predictions, numOfClasses);
 	}
 }
 /////////////////////////////////////////////////////////
