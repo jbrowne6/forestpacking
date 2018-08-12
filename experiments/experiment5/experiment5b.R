@@ -183,9 +183,15 @@ if(runMNIST){
 #############     Higgs    ######################################################
 
 if(runHiggs){
-	mydata <- read.csv(file="~/gitrepos/experiments/data/higgs/training.csv", header=TRUE, sep=",")
-	X <- as.matrix(mydata[,2:31])
-	Y <- as.numeric(mydata[,33])
+	mydata <- read.csv(file="../../res/higgs/training.csv", header=TRUE, sep=",")
+	Xtr <- as.matrix(mydata[,2:31])
+	Ytr <- as.numeric(mydata[,33])
+
+testObservations <- sample(1:nrow(Xtr), 25000)
+
+	Xte <- Xtr[testObservations,]
+	Yte <- tr[testObservations]
+
 	mydata <- NA
 	gc()
 
@@ -196,14 +202,7 @@ if(runHiggs){
 	}
 
 	if(runRerF){
-		X1 <- sample(1:length(Y[Y==1]), .8 *length(Y[Y==1]), replace=FALSE)
-		X2 <- sample(1:length(Y[Y==2]), .8 *length(Y[Y==2]), replace=FALSE)
-		Xtr <- rbind(X[Y==1,][X1,],X[Y==2,][X2,])
-		Ytr <- c(Y[Y==1][X1], Y[Y==2][X2])
-		Xte <- rbind(X[Y==1,][-X1,],X[Y==2,][-X2,])
-		Yte <- c(Y[Y==1][-X1], Y[Y==2][-X2])
-
-		gc()
+				gc()
 
 		for(depthToRun in runDepth){
 		for(treesToRun in num_trees){
