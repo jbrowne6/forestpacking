@@ -21,6 +21,12 @@ data_summary <- function(data, varname, groupnames){
 
 
 mydata <- read.csv(file="experiment1.csv", header=FALSE)
+mydata$V2  <- relevel(mydata$V2, " Bin")
+mydata$V2  <- relevel(mydata$V2, " Stat")
+mydata$V2  <- relevel(mydata$V2, " DF-")
+mydata$V2  <- relevel(mydata$V2, " DF")
+mydata$V2  <- relevel(mydata$V2, " BF")
+
 
 mydata <- data_summary(mydata,varname="V6",groupnames=c("V2","V3","V4","V5"))
 
@@ -52,16 +58,18 @@ p <- ggplot(mydata, aes(x=V5, y=V6, group=V2, color=V2)) + geom_line()
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + guides(fill=guide_legend(title="Technique"))
 p <- p + labs(x = "Number of Threads Used", y =expression(paste("Mean Inference Time per Observation (", mu,"s)")))
-p <- p + scale_colour_manual(values=c("red2", "blue2", "orange2", "green2", "purple2", "cyan2"), 
-														 name="Encoding", 
-														 breaks=c(" BF"," DF"," DF-"," Stat"," Bin"," Bin+"), 
-														 labels=c("BF","DF","DF-","Stat","Bin","Bin+"))
+
+p <- p + scale_colour_manual(values=c("cyan2", "purple2", "orange2", "green2", "red2", "blue2"), name="Encoding" )
+#p <- p + scale_colour_manual(values=c("red2", "blue2", "orange2", "green2", "purple2", "cyan2"), 
+#														 name="Encoding", 
+#														 breaks=c(" BF"," DF"," DF-"," Stat"," Bin"," Bin+"), 
+#														 labels=c("BF","DF","DF-","Stat","Bin","Bin+"))
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
 #p <- p + facet_grid(V4 ~ V3)
 
 
-png(file="experiment1.png")
+png(file="scaling.png")
 print(p)
 dev.off()
 
@@ -90,10 +98,13 @@ p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + guides(fill=FALSE)
 #p <- p + guides(fill=guide_legend(title="Technique"))
 p <- p + labs(x = "Number of Threads Used", y = "Speed Up")
-p <- p + scale_colour_manual(values=c("red2", "blue2", "orange2", "green2", "purple2", "cyan2"), 
-														 name="Encoding", 
-														 breaks=c(" BF"," DF"," DF-"," Stat"," Bin"," Bin+"), 
-														 labels=c("BF","DF","DF-","Stat","Bin","Bin+"))
+
+p <- p + scale_colour_manual(values=c("cyan2", "purple2", "orange2", "green2", "red2", "blue2"), name="Encoding" )
+
+#p <- p + scale_colour_manual(values=c("red2", "blue2", "orange2", "green2", "purple2", "cyan2"), 
+#														 name="Encoding", 
+#														 breaks=c(" BF"," DF"," DF-"," Stat"," Bin"," Bin+"), 
+#														 labels=c("BF","DF","DF-","Stat","Bin","Bin+"))
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
 #p <- p + facet_grid(V4 ~ V3)

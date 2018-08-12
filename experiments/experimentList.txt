@@ -1,0 +1,5 @@
+experiment1: speed-up and scaling charts
+experiment2: hyperthreading experiment 
+experiment3: differences when changing depth and bin size
+experiment4: uses data from experiment1 to create the memory layout single thread time diagram and the BF, Bin, Bin+ chart.
+experiment5: xgboost RerF
