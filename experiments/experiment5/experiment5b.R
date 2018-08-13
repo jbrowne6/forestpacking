@@ -21,7 +21,7 @@ num.threads <- 64
 maxDepth <- 6
 output <- data.frame()
 output <- c("test", "test", 3,3,3)
-fileName <- "predTimes.csv"
+fileName <- "experiment5b.csv"
 
 numToPredictHolder <- 1000
 
@@ -200,6 +200,7 @@ if(runHiggs){
 
     for(depthToRun in runDepths){
       for(treesToRun in num_trees){
+				print(paste("running rf ", depthToRun, ", ", treesToRun))
         forestRerFHiggs <- RerF(Xtr,Ytr, trees=treesToRun, max.depth=depthToRun, num.cores=num.threads, seed=sample(1:100000,1))
         #		save(forestRerFHiggs, file="forestRerFHiggs.Rdata")
         for( q in 1:num_trees){
@@ -227,6 +228,7 @@ if(runHiggs){
     for(depthToRun in runDepths){
       for(treesToRun in num_trees){
 
+				print(paste("running xg ", depthToRun, ", ", treesToRun))
         forest <- xgboost(data=train, label=label, objective="multi:softmax",nrounds=treesToRun,num_class=num_classes, nthread=num.threads,max_depth=depthToRun)
         warnings()
         #save(forestXGBoostHiggs, file="forestXGBoostHiggs.Rdata")

@@ -30,11 +30,13 @@ z <- mydata$V3 == " Allstate"
 mydata[z,]$V7 <- mydata[z,]$V7/50000
 
 mydata$V6 <- as.factor(mydata$V6)
+mydata$V8 <- as.factor(mydata$V8)
+levels(mydata$V8) <- c("1 Thread", "2 Threads", "4 Threads")
 
 mydata <- data_summary(mydata, varname="V7",groupnames=c("V3", "V5", "V6", "V8"))
 
 
-leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
+leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15), strip.text.x = element_text(size=15), strip.text.y = element_text(size=15))
 
 p <- ggplot(mydata, aes(x=V5, y=V7, group=V6, color=V6)) + geom_line()
   

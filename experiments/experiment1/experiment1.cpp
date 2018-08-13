@@ -297,7 +297,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 	std::cout << "MultiTree\n"; 
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
 //		int treesPerBin = 2048/numCores;
-		improv6 tester(forestFileName1,1,travs, numCores, 3);
+		improv6 tester(forestFileName1,1,travs, 32, 3);
 		tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		printf("starting run\n");
@@ -356,7 +356,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
 	//	int treesPerBin = 2048/numCores;
-		improv8 tester(forestFileName1,1,travs, numCores, 3);
+		improv8 tester(forestFileName1,1,travs, 32, 3);
 		tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		printf("starting run\n");
@@ -670,7 +670,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
 	//	int treesPerBin = 2048/numCores;
-		improv6 tester(forestFileName2,1,travs, numCores, 3);
+		improv6 tester(forestFileName2,1,travs, 32, 3);
 		tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		printf("starting run\n");
@@ -730,7 +730,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
 	//	int treesPerBin = 2048/numCores;
-		improv8 tester(forestFileName2,1,travs,numCores, 3);
+		improv8 tester(forestFileName2,1,travs,32, 3);
 		tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		printf("starting run\n");
@@ -1044,7 +1044,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
 		std::cout << "MultiTree, numCores=" << numCores << "\n"; 
 	//	int treesPerBin = 2048/numCores;
-		improv6 tester(forestFileName1,1,travs,numCores, 3);
+		improv6 tester(forestFileName1,1,travs,32, 3);
 		tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		printf("starting run\n");
@@ -1106,7 +1106,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
 		std::cout << "MultiTree, numCores=" << numCores << "\n"; 
 	//	int treesPerBin = 2048/numCores;
-		improv8 tester(forestFileName1,1,travs,numCores, 3);
+		improv8 tester(forestFileName1,1,travs,32, 3);
 		tester.printForest();
 		printf("size of a node is %d\n",(int) sizeof(padNode));
 		printf("starting run\n");
