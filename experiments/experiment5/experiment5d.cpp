@@ -46,105 +46,7 @@ int main(int argc, char* argv[]) {
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////
-  {
-    const std::string forestFileName1 = "experiments/experiment5/forest-6-128-.csv";
-
-    
-{//start naive namespace
-      //////Naive/////////
-      std::cout << "running naive Test"; 
-      naive tester(forestFileName1,1);
-      tester.printForest();
-      printf("size of a node is %d\n",(int) sizeof(padNode));
-      printf("starting run\n");
-
-
-      std::cout << "MultiTree\n"; 
-      for(int runNum = 0; runNum < numTimes; ++runNum){
-        start_time = std::chrono::high_resolution_clock::now();
-        tester.makePredictionsMultiTree(observations,32);
-        stop_time = std::chrono::high_resolution_clock::now();
-        diffMilli = stop_time - start_time;
-        outfile << std::fixed << "BF(MC), 6, 128, " << diffMilli.count()<< std::endl;
-        std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-      }
-
-    }//end naive test
-
-
-    {//start improv8 namespace
-      //////improv8/////////
-      std::cout << "\n\n\n"; 
-      std::cout << "running improv8 Test"; 
-
-      improv8 tester(forestFileName1,1,travs, 4, 3);
-      tester.printForest();
-      printf("size of a node is %d\n",(int) sizeof(padNode));
-      printf("starting run\n");
-
-      for(int runNum = 0; runNum < numTimes; ++runNum){
-        start_time = std::chrono::high_resolution_clock::now();
-        tester.makePredictionsMultiTree(observations,4);
-        stop_time = std::chrono::high_resolution_clock::now();
-        diffMilli = stop_time - start_time;
-        outfile << std::fixed << "Bin+(MC), 6, 128, " << diffMilli.count()<< std::endl;
-        std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-      }
-
-    }
-  }
-
-    ////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////
-    {
-      const std::string forestFileName1 = "experiments/experiment5/forest-6-256-.csv";
-
-{//start naive namespace
-        //////Naive/////////
-        std::cout << "running naive Test"; 
-        naive tester(forestFileName1,1);
-        tester.printForest();
-        printf("size of a node is %d\n",(int) sizeof(padNode));
-        printf("starting run\n");
-
-
-        std::cout << "MultiTree\n"; 
-        for(int runNum = 0; runNum < numTimes; ++runNum){
-          start_time = std::chrono::high_resolution_clock::now();
-          tester.makePredictionsMultiTree(observations,32);
-          stop_time = std::chrono::high_resolution_clock::now();
-          diffMilli = stop_time - start_time;
-          outfile << std::fixed << "BF(MC), 6, 256, " << diffMilli.count()<< std::endl;
-          std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-        }
-
-
-      }//end naive test
-
-
-      {//start improv8 namespace
-        //////improv8/////////
-        std::cout << "\n\n\n"; 
-        std::cout << "running improv8 Test"; 
-
-        improv8 tester(forestFileName1,1,travs, 8, 3);
-        tester.printForest();
-        printf("size of a node is %d\n",(int) sizeof(padNode));
-        printf("starting run\n");
-
-        for(int runNum = 0; runNum < numTimes; ++runNum){
-          start_time = std::chrono::high_resolution_clock::now();
-          tester.makePredictionsMultiTree(observations,8);
-          stop_time = std::chrono::high_resolution_clock::now();
-          diffMilli = stop_time - start_time;
-          outfile << std::fixed << "Bin+(MC), 6, 256, " << diffMilli.count()<< std::endl;
-          std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-        }
-      }
-
-    }
-
-
+  
 
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
@@ -194,63 +96,13 @@ int main(int argc, char* argv[]) {
     }
   
 
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  {
-    const std::string forestFileName1 = "experiments/experiment5/forest-10-128-.csv";
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+{
+      const std::string forestFileName1 = "experiments/experiment5/forest-6-1024-.csv";
 
 {//start naive namespace
-      //////Naive/////////
-      std::cout << "running naive Test"; 
-      naive tester(forestFileName1,1);
-      tester.printForest();
-      printf("size of a node is %d\n",(int) sizeof(padNode));
-      printf("starting run\n");
-
-
-      std::cout << "MultiTree\n"; 
-      for(int runNum = 0; runNum < numTimes; ++runNum){
-        start_time = std::chrono::high_resolution_clock::now();
-        tester.makePredictionsMultiTree(observations,32);
-        stop_time = std::chrono::high_resolution_clock::now();
-        diffMilli = stop_time - start_time;
-        outfile << std::fixed << "BF(MC), 10, 128, " << diffMilli.count()<< std::endl;
-        std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-      }
-
-    }//end naive test
-
-
-    {//start improv8 namespace
-      //////improv8/////////
-      std::cout << "\n\n\n"; 
-      std::cout << "running improv8 Test"; 
-
-      improv8 tester(forestFileName1,1,travs, 4, 3);
-      tester.printForest();
-      printf("size of a node is %d\n",(int) sizeof(padNode));
-      printf("starting run\n");
-
-      for(int runNum = 0; runNum < numTimes; ++runNum){
-        start_time = std::chrono::high_resolution_clock::now();
-        tester.makePredictionsMultiTree(observations,4);
-        stop_time = std::chrono::high_resolution_clock::now();
-        diffMilli = stop_time - start_time;
-        outfile << std::fixed << "Bin+(MC), 10, 128, " << diffMilli.count()<< std::endl;
-        std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-      }
-    }
-  }
-
-    ////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////
-    {
-      const std::string forestFileName1 = "experiments/experiment5/forest-10-256-.csv";
-
-    {//start naive namespace
         //////Naive/////////
         std::cout << "running naive Test"; 
         naive tester(forestFileName1,1);
@@ -265,7 +117,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,32);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "BF(MC), 10, 256, " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "BF(MC), 6, 1024, " << diffMilli.count()<< std::endl;
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
         }
       }//end naive test
@@ -276,24 +128,78 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-        improv8 tester(forestFileName1,1,travs, 8, 3);
+          improv8 tester(forestFileName1,1,travs, 16, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,16);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << "Bin+(MC), 6, 1024, " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
+      }
+    }
+
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+{
+      const std::string forestFileName1 = "experiments/experiment5/forest-6-2048-.csv";
+
+{//start naive namespace
+        //////Naive/////////
+        std::cout << "running naive Test"; 
+        naive tester(forestFileName1,1);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
 
+
+        std::cout << "MultiTree\n"; 
         for(int runNum = 0; runNum < numTimes; ++runNum){
           start_time = std::chrono::high_resolution_clock::now();
-          tester.makePredictionsMultiTree(observations,8);
+          tester.makePredictionsMultiTree(observations,32);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "Bin+(MC), 10, 256, " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "BF(MC), 6, 2048, " << diffMilli.count()<< std::endl;
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
         }
-      }//end improv8 namespace
-
-    }
+      }//end naive test
 
 
+      {//start improv8 namespace
+        //////improv8/////////
+        std::cout << "\n\n\n"; 
+        std::cout << "running improv8 Test"; 
+
+          improv8 tester(forestFileName1,1,travs, 16, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,16);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << "Bin+(MC), 6, 2048, " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
+      }
+} 
+
+
+
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  
 
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
@@ -343,63 +249,10 @@ int main(int argc, char* argv[]) {
 
     }
   
-
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////
-  {
-    const std::string forestFileName1 = "experiments/experiment5/forest-14-128-.csv";
-{//start naive namespace
-      //////Naive/////////
-      std::cout << "running naive Test"; 
-      naive tester(forestFileName1,1);
-      tester.printForest();
-      printf("size of a node is %d\n",(int) sizeof(padNode));
-      printf("starting run\n");
-
-
-      std::cout << "MultiTree\n"; 
-      for(int runNum = 0; runNum < numTimes; ++runNum){
-        start_time = std::chrono::high_resolution_clock::now();
-        tester.makePredictionsMultiTree(observations,32);
-        stop_time = std::chrono::high_resolution_clock::now();
-        diffMilli = stop_time - start_time;
-        outfile << std::fixed << "BF(MC), 14, 128, " << diffMilli.count()<< std::endl;
-        std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-      }
-
-    }//end naive test
-
-
-    {//start improv8 namespace
-      //////improv8/////////
-      std::cout << "\n\n\n"; 
-      std::cout << "running improv8 Test"; 
-
-      improv8 tester(forestFileName1,1,travs, 4, 3);
-      tester.printForest();
-      printf("size of a node is %d\n",(int) sizeof(padNode));
-      printf("starting run\n");
-
-      for(int runNum = 0; runNum < numTimes; ++runNum){
-        start_time = std::chrono::high_resolution_clock::now();
-        tester.makePredictionsMultiTree(observations,4);
-        stop_time = std::chrono::high_resolution_clock::now();
-        diffMilli = stop_time - start_time;
-        outfile << std::fixed << "Bin+(MC), 14, 128, " << diffMilli.count()<< std::endl;
-        std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
-      }
-
-    }
-  }
-
-
-    ////////////////////////////////////////////////////
+////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
     {
-      const std::string forestFileName1 = "experiments/experiment5/forest-14-256-.csv";
+      const std::string forestFileName1 = "experiments/experiment5/forest-10-1024-.csv";
 
 {//start naive namespace
         //////Naive/////////
@@ -416,7 +269,7 @@ int main(int argc, char* argv[]) {
           tester.makePredictionsMultiTree(observations,32);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "BF(MC), 14, 256, " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "BF(MC), 10, 1024, " << diffMilli.count()<< std::endl;
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
         }
       }//end naive test
@@ -427,21 +280,76 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-        improv8 tester(forestFileName1,1,travs, 8, 3);
+          improv8 tester(forestFileName1,1,travs, 16, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,16);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << "Bin+(MC), 10, 1024, " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
+      }//end improv8 namespace
+
+    }
+
+////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    {
+      const std::string forestFileName1 = "experiments/experiment5/forest-10-2048-.csv";
+
+{//start naive namespace
+        //////Naive/////////
+        std::cout << "running naive Test"; 
+        naive tester(forestFileName1,1);
         tester.printForest();
         printf("size of a node is %d\n",(int) sizeof(padNode));
         printf("starting run\n");
 
+
+        std::cout << "MultiTree\n"; 
         for(int runNum = 0; runNum < numTimes; ++runNum){
           start_time = std::chrono::high_resolution_clock::now();
-          tester.makePredictionsMultiTree(observations,8);
+          tester.makePredictionsMultiTree(observations,32);
           stop_time = std::chrono::high_resolution_clock::now();
           diffMilli = stop_time - start_time;
-          outfile << std::fixed << "Bin+(MC), 14, 256, " << diffMilli.count()<< std::endl;
+          outfile << std::fixed << "BF(MC), 10, 2048, " << diffMilli.count()<< std::endl;
           std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
         }
+      }//end naive test
+
+
+      {//start improv8 namespace
+        //////improv8/////////
+        std::cout << "\n\n\n"; 
+        std::cout << "running improv8 Test"; 
+
+          improv8 tester(forestFileName1,1,travs, 16, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,16);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << "Bin+(MC), 10, 2048, " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
       }//end improv8 namespace
+
     }
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  
 
 
 
@@ -492,7 +400,102 @@ int main(int argc, char* argv[]) {
       }//end improv8 namespace
 
     }
-     
+     ////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    {
+      const std::string forestFileName1 = "experiments/experiment5/forest-14-1024-.csv";
+
+{//start naive namespace
+        //////Naive/////////
+        std::cout << "running naive Test"; 
+        naive tester(forestFileName1,1);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+
+
+        std::cout << "MultiTree\n"; 
+        for(int runNum = 0; runNum < numTimes; ++runNum){
+          start_time = std::chrono::high_resolution_clock::now();
+          tester.makePredictionsMultiTree(observations,32);
+          stop_time = std::chrono::high_resolution_clock::now();
+          diffMilli = stop_time - start_time;
+          outfile << std::fixed << "BF(MC), 14, 1024, " << diffMilli.count()<< std::endl;
+          std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+        }
+      }//end naive test
+
+
+      {//start improv8 namespace
+        //////improv8/////////
+        std::cout << "\n\n\n"; 
+        std::cout << "running improv8 Test"; 
+
+          improv8 tester(forestFileName1,1,travs, 16, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,16);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << "Bin+(MC), 14, 1024, " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
+      }//end improv8 namespace
+
+    }
+
+////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    {
+      const std::string forestFileName1 = "experiments/experiment5/forest-14-2048-.csv";
+
+{//start naive namespace
+        //////Naive/////////
+        std::cout << "running naive Test"; 
+        naive tester(forestFileName1,1);
+        tester.printForest();
+        printf("size of a node is %d\n",(int) sizeof(padNode));
+        printf("starting run\n");
+
+
+        std::cout << "MultiTree\n"; 
+        for(int runNum = 0; runNum < numTimes; ++runNum){
+          start_time = std::chrono::high_resolution_clock::now();
+          tester.makePredictionsMultiTree(observations,32);
+          stop_time = std::chrono::high_resolution_clock::now();
+          diffMilli = stop_time - start_time;
+          outfile << std::fixed << "BF(MC), 14, 2048, " << diffMilli.count()<< std::endl;
+          std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+        }
+      }//end naive test
+
+
+      {//start improv8 namespace
+        //////improv8/////////
+        std::cout << "\n\n\n"; 
+        std::cout << "running improv8 Test"; 
+
+          improv8 tester(forestFileName1,1,travs, 16, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,16);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << "Bin+(MC), 14, 2048, " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
+      }//end improv8 namespace
+
+    }
+
   outfile.close();
   return 0;
 }

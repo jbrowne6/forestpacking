@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	if (argc ==2 ){
 		maxDepth=atoi(argv[1]);
 	}else{
-		maxDepth = 9;
+		maxDepth = 10;
 	}
 	std::ofstream outfile;
 	outfile.open("experiments/experiment3/experiment3.csv");
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double, std::micro> diffMilli;
 
 	float percentRight = 0;
-	int numTimes = 5;
+	int numTimes = 3;
 
 
 
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
 
-			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=3){	
+			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
 				for(int numBins = 4; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName1,1,travs, numBins, numDepth);
 					tester.printForest();
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
 			//////improv8/////////
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
-			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=3){	
+			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
 				for(int numBins = 4; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName2,1,travs, numBins, numDepth);
 					tester.printForest();
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
 			std::cout << "running improv8 Test"; 
 
 
-			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=3){	
+			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
 				for(int numBins = 4; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName1,1,travs, numBins, numDepth);
 					tester.printForest();

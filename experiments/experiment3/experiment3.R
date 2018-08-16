@@ -45,7 +45,7 @@ p <- ggplot(mydata, aes(x=V5, y=V7, group=V6, color=V6)) + geom_line()
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 #p <- p + scale_colour_manual(name="Depth")
 
-p <- p + scale_colour_manual(values=c("0"="#f7f7f7", "1"="#d9d9d9", "2"="#bdbdbd", "3"="#969696", "4"="#636363", "5"="red3", "6"="green3"), name="Depth")
+#p <- p + scale_colour_manual(values=c("0"="#d9d9d9", "3"="#bdbdbd", "6"="#969696", "9"="#636363"), name="Depth")
 														 
 p <- p + labs(x = "Trees Per Bin", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
 p <- p + leg
