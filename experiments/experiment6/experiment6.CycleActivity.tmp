@@ -1,0 +1,144 @@
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.19994129 GHz,
+TABLE,Region naive,Group 1 Raw,CYCLE_ACTIVITY,6
+Region Info,Core 2,
+RDTSC Runtime [s],86.625230,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286700000
+CPU_CLK_UNHALTED_CORE,FIXC1,197032400000
+CPU_CLK_UNHALTED_REF,FIXC2,188465800000
+CYCLE_ACTIVITY_STALLS_L2_PENDING,PMC1,148421500000
+CYCLE_ACTIVITY_STALLS_L1D_PENDING,PMC2,150787100000
+CYCLE_ACTIVITY_CYCLES_NO_DISPATCH,PMC3,158566200000
+TABLE,Region naive,Group 1 Metric,CYCLE_ACTIVITY,7
+Metric,Core 2,
+Runtime (RDTSC) [s],86.6252,
+Runtime unhalted [s],89.5626,
+Clock [MHz],2299.9383,
+CPI,7.7919,
+Cycles without execution [%],80.4772,
+Cycles with stalls due to L1D [%],76.5291,
+Cycles with stalls due to L2 [%],75.3285,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.19994129 GHz,
+TABLE,Region improv1,Group 1 Raw,CYCLE_ACTIVITY,6
+Region Info,Core 2,
+RDTSC Runtime [s],70.134230,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286510000
+CPU_CLK_UNHALTED_CORE,FIXC1,159399500000
+CPU_CLK_UNHALTED_REF,FIXC2,152469100000
+CYCLE_ACTIVITY_STALLS_L2_PENDING,PMC1,115296300000
+CYCLE_ACTIVITY_STALLS_L1D_PENDING,PMC2,115310700000
+CYCLE_ACTIVITY_CYCLES_NO_DISPATCH,PMC3,123482300000
+TABLE,Region improv1,Group 1 Metric,CYCLE_ACTIVITY,7
+Metric,Core 2,
+Runtime (RDTSC) [s],70.1342,
+Runtime unhalted [s],72.4563,
+Clock [MHz],2299.9384,
+CPI,6.3037,
+Cycles without execution [%],77.4672,
+Cycles with stalls due to L1D [%],72.3407,
+Cycles with stalls due to L2 [%],72.3317,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.19994129 GHz,
+TABLE,Region improv2,Group 1 Raw,CYCLE_ACTIVITY,6
+Region Info,Core 2,
+RDTSC Runtime [s],63.303730,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286380000
+CPU_CLK_UNHALTED_CORE,FIXC1,144000800000
+CPU_CLK_UNHALTED_REF,FIXC2,137739900000
+CYCLE_ACTIVITY_STALLS_L2_PENDING,PMC1,100656500000
+CYCLE_ACTIVITY_STALLS_L1D_PENDING,PMC2,100466700000
+CYCLE_ACTIVITY_CYCLES_NO_DISPATCH,PMC3,108069500000
+TABLE,Region improv2,Group 1 Metric,CYCLE_ACTIVITY,7
+Metric,Core 2,
+Runtime (RDTSC) [s],63.3037,
+Runtime unhalted [s],65.4567,
+Clock [MHz],2299.9385,
+CPI,5.6948,
+Cycles without execution [%],75.0478,
+Cycles with stalls due to L1D [%],69.7682,
+Cycles with stalls due to L2 [%],69.9000,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.19994129 GHz,
+TABLE,Region improv4,Group 1 Raw,CYCLE_ACTIVITY,6
+Region Info,Core 2,
+RDTSC Runtime [s],56.334010,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286380000
+CPU_CLK_UNHALTED_CORE,FIXC1,128075200000
+CPU_CLK_UNHALTED_REF,FIXC2,122506700000
+CYCLE_ACTIVITY_STALLS_L2_PENDING,PMC1,87458260000
+CYCLE_ACTIVITY_STALLS_L1D_PENDING,PMC2,86877710000
+CYCLE_ACTIVITY_CYCLES_NO_DISPATCH,PMC3,93978940000
+TABLE,Region improv4,Group 1 Metric,CYCLE_ACTIVITY,7
+Metric,Core 2,
+Runtime (RDTSC) [s],56.3340,
+Runtime unhalted [s],58.2176,
+Clock [MHz],2299.9389,
+CPI,5.0650,
+Cycles without execution [%],73.3779,
+Cycles with stalls due to L1D [%],67.8334,
+Cycles with stalls due to L2 [%],68.2866,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.19994129 GHz,
+TABLE,Region improv6,Group 1 Raw,CYCLE_ACTIVITY,6
+Region Info,Core 2,
+RDTSC Runtime [s],53.672120,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,27117820000
+CPU_CLK_UNHALTED_CORE,FIXC1,120236100000
+CPU_CLK_UNHALTED_REF,FIXC2,115008400000
+CYCLE_ACTIVITY_STALLS_L2_PENDING,PMC1,82112640000
+CYCLE_ACTIVITY_STALLS_L1D_PENDING,PMC2,82552020000
+CYCLE_ACTIVITY_CYCLES_NO_DISPATCH,PMC3,88130950000
+TABLE,Region improv6,Group 1 Metric,CYCLE_ACTIVITY,7
+Metric,Core 2,
+Runtime (RDTSC) [s],53.6721,
+Runtime unhalted [s],54.6542,
+Clock [MHz],2299.9395,
+CPI,4.4338,
+Cycles without execution [%],73.2982,
+Cycles with stalls due to L1D [%],68.6583,
+Cycles with stalls due to L2 [%],68.2928,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.19994129 GHz,
+TABLE,Region improv8,Group 1 Raw,CYCLE_ACTIVITY,6
+Region Info,Core 2,
+RDTSC Runtime [s],29.480900,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,51351130000
+CPU_CLK_UNHALTED_CORE,FIXC1,66881650000
+CPU_CLK_UNHALTED_REF,FIXC2,63973750000
+CYCLE_ACTIVITY_STALLS_L2_PENDING,PMC1,21590460000
+CYCLE_ACTIVITY_STALLS_L1D_PENDING,PMC2,14983410000
+CYCLE_ACTIVITY_CYCLES_NO_DISPATCH,PMC3,25046460000
+TABLE,Region improv8,Group 1 Metric,CYCLE_ACTIVITY,7
+Metric,Core 2,
+Runtime (RDTSC) [s],29.4809,
+Runtime unhalted [s],30.4016,
+Clock [MHz],2299.9387,
+CPI,1.3024,
+Cycles without execution [%],37.4489,
+Cycles with stalls due to L1D [%],22.4029,
+Cycles with stalls due to L2 [%],32.2816,

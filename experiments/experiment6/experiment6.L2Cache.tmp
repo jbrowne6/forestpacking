@@ -1,0 +1,138 @@
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199941732 GHz,
+TABLE,Region naive,Group 1 Raw,L2CACHE,5
+Region Info,Core 2,
+RDTSC Runtime [s],86.443530,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25285500000
+CPU_CLK_UNHALTED_CORE,FIXC1,196609000000
+CPU_CLK_UNHALTED_REF,FIXC2,188060800000
+L2_TRANS_ALL_REQUESTS,PMC0,9582941000
+L2_RQSTS_MISS,PMC1,3594527000
+TABLE,Region naive,Group 1 Metric,L2CACHE,7
+Metric,Core 2,
+Runtime (RDTSC) [s],86.4435,
+Runtime unhalted [s],89.3701,
+Clock [MHz],2299.9389,
+CPI,7.7756,
+L2 request rate,0.3790,
+L2 miss rate,0.1422,
+L2 miss ratio,0.3751,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199941732 GHz,
+TABLE,Region improv1,Group 1 Raw,L2CACHE,5
+Region Info,Core 2,
+RDTSC Runtime [s],70.132290,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25285310000
+CPU_CLK_UNHALTED_CORE,FIXC1,159420900000
+CPU_CLK_UNHALTED_REF,FIXC2,152489500000
+L2_TRANS_ALL_REQUESTS,PMC0,9414670000
+L2_RQSTS_MISS,PMC1,3530840000
+TABLE,Region improv1,Group 1 Metric,L2CACHE,7
+Metric,Core 2,
+Runtime (RDTSC) [s],70.1323,
+Runtime unhalted [s],72.4660,
+Clock [MHz],2299.9399,
+CPI,6.3049,
+L2 request rate,0.3723,
+L2 miss rate,0.1396,
+L2 miss ratio,0.3750,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199941732 GHz,
+TABLE,Region improv2,Group 1 Raw,L2CACHE,5
+Region Info,Core 2,
+RDTSC Runtime [s],63.403460,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25285180000
+CPU_CLK_UNHALTED_CORE,FIXC1,144248700000
+CPU_CLK_UNHALTED_REF,FIXC2,137977000000
+L2_TRANS_ALL_REQUESTS,PMC0,9064835000
+L2_RQSTS_MISS,PMC1,3399695000
+TABLE,Region improv2,Group 1 Metric,L2CACHE,7
+Metric,Core 2,
+Runtime (RDTSC) [s],63.4035,
+Runtime unhalted [s],65.5693,
+Clock [MHz],2299.9394,
+CPI,5.7049,
+L2 request rate,0.3585,
+L2 miss rate,0.1345,
+L2 miss ratio,0.3750,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199941732 GHz,
+TABLE,Region improv4,Group 1 Raw,L2CACHE,5
+Region Info,Core 2,
+RDTSC Runtime [s],56.583840,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25285180000
+CPU_CLK_UNHALTED_CORE,FIXC1,128656100000
+CPU_CLK_UNHALTED_REF,FIXC2,123062300000
+L2_TRANS_ALL_REQUESTS,PMC0,8257036000
+L2_RQSTS_MISS,PMC1,3148119000
+TABLE,Region improv4,Group 1 Metric,L2CACHE,7
+Metric,Core 2,
+Runtime (RDTSC) [s],56.5838,
+Runtime unhalted [s],58.4816,
+Clock [MHz],2299.9401,
+CPI,5.0882,
+L2 request rate,0.3266,
+L2 miss rate,0.1245,
+L2 miss ratio,0.3813,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199941732 GHz,
+TABLE,Region improv6,Group 1 Raw,L2CACHE,5
+Region Info,Core 2,
+RDTSC Runtime [s],51.825690,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,26824050000
+CPU_CLK_UNHALTED_CORE,FIXC1,116021600000
+CPU_CLK_UNHALTED_REF,FIXC2,110977100000
+L2_TRANS_ALL_REQUESTS,PMC0,7985666000
+L2_RQSTS_MISS,PMC1,2907835000
+TABLE,Region improv6,Group 1 Metric,L2CACHE,7
+Metric,Core 2,
+Runtime (RDTSC) [s],51.8257,
+Runtime unhalted [s],52.7385,
+Clock [MHz],2299.9408,
+CPI,4.3253,
+L2 request rate,0.2977,
+L2 miss rate,0.1084,
+L2 miss ratio,0.3641,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199941732 GHz,
+TABLE,Region improv8,Group 1 Raw,L2CACHE,5
+Region Info,Core 2,
+RDTSC Runtime [s],28.899280,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,51341950000
+CPU_CLK_UNHALTED_CORE,FIXC1,65541570000
+CPU_CLK_UNHALTED_REF,FIXC2,62691940000
+L2_TRANS_ALL_REQUESTS,PMC0,5750121000
+L2_RQSTS_MISS,PMC1,2177297000
+TABLE,Region improv8,Group 1 Metric,L2CACHE,7
+Metric,Core 2,
+Runtime (RDTSC) [s],28.8993,
+Runtime unhalted [s],29.7924,
+Clock [MHz],2299.9390,
+CPI,1.2766,
+L2 request rate,0.1120,
+L2 miss rate,0.0424,
+L2 miss ratio,0.3787,

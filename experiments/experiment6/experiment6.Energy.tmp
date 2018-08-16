@@ -1,0 +1,174 @@
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199944348 GHz,
+TABLE,Region naive,Group 1 Raw,ENERGY,7
+Region Info,Core 2,
+RDTSC Runtime [s],86.681940,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25289100000
+CPU_CLK_UNHALTED_CORE,FIXC1,197111300000
+CPU_CLK_UNHALTED_REF,FIXC2,188541200000
+TEMP_CORE,TMP0,49
+PWR_PKG_ENERGY,PWR0,3174.5580
+PWR_PP0_ENERGY,PWR1,1951.0790
+PWR_DRAM_ENERGY,PWR3,1267.2190
+TABLE,Region naive,Group 1 Metric,ENERGY,11
+Metric,Core 2,
+Runtime (RDTSC) [s],86.6819,
+Runtime unhalted [s],89.5983,
+Clock [MHz],2299.9423,
+CPI,7.7943,
+Temperature [C],49,
+Energy [J],3174.5580,
+Power [W],36.6231,
+Energy PP0 [J],1951.0790,
+Power PP0 [W],22.5085,
+Energy DRAM [J],1267.2190,
+Power DRAM [W],14.6192,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199944348 GHz,
+TABLE,Region improv1,Group 1 Raw,ENERGY,7
+Region Info,Core 2,
+RDTSC Runtime [s],70.074480,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25288910000
+CPU_CLK_UNHALTED_CORE,FIXC1,159344400000
+CPU_CLK_UNHALTED_REF,FIXC2,152416400000
+TEMP_CORE,TMP0,49
+PWR_PKG_ENERGY,PWR0,2573.2040
+PWR_PP0_ENERGY,PWR1,1582.3010
+PWR_DRAM_ENERGY,PWR3,1044.3470
+TABLE,Region improv1,Group 1 Metric,ENERGY,11
+Metric,Core 2,
+Runtime (RDTSC) [s],70.0745,
+Runtime unhalted [s],72.4311,
+Clock [MHz],2299.9416,
+CPI,6.3010,
+Temperature [C],49,
+Energy [J],2573.2040,
+Power [W],36.7210,
+Energy PP0 [J],1582.3010,
+Power PP0 [W],22.5803,
+Energy DRAM [J],1044.3470,
+Power DRAM [W],14.9034,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199944348 GHz,
+TABLE,Region improv2,Group 1 Raw,ENERGY,7
+Region Info,Core 2,
+RDTSC Runtime [s],63.247160,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25288780000
+CPU_CLK_UNHALTED_CORE,FIXC1,143885400000
+CPU_CLK_UNHALTED_REF,FIXC2,137629500000
+TEMP_CORE,TMP0,49
+PWR_PKG_ENERGY,PWR0,2327.7230
+PWR_PP0_ENERGY,PWR1,1433.2700
+PWR_DRAM_ENERGY,PWR3,943.7311
+TABLE,Region improv2,Group 1 Metric,ENERGY,11
+Metric,Core 2,
+Runtime (RDTSC) [s],63.2472,
+Runtime unhalted [s],65.4041,
+Clock [MHz],2299.9420,
+CPI,5.6897,
+Temperature [C],49,
+Energy [J],2327.7230,
+Power [W],36.8036,
+Energy PP0 [J],1433.2700,
+Power PP0 [W],22.6614,
+Energy DRAM [J],943.7311,
+Power DRAM [W],14.9213,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199944348 GHz,
+TABLE,Region improv4,Group 1 Raw,ENERGY,7
+Region Info,Core 2,
+RDTSC Runtime [s],56.329120,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25288780000
+CPU_CLK_UNHALTED_CORE,FIXC1,128090900000
+CPU_CLK_UNHALTED_REF,FIXC2,122521700000
+TEMP_CORE,TMP0,49
+PWR_PKG_ENERGY,PWR0,2076.9600
+PWR_PP0_ENERGY,PWR1,1279.9400
+PWR_DRAM_ENERGY,PWR3,834.1275
+TABLE,Region improv4,Group 1 Metric,ENERGY,11
+Metric,Core 2,
+Runtime (RDTSC) [s],56.3291,
+Runtime unhalted [s],58.2246,
+Clock [MHz],2299.9424,
+CPI,5.0651,
+Temperature [C],49,
+Energy [J],2076.9600,
+Power [W],36.8719,
+Energy PP0 [J],1279.9400,
+Power PP0 [W],22.7225,
+Energy DRAM [J],834.1275,
+Power DRAM [W],14.8081,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199944348 GHz,
+TABLE,Region improv6,Group 1 Raw,ENERGY,7
+Region Info,Core 2,
+RDTSC Runtime [s],52.001730,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,27194610000
+CPU_CLK_UNHALTED_CORE,FIXC1,116433000000
+CPU_CLK_UNHALTED_REF,FIXC2,111370700000
+TEMP_CORE,TMP0,49
+PWR_PKG_ENERGY,PWR0,1917.2380
+PWR_PP0_ENERGY,PWR1,1181.6390
+PWR_DRAM_ENERGY,PWR3,765.0211
+TABLE,Region improv6,Group 1 Metric,ENERGY,11
+Metric,Core 2,
+Runtime (RDTSC) [s],52.0017,
+Runtime unhalted [s],52.9254,
+Clock [MHz],2299.9417,
+CPI,4.2815,
+Temperature [C],49,
+Energy [J],1917.2380,
+Power [W],36.8687,
+Energy PP0 [J],1181.6390,
+Power PP0 [W],22.7231,
+Energy DRAM [J],765.0211,
+Power DRAM [W],14.7115,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199944348 GHz,
+TABLE,Region improv8,Group 1 Raw,ENERGY,7
+Region Info,Core 2,
+RDTSC Runtime [s],29.453200,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,51353530000
+CPU_CLK_UNHALTED_CORE,FIXC1,66824720000
+CPU_CLK_UNHALTED_REF,FIXC2,63919300000
+TEMP_CORE,TMP0,50
+PWR_PKG_ENERGY,PWR0,281475000000000
+PWR_PP0_ENERGY,PWR1,686.1338
+PWR_DRAM_ENERGY,PWR3,451.3319
+TABLE,Region improv8,Group 1 Metric,ENERGY,11
+Metric,Core 2,
+Runtime (RDTSC) [s],29.4532,
+Runtime unhalted [s],30.3756,
+Clock [MHz],2299.9417,
+CPI,1.3013,
+Temperature [C],50,
+Energy [J],281475000000000,
+Power [W],9.556687e+12,
+Energy PP0 [J],686.1338,
+Power PP0 [W],23.2957,
+Energy DRAM [J],451.3319,
+Power DRAM [W],15.3237,

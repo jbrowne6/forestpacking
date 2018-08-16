@@ -21,10 +21,10 @@ OBJEXT      := o
 CFLAGS      := -fopenmp -Wall -O3 -ffast-math 
 #LIB         := -fopenmp -lm 
 #LIB         := -fopenmp -lm -lnuma
-LIB         := -fopenmp -lm -O3 -ffast-math 
-#LIB         := -fopenmp -lm -O3 -ffast-math -llikwid
-INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ 
-#INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ -DLIKWID_PERFMON
+#LIB         := -fopenmp -lm -O3 -ffast-math 
+LIB         := -fopenmp -lm -O3 -ffast-math -llikwid
+#INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ 
+INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ -DLIKWID_PERFMON
 INCDEP      := -I$(INCDIR)
 
 #---------------------------------------------------------------------------------
@@ -106,6 +106,22 @@ experiment5Move:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$
 experiment5Remove: $(OBJECTS)
 	$(CC) -o $(TARGETDIR)/experiment5a $^ $(LIB)
 	@rm src/experiment5a.cpp
+###########################################################
+
+###########################Experiment6####################
+experiment6: | experiment6Move resources experiment6Remove
+
+experiment6Move:	
+	@cp experiments/experiment6/experiment6.cpp src/
+experiment6Move:	TARGET     := experiment6
+experiment6Move:	SOURCES    := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+experiment6Move:	LIB        += -llikwid
+experiment6Move:	INC        += -DLIKWID_PERFMON
+experiment6Move:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+
+experiment6Remove: $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/experiment6 $^ $(LIB) 
+	@rm src/experiment6.cpp
 ###########################################################
 
 

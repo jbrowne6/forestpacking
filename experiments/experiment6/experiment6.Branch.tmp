@@ -1,0 +1,144 @@
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199929949 GHz,
+TABLE,Region naive,Group 1 Raw,BRANCH,5
+Region Info,Core 2,
+RDTSC Runtime [s],86.589160,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286400000
+CPU_CLK_UNHALTED_CORE,FIXC1,196906000000
+CPU_CLK_UNHALTED_REF,FIXC2,188344800000
+BR_INST_RETIRED_ALL_BRANCHES,PMC0,4239245000
+BR_MISP_RETIRED_ALL_BRANCHES,PMC1,633179500
+TABLE,Region naive,Group 1 Metric,BRANCH,8
+Metric,Core 2,
+Runtime (RDTSC) [s],86.5892,
+Runtime unhalted [s],89.5056,
+Clock [MHz],2299.9276,
+CPI,7.7870,
+Branch rate,0.1676,
+Branch misprediction rate,0.0250,
+Branch misprediction ratio,0.1494,
+Instructions per branch,5.9648,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199929949 GHz,
+TABLE,Region improv1,Group 1 Raw,BRANCH,5
+Region Info,Core 2,
+RDTSC Runtime [s],70.134500,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286210000
+CPU_CLK_UNHALTED_CORE,FIXC1,159408900000
+CPU_CLK_UNHALTED_REF,FIXC2,152478100000
+BR_INST_RETIRED_ALL_BRANCHES,PMC0,4239061000
+BR_MISP_RETIRED_ALL_BRANCHES,PMC1,633459100
+TABLE,Region improv1,Group 1 Metric,BRANCH,8
+Metric,Core 2,
+Runtime (RDTSC) [s],70.1345,
+Runtime unhalted [s],72.4609,
+Clock [MHz],2299.9264,
+CPI,6.3042,
+Branch rate,0.1676,
+Branch misprediction rate,0.0251,
+Branch misprediction ratio,0.1494,
+Instructions per branch,5.9650,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199929949 GHz,
+TABLE,Region improv2,Group 1 Raw,BRANCH,5
+Region Info,Core 2,
+RDTSC Runtime [s],63.298070,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286080000
+CPU_CLK_UNHALTED_CORE,FIXC1,143993900000
+CPU_CLK_UNHALTED_REF,FIXC2,137733300000
+BR_INST_RETIRED_ALL_BRANCHES,PMC0,4238933000
+BR_MISP_RETIRED_ALL_BRANCHES,PMC1,631800100
+TABLE,Region improv2,Group 1 Metric,BRANCH,8
+Metric,Core 2,
+Runtime (RDTSC) [s],63.2981,
+Runtime unhalted [s],65.4539,
+Clock [MHz],2299.9267,
+CPI,5.6946,
+Branch rate,0.1676,
+Branch misprediction rate,0.0250,
+Branch misprediction ratio,0.1490,
+Instructions per branch,5.9652,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199929949 GHz,
+TABLE,Region improv4,Group 1 Raw,BRANCH,5
+Region Info,Core 2,
+RDTSC Runtime [s],56.340390,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,25286080000
+CPU_CLK_UNHALTED_CORE,FIXC1,128112600000
+CPU_CLK_UNHALTED_REF,FIXC2,122542500000
+BR_INST_RETIRED_ALL_BRANCHES,PMC0,4238931000
+BR_MISP_RETIRED_ALL_BRANCHES,PMC1,632169700
+TABLE,Region improv4,Group 1 Metric,BRANCH,8
+Metric,Core 2,
+Runtime (RDTSC) [s],56.3404,
+Runtime unhalted [s],58.2349,
+Clock [MHz],2299.9265,
+CPI,5.0665,
+Branch rate,0.1676,
+Branch misprediction rate,0.0250,
+Branch misprediction ratio,0.1491,
+Instructions per branch,5.9652,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199929949 GHz,
+TABLE,Region improv6,Group 1 Raw,BRANCH,5
+Region Info,Core 2,
+RDTSC Runtime [s],52.602430,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,27108210000
+CPU_CLK_UNHALTED_CORE,FIXC1,117685700000
+CPU_CLK_UNHALTED_REF,FIXC2,112568900000
+BR_INST_RETIRED_ALL_BRANCHES,PMC0,4655738000
+BR_MISP_RETIRED_ALL_BRANCHES,PMC1,635373500
+TABLE,Region improv6,Group 1 Metric,BRANCH,8
+Metric,Core 2,
+Runtime (RDTSC) [s],52.6024,
+Runtime unhalted [s],53.4952,
+Clock [MHz],2299.9274,
+CPI,4.3413,
+Branch rate,0.1717,
+Branch misprediction rate,0.0234,
+Branch misprediction ratio,0.1365,
+Instructions per branch,5.8225,
+STRUCT,Info,3
+CPU name:,Intel(R) Xeon(R) CPU E5-4620 0 @ 2.20GHz,
+CPU type:,Intel Xeon SandyBridge EN/EP processor,
+CPU clock:,2.199929949 GHz,
+TABLE,Region improv8,Group 1 Raw,BRANCH,5
+Region Info,Core 2,
+RDTSC Runtime [s],28.599660,
+call count,1,
+Event,Counter,Core 2
+INSTR_RETIRED_ANY,FIXC0,51350830000
+CPU_CLK_UNHALTED_CORE,FIXC1,64854140000
+CPU_CLK_UNHALTED_REF,FIXC2,62034390000
+BR_INST_RETIRED_ALL_BRANCHES,PMC0,7921947000
+BR_MISP_RETIRED_ALL_BRANCHES,PMC1,775693600
+TABLE,Region improv8,Group 1 Metric,BRANCH,8
+Metric,Core 2,
+Runtime (RDTSC) [s],28.5997,
+Runtime unhalted [s],29.4801,
+Clock [MHz],2299.9269,
+CPI,1.2630,
+Branch rate,0.1543,
+Branch misprediction rate,0.0151,
+Branch misprediction ratio,0.0979,
+Instructions per branch,6.4821,
