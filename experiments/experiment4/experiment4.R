@@ -21,7 +21,7 @@ data_summary <- function(data, varname, groupnames){
 
 
 mydata <- read.csv(file="../experiment1/experiment1.csv", header=FALSE)
-mydata$V2  <- relevel(mydata$V2, " Bin")
+#mydata$V2  <- relevel(mydata$V2, " Bin")
 mydata$V2  <- relevel(mydata$V2, " Stat")
 mydata$V2  <- relevel(mydata$V2, " DF-")
 mydata$V2  <- relevel(mydata$V2, " DF")
@@ -41,19 +41,35 @@ mydata[z,]$V6 <- mydata[z,]$V6/50000
 
 mydata <- data_summary(mydata, varname="V6",groupnames=c("V2", "V3"))
 
+
+data_Relative <- function(data, varnameTimes, varnameTechnique, groupnames){
+      require(plyr)
+  summary_func <- function(x, col1, col2){
+		binTime <- x[[col1]][x[[col2]]==" Bin"]
+           x[[col1]] = x[[col1]]/binTime
+		x
+    }
+    data_sum<-ddply(data, groupnames, .fun=summary_func, varnameTimes, varnameTechnique)
+    #data_sum <- rename(data_sum, c("su" = varnameTimes))
+     return(data_sum)
+}
+mydata <- data_Relative(mydata,varnameTimes="V6",varnameTechnique="V2",groupnames=c("V3"))
+
+
+
+
+
+
 leg <- theme(legend.text = element_text(size = 15), legend.title=element_blank(), plot.title = element_text(size = 16,  face="bold"), plot.subtitle = element_text(size = 12),axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
 
 p <- ggplot(mydata, aes(x=V3, y=V6, fill=V2)) + 
-    geom_bar(stat="identity", position=position_dodge()) +
-    geom_errorbar(aes(ymin=V6-sd, ymax=V6+sd), width=.2, position=position_dodge(.9))
+    geom_bar(stat="identity", position=position_dodge())
 
-    p <- p + scale_fill_brewer(palette="Paired") + theme_minimal() 
-    p <- p + guides(fill=guide_legend(title=" "))
-    p <- p + theme(legend.position = c(.8,.7))
+    p <- p +  theme_minimal() 
 
-    p <- p + labs(x = "Memory Encoding", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
+    p <- p + labs(x = "Dataset", y ="Inference Time Relative to Bin")
 
-p <- p + scale_fill_manual(values=c("cyan2", "purple2", "orange2", "green2", "red2"), name="Encoding" )
+p <- p + scale_fill_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"), name="Encoding" )
 
 p <- p + leg
 
@@ -76,22 +92,34 @@ z <- mydata$V3 == " Allstate"
 mydata[z,]$V6 <- mydata[z,]$V6/50000
 
 
-
 mydata <- data_summary(mydata, varname="V6",groupnames=c("V2", "V3"))
+
+
+data_Relative <- function(data, varnameTimes, varnameTechnique, groupnames){
+      require(plyr)
+  summary_func <- function(x, col1, col2){
+		binTime <- x[[col1]][x[[col2]]==" Bin+"]
+           x[[col1]] = x[[col1]]/binTime
+		x
+    }
+    data_sum<-ddply(data, groupnames, .fun=summary_func, varnameTimes, varnameTechnique)
+    #data_sum <- rename(data_sum, c("su" = varnameTimes))
+     return(data_sum)
+}
+mydata <- data_Relative(mydata,varnameTimes="V6",varnameTechnique="V2",groupnames=c("V3"))
+
+
 
 leg <- theme(legend.text = element_text(size = 15), legend.title=element_blank(), plot.title = element_text(size = 16,  face="bold"), plot.subtitle = element_text(size = 12),axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15))
 
 p <- ggplot(mydata, aes(x=V3, y=V6, fill=V2)) + 
-    geom_bar(stat="identity", position=position_dodge()) +
-    geom_errorbar(aes(ymin=V6-sd, ymax=V6+sd), width=.2, position=position_dodge(.9))
+    geom_bar(stat="identity", position=position_dodge())
 
-    p <- p + scale_fill_brewer(palette="Paired") + theme_minimal() 
-    p <- p + guides(fill=guide_legend(title=" "))
-    p <- p + theme(legend.position = c(.8,.7))
+    p <- p + theme_minimal() 
 
-    p <- p + labs(x = "Memory Encoding", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
+    p <- p + labs(x = "Dataset", y ="Inference Time Relative to Bin+")
 
-p <- p + scale_fill_manual(values=c("cyan2", "red2", "blue2"), name="Encoding" )
+p <- p + scale_fill_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"), name="Encoding" )
 
 p <- p + leg
 

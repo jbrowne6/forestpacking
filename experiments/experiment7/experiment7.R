@@ -46,13 +46,13 @@ mydata <- data_summary(mydata,varname="V6",groupnames=c("V2","V3","V4","V5"))
 
 leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15), strip.text.x = element_text(size=15))
 
-p <- ggplot(mydata, aes(x=V5, y=V6, group=V2, color=V2)) + geom_line(size=1)
+p <- ggplot(mydata, aes(x=V5, y=V6, group=V2, color=V2)) + geom_line()
   
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + guides(fill=guide_legend(title="Technique"))
 p <- p + labs(x = "Number of Threads Used", y =expression(paste("Mean Inference Time per Observation (", mu,"s)")))
 
-p <- p + scale_colour_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"), name="Encoding" )
+p <- p + scale_colour_manual(values=c("cyan2", "purple2", "orange2", "green2", "red2", "blue2"), name="Encoding" )
 
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
@@ -81,13 +81,14 @@ mydata <- mydata[,1:5]
 
 mydata <- data_speedUp(mydata,varnameTimes="V6",varnameCores="V5",groupnames=c("V2","V3","V4"))
 
-p <- ggplot(mydata, aes(x=V5, y=V6, group=V2, color=V2)) + geom_line(size=1)
+p <- ggplot(mydata, aes(x=V5, y=V6, group=V2, color=V2)) + geom_line()
   
-p <- p + theme_minimal()
+p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + guides(fill=FALSE)
+#p <- p + guides(fill=guide_legend(title="Technique"))
 p <- p + labs(x = "Number of Threads Used", y = "Speed Up")
 
-p <- p + scale_colour_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"), name="Encoding" )
+p <- p + scale_colour_manual(values=c("cyan2", "purple2", "orange2", "green2", "red2", "blue2"), name="Encoding" )
 
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
