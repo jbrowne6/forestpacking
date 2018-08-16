@@ -21,10 +21,10 @@ OBJEXT      := o
 CFLAGS      := -fopenmp -Wall -O3 -ffast-math 
 #LIB         := -fopenmp -lm 
 #LIB         := -fopenmp -lm -lnuma
-#LIB         := -fopenmp -lm -O3 -ffast-math 
-LIB         := -fopenmp -lm -O3 -ffast-math -llikwid
-#INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ 
-INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ -DLIKWID_PERFMON
+LIB         := -fopenmp -lm -O3 -ffast-math 
+#LIB         := -fopenmp -lm -O3 -ffast-math -llikwid
+INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ 
+#INC         := -I$(INCDIR) -I/usr/local/include -I/usr/local/bin/../include/ -L/usr/local/bin/../lib/ -DLIKWID_PERFMON
 INCDEP      := -I$(INCDIR)
 
 #---------------------------------------------------------------------------------
