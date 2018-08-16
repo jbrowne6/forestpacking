@@ -34,7 +34,7 @@ mydata$V8 <- as.factor(mydata$V8)
 levels(mydata$V8) <- c("1 Thread", "2 Threads", "4 Threads")
 
 mydata <- data_summary(mydata, varname="V7",groupnames=c("V3", "V5", "V6", "V8"))
-
+#mydata <- mydata[mydata$V6!=6,]
 
 leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15), strip.text.x = element_text(size=15), strip.text.y = element_text(size=15))
 
@@ -45,7 +45,7 @@ p <- ggplot(mydata, aes(x=V5, y=V7, group=V6, color=V6)) + geom_line()
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 #p <- p + scale_colour_manual(name="Depth")
 
-p <- p + scale_colour_manual(values=c("red2", "blue2", "orange2", "green2", "purple2", "cyan2", "tomato2"), name="Depth")
+p <- p + scale_colour_manual(values=c("0"="#f7f7f7", "1"="#d9d9d9", "2"="#bdbdbd", "3"="#969696", "4"="#636363", "5"="red3", "6"="green3"), name="Depth")
 														 
 p <- p + labs(x = "Trees Per Bin", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
 p <- p + leg

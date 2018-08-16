@@ -51,3 +51,4 @@ res/higgs
 
 # The output from experiments
 *.png
+*.model

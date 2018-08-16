@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double, std::micro> diffMilli;
 
 	float percentRight = 0;
-	int numTimes = 2;
+	int numTimes = 5;
 
 
 

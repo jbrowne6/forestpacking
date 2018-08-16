@@ -21,7 +21,7 @@ num.threads <- 64
 maxDepth <- 6
 output <- data.frame()
 output <- c("test", "test", 3,3,3)
-fileName <- "experiment5b.csv"
+fileName <- "experiment5c.csv"
 
 numToPredictHolder <- 1000
 
@@ -30,8 +30,6 @@ runDepths <- c(6,10,14)
 nTimes <- 2
 num_trees <- c(128,256,512)
 num.threads <- 16
-
-
 
 
 if(file.exists(fileName)) file.remove(fileName)
@@ -208,12 +206,15 @@ if(runHiggs){
           forestRerFHiggs$trees[[q]]$ClassProb[m] <- .5
         }
         for (i in 1:nTimes){
+					start <- 1
           ptm <- proc.time()
-          for(m in 1:numToPredict){
-            predictions <- Predict(Xte[m,,drop=FALSE], forestRerFHiggs, num.cores =1)
+          for(m in 1:5){
+					stop <- m*5000	
+            predictions <- Predict(Xte[start:stop,,drop=FALSE], forestRerFHiggs, num.cores =48)
+					start <- stop+1
           }
           ptmHold <- (proc.time() - ptm)[3]
-          output<- rbind(output, c("RerF", "Higgs", ptmHold,treesToRun,depthToRun))
+          output<- rbind(output, c("RerF-Batch(MC)", "Higgs", ptmHold,treesToRun,depthToRun))
         }
       }
     }
@@ -236,15 +237,18 @@ if(runHiggs){
         testS <- apply(Xte,2,as.numeric)
         testlabel <- Yte-1
         for (i in 1:nTimes){
+					start <- 1
           ptm <- proc.time()
-          for(m in 1:numToPredict){
+          for(m in 1:5){
+					stop <- m*5000	
             #		forest <- xgb.load("xgboost.model")
-            pred <- predict(forest, testS[m,,drop=FALSE], ntreelimit=treesToRun) 
+            pred <- predict(forest, testS[start:stop,,drop=FALSE], ntreelimit=treesToRun) 
+					start <- 	stop+1
           }
           #pred <- matrix(pred, ncol=num_classes, byrow=TRUE)
           #pred_labels <- max.col(pred) - 1
           ptmHold <- (proc.time() - ptm)[3]
-          output<- rbind(output, c("XGBoost", "Higgs", ptmHold,treesToRun,depthToRun))
+          output<- rbind(output, c("XGBoost-Batch(MC)", "Higgs", ptmHold,treesToRun,depthToRun))
         }
       }
     }
