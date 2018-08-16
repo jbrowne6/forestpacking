@@ -15,20 +15,20 @@ runMNIST <- FALSE
 runHiggs <- TRUE
 runP53 <- FALSE
 
-nTimes <- 10
+nTimes <- 5
 num_trees <- 512
-num.threads <- 64
+num.threads <- 32
 maxDepth <- 6
 output <- data.frame()
 output <- c("test", "test", 3,3,3)
 fileName <- "experiment5c.csv"
 
-numToPredictHolder <- 1000
+numToPredictHolder <- 100000
 
 
 runDepths <- c(6,10,14)
 nTimes <- 2
-num_trees <- c(128,256,512)
+num_trees <- c(128,256,512,1024,2048)
 num.threads <- 16
 
 
@@ -68,111 +68,75 @@ if(runMNIST){
   q <- readBin(label_block, integer(), n=1, endian="big")
   num_labels <- readBin(label_block, integer(), n=1, endian="big")
 
-  Xt <- readBin(image_block, integer(), n=num_images*num_col*num_row, size=1, signed=FALSE)
-  Xt <- matrix(Xt, ncol=num_col*num_row, byrow=TRUE)
+  Xte <- readBin(image_block, integer(), n=num_images*num_col*num_row, size=1, signed=FALSE)
+  Xte <- matrix(Xt, ncol=num_col*num_row, byrow=TRUE)
 
-  Yt <- as.numeric(readBin(label_block, integer(), n=num_labels, size=1, signed=FALSE)+1)
+  Yte <- as.numeric(readBin(label_block, integer(), n=num_labels, size=1, signed=FALSE)+1)
 
   close(image_block)
   close(label_block)
   image_block <- NULL
   label_block <- NULL
 
-  if(numToPredictHolder < nrow(Xt)){
-    numToPredict <- numToPredictHolder
-  } else {
-    numToPredict <- nrow(Xt)
-  }
+    numToPredict <- nrow(Xte)
 
   if(runRerF){
     gc()
-
-    forestRerFMnist <- RerF(X,Y, trees=num_trees, min.parent=1, max.depth=6, num.cores=num.threads)
-    #		save(forestRerFMnist, file="forestRerFMnist.Rdata")
-    for (i in 1:nTimes){
-      ptm <- proc.time()
-      for(m in 1:numToPredict){
-        predictions <- Predict(Xt[m,,drop=FALSE], forestRerFMnist, num.cores = 1)
+for(depthToRun in runDepths){
+      for(treesToRun in num_trees){
+				print(paste("running rf ", depthToRun, ", ", treesToRun))
+        forestRerFMnist <- RerF(Xtr,Ytr, trees=treesToRun, max.depth=depthToRun, num.cores=num.threads, seed=sample(1:100000,1))
+        for (i in 1:nTimes){
+					start <- 1
+          ptm <- proc.time()
+          for(m in 1:2){
+					stop <- m*5000	
+            predictions <- Predict(Xte[start:stop,,drop=FALSE], forestRerFMnist, num.cores =48)
+					start <- stop+1
+          }
+          ptmHold <- (proc.time() - ptm)[3]
+          output<- rbind(output, c("RerF-Batch(MC)", "MNIST", ptmHold,treesToRun,depthToRun))
+        }
       }
-      ptmHold <- (proc.time() - ptm)[3]
-      output<- rbind(output, c("RerF", "MNIST", ptmHold))
     }
-  }
-
-  if(runFP){
-    gc()
-    forestFPMnist <-RerF(X,Y,min.parent =1, max.depth=6, trees=num_trees, seed=sample(1:10000,1), mat.options = list(p = ncol(X), d =ceiling(sqrt(ncol(X))), random.matrix = "rf", rho = 1/ncol(X)), num.cores = num.threads) 
-    z<- PackForest(X, Y, forestFPMnist)
-    forest <- methods::new(forestPredict,"forest.out")
-    for (i in 1:nTimes){
-      ptm <- proc.time()
-      for(m in 1:numToPredict){
-        predictions <- forest$pred(Xt[m,,drop=FALSE])
-        #predictions <- PackPredict(Xt[m,,drop=FALSE], 1)
       }
-      ptmHold <- (proc.time() - ptm)[3]
-      output<- rbind(output, c("FP", "MNIST", ptmHold))
-    }
-  }
+
 
 
   if(runXG){
-    num_classes <- length(unique(Y))
-    train <- apply(X,2,as.numeric)
-    label <- Y-1
-    ptm_hold <- NA
+    num_classes <- length(unique(Ytr))
+    train <- apply(Xtr,2,as.numeric)
+    label <- Ytr-1
     gc()
-    forest <- xgboost(data=train, label=label, objective="multi:softmax", nrounds=num_trees,num_class=num_classes, nthread=num.threads, max_depth=6)
-    #		save(forestXGBoostMnist, file="forestXGBoostMnist.Rdata")
-    testS <- apply(Xt,2,as.numeric)
-    testlabel <- Yt-1
+    for(depthToRun in runDepths){
+      for(treesToRun in num_trees){
 
+				print(paste("running xg ", depthToRun, ", ", treesToRun))
+        forest <- xgboost(data=train, label=label, objective="multi:softmax",nrounds=treesToRun,num_class=num_classes, nthread=num.threads,max_depth=depthToRun)
+        warnings()
+        #save(forestXGBoostHiggs, file="forestXGBoostHiggs.Rdata")
 
-    for (i in 1:nTimes){
-      ptm <- proc.time()
-      for(m in 1:numToPredict){
-        #			forest <- xgb.load("xgboost.model")
-        pred <- predict(forest, testS[m,,drop=FALSE], ntreelimit=num_trees) 
-        #pred <- matrix(pred, ncol=num_classes, byrow=TRUE) 
-        #pred_labels <- max.col(pred) - 1
+        testS <- apply(Xte,2,as.numeric)
+        testlabel <- Yte-1
+        for (i in 1:nTimes){
+					start <- 1
+          ptm <- proc.time()
+          for(m in 1:2){
+					stop <- m*5000	
+            #		forest <- xgb.load("xgboost.model")
+            pred <- predict(forest, testS[start:stop,,drop=FALSE], ntreelimit=treesToRun) 
+					start <- 	stop+1
+          }
+          #pred <- matrix(pred, ncol=num_classes, byrow=TRUE)
+          #pred_labels <- max.col(pred) - 1
+          ptmHold <- (proc.time() - ptm)[3]
+          output<- rbind(output, c("XGBoost-Batch(MC)", "MNIST", ptmHold,treesToRun,depthToRun))
+        }
       }
-      ptmHold <- (proc.time() - ptm)[3]
-      output<-rbind(output, c("XGBoost", "MNIST", ptmHold))
     }
   }
 
-  if(runRF){
-    Yrf<-as.factor(as.character(Y))
-    gc()
-    forestRFMnist <- randomForest(X,Yrf, ntree=num_trees)
-    #		save(forestRFMnist, file="forestRFMnist.Rdata")
-    for (i in 1:nTimes){
-      ptm <- proc.time()
-      pred <- predict(forestRFMnist, Xt)
-      ptmHold <- (proc.time() - ptm)[3]
-      output<-rbind(output, c("RF", "MNIST", ptmHold))
-    }
-  }
-
-
-  if(runRanger){
-    X <- cbind(X,Y)
-    colnames(X) <- as.character(1:ncol(X))
-
-    gc()
-    forestRangerMnist <- ranger(dependent.variable.name = as.character(ncol(X)), data = X, num.trees = num_trees, num.threads = num.threads, classification=TRUE)
-    #		save(forestRangerMnist, file="forestRangerMnist.Rdata")
-    colnames(Xt) <- as.character(1:ncol(Xt))
-
-    for (i in 1:nTimes){
-      ptm <- proc.time()
-      for(m in 1:numToPredict){
-        pred <- predict(forestRangerMnist,Xt[m,,drop=FALSE], num.threads=1)
-      }
-      ptmHold <- (proc.time() - ptm)[3]
-      output<-rbind(output, c("Ranger", "MNIST", ptmHold))
-    }
-  }
+  
 }
 
 #################################################################################
