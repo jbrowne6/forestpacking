@@ -36,23 +36,23 @@ levels(mydata$V8) <- c("1 Thread", "2 Threads", "4 Threads")
 mydata <- data_summary(mydata, varname="V7",groupnames=c("V3", "V5", "V6", "V8"))
 #mydata <- mydata[mydata$V6!=6,]
 
-leg <- theme(legend.text = element_text(size = 12), legend.title=element_text(size = 12), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=15), axis.text.x = element_text(size=15), axis.title.y = element_text(size=15), axis.text.y = element_text(size=15), strip.text.x = element_text(size=15), strip.text.y = element_text(size=15))
+leg <- theme(legend.text = element_text(size = 13), legend.title=element_text(size = 13), plot.title = element_text(size = 16,  face="bold"), axis.title.x = element_text(size=13), axis.text.x = element_text(size=13), axis.title.y = element_text(size=13), axis.text.y = element_text(size=13), strip.text.x = element_text(size=13), strip.text.y = element_text(size=13))
 
-p <- ggplot(mydata, aes(x=V5, y=V7, group=V6, color=V6)) + geom_line()
+p <- ggplot(mydata, aes(x=V5, y=V7, group=V6, color=V6)) + geom_line(size=1)
   
 
 
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 #p <- p + scale_colour_manual(name="Depth")
 
-#p <- p + scale_colour_manual(values=c("0"="#d9d9d9", "3"="#bdbdbd", "6"="#969696", "9"="#636363"), name="Depth")
-														 
+p <- p + scale_colour_manual(values=c("0"="#006837", "5"="#31a354", "10"="#78c679"), name="Intertwined Depth")
+p <- p + theme(legend.position="bottom")
 p <- p + labs(x = "Trees Per Bin", y =expression(paste("Mean Prediction Time per Observation (", mu, "s)")))
 p <- p + leg
 p <- p + scale_x_continuous(trans='log2')
 p <- p + scale_y_continuous(trans='log2')
 p <- p + facet_grid(V8 ~ V3)
-
+p <- p + theme(strip.background = element_rect(fill="grey95"))
 p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.text.y = element_text(angle=90, hjust=1))
 
 png(file="depthAndStripe.png")

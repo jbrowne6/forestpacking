@@ -18,7 +18,7 @@ data_summary <- function(data, varname, groupnames){
     data_sum <- rename(data_sum, c("mean" = varname))
      return(data_sum)
 }
-mydata1 <- read.csv(file="experiment5b.csv", header=FALSE)
+mydata1 <- read.csv(file="experiment5c.csv", header=FALSE)
 mydata1$V1 <- as.factor(as.character(mydata1$V1));
 mydata1$V5 <- as.factor(as.character(mydata1$V5));
 mydata1$V4 <- as.factor(as.character(mydata1$V4));
@@ -38,7 +38,7 @@ mydata1 <- rename(mydata1,c("V5"="V2","V3"="V4","V4"="V3"))
 #mydata2 <- rename(mydata2,c("V5"="V2","V3"="V4","V4"="V3"))
 
 
-mydata <- read.csv(file="experiment5a.csv", header=FALSE)
+mydata <- read.csv(file="experiment5d.csv", header=FALSE)
 
 mydata$V1 <- as.factor(mydata$V1);
 mydata$V2 <- as.factor(mydata$V2);
@@ -48,11 +48,10 @@ mydata$V4 <- mydata$V4/25000;
 mydata <- rbind(mydata,mydata1)
 #mydata <- rbind(mydata,mydata2)
 
-levels(mydata$V3) <- c("128 Trees", "256 Trees", "512 Trees")
+levels(mydata$V3) <- c("512 Trees", "1024 Trees", "2048 Trees")
 
 mydata <- data_summary(mydata,varname="V4",groupnames=c("V1","V2","V3"))
 
-mydata$V4 <- as.double(mydata$V4);
 
 
 
@@ -77,14 +76,14 @@ p <- ggplot(mydata, aes(x=V2, y=V4, group=V1, color=V1)) + geom_line(size=1)
 p <- p + theme_minimal()
 p <- p + labs(x = "Max Depth of Forest", y = expression(paste("Mean Prediction Time per Observation (", mu, "s, Log Scale)")))
 
-p <- p + scale_y_continuous(trans='log10', labels=scales::comma)
-p <- p + scale_colour_manual(values=c("Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", "BF"="#4daf4a", "RerF"="#e78ac3", "XGBoost"="#fc8d62" ), name=NULL )
+p <- p + scale_y_continuous(trans='log10')
+p <- p + scale_colour_manual(values=c("Bin+(MC)"="#e41a1c", "BF(MC)"="#4daf4a", "RerF-Batch(MC)"="#e78ac3", "XGBoost-Batch(MC)"="#fc8d62" ), labels=c("BF","Bin+","RerF","XGBoost"), name=NULL)
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
-p <- p + theme(strip.background = element_rect(fill="grey95"))
 p <- p + theme(legend.position="bottom")
+p <- p + theme(strip.background = element_rect(fill="grey95"))
 
-png(file="System.png")
+png(file="SystemMC.png")
 print(p)
 dev.off()
 

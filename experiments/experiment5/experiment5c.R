@@ -28,7 +28,7 @@ numToPredictHolder <- 100000
 
 runDepths <- c(6,10,14)
 nTimes <- 2
-num_trees <- c(128,256,512,1024,2048)
+num_trees <- c(512,1024,2048)
 num.threads <- 16
 
 

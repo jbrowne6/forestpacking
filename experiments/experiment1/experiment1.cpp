@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 		maxCores = std::thread::hardware_concurrency();
 	}
 	std::ofstream outfile;
-	outfile.open("experiments/experiment1/experiment1.csv");
+	outfile.open("experiments/experiment1/experiment1a.csv");
 
 	auto start_time = std::chrono::high_resolution_clock::now();
 	auto stop_time = std::chrono::high_resolution_clock::now();
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 	float percentRight = 0;
 	int numTimes = 3;
 
-
+bool runAll = false;
 
 	if(doesExist("res/higgs/forest.csv") && true){//begin higgs test namespace
 		const std::string forestFileName1 = "res/higgs/forest.csv";
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 		inferenceSamples observations(testFileName1);
 
 
-		{//start naive namespace
+	if(runAll){//start naive namespace
 			//////Naive/////////
 			std::cout << "running naive Test"; 
 			naive tester(forestFileName1,1);
@@ -110,7 +110,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end naive test
 
 
-{//start improv1 namespace
+if(runAll){//start improv1 namespace
 	//////improv1/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv1 Test"; 
@@ -170,7 +170,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end improv1 namespace
 
 
-{//start improv2 namespace
+if(runAll){//start improv2 namespace
 	//////improv2/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv2 Test"; 
@@ -200,7 +200,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 	}//end improv2 namespace
 
 
-{//start improv4 namespace
+if(runAll){//start improv4 namespace
 	//////improv4/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv4 Test"; 
@@ -303,7 +303,7 @@ if (doesExist("res/mnist/forest.csv") && true){//begin mnist test namespace
 	inferenceSamples observations(testFileName2);
 
 
-	{//start naive namespace
+	if(runAll){//start naive namespace
 		//////Naive/////////
 		std::cout << "running naive Test"; 
 		naive tester(forestFileName2,1);
@@ -363,7 +363,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end naive test
 
 
-{//start improv1 namespace
+if(runAll){//start improv1 namespace
 	//////improv1/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv1 Test"; 
@@ -423,7 +423,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end improv1 namespace
 
 
-{//start improv2 namespace
+if(runAll){//start improv2 namespace
 	//////improv2/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv2 Test"; 
@@ -483,7 +483,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end improv2 namespace
 
 
-{//start improv4 namespace
+if(runAll){//start improv4 namespace
 	//////improv4/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv4 Test"; 
@@ -676,7 +676,7 @@ if(doesExist("res/allstate/forest.csv") && true){//begin allstate test namespace
 	inferenceSamples observations(testFileName1);
 
 
-	{//start naive namespace
+	if(runAll){//start naive namespace
 		//////Naive/////////
 		std::cout << "running naive Test"; 
 		naive tester(forestFileName1,1);
@@ -736,7 +736,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end naive test
 
 
-{//start improv1 namespace
+if(runAll){//start improv1 namespace
 	//////improv1/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv1 Test"; 
@@ -796,7 +796,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end improv1 namespace
 
 
-{//start improv2 namespace
+if(runAll){//start improv2 namespace
 	//////improv2/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv2 Test"; 
@@ -856,7 +856,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 }//end improv2 namespace
 
 
-{//start improv4 namespace
+if(runAll){//start improv4 namespace
 	//////improv4/////////
 	std::cout << "\n\n\n"; 
 	std::cout << "running improv4 Test"; 
@@ -922,7 +922,7 @@ std::cout << "percentRight does not match: " << percentRight << " : " << observa
 	std::cout << "running improv6 Test"; 
 	std::cout << "MultiTree\n"; 
 	for(int numCores = 1; numCores <= maxCores; numCores *= 2){	
-		std::cout << "MultiTree, numCores=" << numCores << "\n"; 
+		std::cout << "Allstate MultiTree, numCores=" << numCores << "\n"; 
 	//	int treesPerBin = 2048/numCores;
 		improv6 tester(forestFileName1,1,travs,128, 3);
 		tester.printForest();
