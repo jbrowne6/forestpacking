@@ -53,17 +53,16 @@ int main(int argc, char* argv[]) {
 			//////improv8/////////
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
-int numDepth = 3;
-		//	for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
-				for(int numBins = 1; numBins <= 2048; numBins *= 2){	
+
+			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
+				for(int numBins = 4; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName1,1,travs, numBins, numDepth);
 					tester.printForest();
 					printf("size of a node is %d\n",(int) sizeof(padNode));
 					printf("starting run\n");
 					int treesPerBin = 2048/numBins;
 
-					for(int numCores = 1; numCores <= 32; numCores *= 2){	
-						if(numBins >= numCores){
+					for(int numCores = 1; numCores <= 4; numCores *= 2){	
 						for(int runNum = 0; runNum < numTimes; ++runNum){
 							start_time = std::chrono::high_resolution_clock::now();
 							tester.makePredictionsMultiTree(observations,numCores);
@@ -74,8 +73,8 @@ int numDepth = 3;
 							std::cout << std::fixed << "experiment3, Bin+, Higgs, MultiTree, " << treesPerBin << ", " << numDepth << ", " << diffMilli.count()<< std::endl;
 						}
 					}
-					}
 				}
+			}
 		}//end improv8 namespace
 
 
@@ -99,9 +98,8 @@ int numDepth = 3;
 			//////improv8/////////
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
-			int numDepth = 3;
-			//for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
-				for(int numBins = 1; numBins <= 2048; numBins *= 2){	
+			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
+				for(int numBins = 4; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName2,1,travs, numBins, numDepth);
 					tester.printForest();
 					printf("size of a node is %d\n",(int) sizeof(padNode));
@@ -109,7 +107,6 @@ int numDepth = 3;
 					int treesPerBin = 2048/numBins;
 
 					for(int numCores = 1; numCores <= 4; numCores *= 2){	
-						if(numBins >= numCores){
 						for(int runNum = 0; runNum < numTimes; ++runNum){
 							start_time = std::chrono::high_resolution_clock::now();
 							tester.makePredictionsMultiTree(observations,numCores);
@@ -144,9 +141,9 @@ int numDepth = 3;
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
 
-int numDepth = 3;
-		//	for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
-				for(int numBins = 1; numBins <= 2048; numBins *= 2){	
+
+			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
+				for(int numBins = 4; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName1,1,travs, numBins, numDepth);
 					tester.printForest();
 					printf("size of a node is %d\n",(int) sizeof(padNode));
@@ -154,7 +151,6 @@ int numDepth = 3;
 					int treesPerBin = 2048/numBins;
 
 					for(int numCores = 1; numCores <= 4; numCores *= 2){	
-						if(numBins >= numCores){
 						for(int runNum = 0; runNum < numTimes; ++runNum){
 							start_time = std::chrono::high_resolution_clock::now();
 							tester.makePredictionsMultiTree(observations,numCores);

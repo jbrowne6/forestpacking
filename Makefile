@@ -95,7 +95,7 @@ experiment3Remove: $(OBJECTS)
 ###########################################################
 
 ###########################Experiment5a####################
-experiment5a: | experiment5aMove resources experiment5Remove
+experiment5a: | experiment5aMove resources experiment5aRemove
 
 experiment5aMove:	
 	@cp experiments/experiment5/experiment5a.cpp src/

@@ -35,8 +35,10 @@ int main(int argc, char* argv[]) {
   int numTimes = 10;
 
 
-  const std::string testFileName1 = "res/higgs/testObservations.csv";
-  const std::string traversalFileName1 = "res/higgs/traversal.csv";
+  //const std::string testFileName1 = "res/higgs/testObservations.csv";
+  //const std::string traversalFileName1 = "res/higgs/traversal.csv";
+  const std::string testFileName1 = "res/mnist/testObservations.csv";
+  const std::string traversalFileName1 = "res/mnist/traversal.csv";
   inferenceSamples travs(traversalFileName1);
   inferenceSamples observations(testFileName1);
 
@@ -47,7 +49,6 @@ int main(int argc, char* argv[]) {
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////
   
-
     ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
     {
@@ -79,7 +80,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -128,7 +129,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -176,7 +177,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -232,7 +233,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -280,7 +281,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -328,7 +329,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -384,7 +385,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -431,7 +432,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -447,7 +448,6 @@ int main(int argc, char* argv[]) {
       }//end improv8 namespace
 
     }
-
 ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////
     {
@@ -473,13 +473,12 @@ int main(int argc, char* argv[]) {
         }
       }//end naive test
 
-
       {//start improv8 namespace
         //////improv8/////////
         std::cout << "\n\n\n"; 
         std::cout << "running improv8 Test"; 
 
-          improv8 tester(forestFileName1,1,travs, 16, 3);
+          improv8 tester(forestFileName1,1,travs, 32, 3);
           tester.printForest();
           printf("size of a node is %d\n",(int) sizeof(padNode));
           printf("starting run\n");
@@ -495,6 +494,35 @@ int main(int argc, char* argv[]) {
       }//end improv8 namespace
 
     }
+
+/*
+{//start improv8 namespace
+        //////improv8/////////
+      const std::string forestFileName1 = "experiments/experiment5/forest-14-2048-.csv";
+        std::cout << "\n\n\n"; 
+        std::cout << "running improv8 Test"; 
+
+				for(int z=4; z<=256; z*=2){
+          improv8 tester(forestFileName1,1,travs, z, 3);
+          tester.printForest();
+          printf("size of a node is %d\n",(int) sizeof(padNode));
+          printf("starting run\n");
+
+				for(int j=4; j<=64; j*=2){
+          for(int runNum = 0; runNum < numTimes; ++runNum){
+            start_time = std::chrono::high_resolution_clock::now();
+            tester.makePredictionsMultiTree(observations,j);
+            stop_time = std::chrono::high_resolution_clock::now();
+            diffMilli = stop_time - start_time;
+            outfile << std::fixed << z << " , " << j << " , " << diffMilli.count()<< std::endl;
+            std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
+          }
+				}
+				}
+      }//end improv8 namespace
+
+*/
+
 
   outfile.close();
   return 0;

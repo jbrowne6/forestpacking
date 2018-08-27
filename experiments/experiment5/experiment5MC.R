@@ -22,7 +22,8 @@ mydata1 <- read.csv(file="experiment5c.csv", header=FALSE)
 mydata1$V1 <- as.factor(as.character(mydata1$V1));
 mydata1$V5 <- as.factor(as.character(mydata1$V5));
 mydata1$V4 <- as.factor(as.character(mydata1$V4));
-mydata1$V3 <- as.double(mydata1$V3)/25000.0 *1000000;
+mydata1$V3 <- 25000.0/as.double(mydata1$V3);
+#mydata1$V3 <- as.double(mydata1$V3)/25000.0 *1000000;
 
 mydata1 <- mydata1[,c(1,5,4,3)]
 mydata1 <- rename(mydata1,c("V5"="V2","V3"="V4","V4"="V3"))
@@ -43,7 +44,7 @@ mydata <- read.csv(file="experiment5d.csv", header=FALSE)
 mydata$V1 <- as.factor(mydata$V1);
 mydata$V2 <- as.factor(mydata$V2);
 mydata$V3 <- as.factor(mydata$V3);
-mydata$V4 <- mydata$V4/25000;
+mydata$V4 <- 25000.0/(mydata$V4/1000000);
 
 mydata <- rbind(mydata,mydata1)
 #mydata <- rbind(mydata,mydata2)
@@ -74,9 +75,9 @@ leg <- theme(legend.text = element_text(size = 17), legend.title=element_text(si
 p <- ggplot(mydata, aes(x=V2, y=V4, group=V1, color=V1)) + geom_line(size=1)
   
 p <- p + theme_minimal()
-p <- p + labs(x = "Max Depth of Forest", y = expression(paste("Mean Prediction Time per Observation (", mu, "s, Log Scale)")))
+p <- p + labs(x = "Max Depth of Forest", y = expression(paste("Predictions Per Second")))
 
-p <- p + scale_y_continuous(trans='log10')
+#p <- p + scale_y_continuous(trans='log10')
 p <- p + scale_colour_manual(values=c("Bin+(MC)"="#e41a1c", "BF(MC)"="#4daf4a", "RerF-Batch(MC)"="#e78ac3", "XGBoost-Batch(MC)"="#fc8d62" ), labels=c("BF","Bin+","RerF","XGBoost"), name=NULL)
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
