@@ -488,7 +488,7 @@ int main(int argc, char* argv[]) {
 				tester.makePredictions(observations);
 				stop_time = std::chrono::high_resolution_clock::now();
 				diffMilli = stop_time - start_time;
-				outfile << std::fixed << "experiment1, BF, Nnist, SingleCore, 1, " << diffMilli.count()<< std::endl;
+				outfile << std::fixed << "experiment1, BF, MNIST, SingleCore, 1, " << diffMilli.count()<< std::endl;
 				if (observations.returnPercentRight() != percentRight){
 					std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 					//outfile << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
@@ -1058,7 +1058,7 @@ int main(int argc, char* argv[]) {
 			std::cout << "running improv6 Test"; 
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv6 Test"; 
-			improv8 tester(forestFileName1,1,travs, 16, 5);
+			improv6 tester(forestFileName1,1,travs, 16, 5);
 			tester.printForest();
 			printf("size of a node is %d\n",(int) sizeof(padNode));
 			printf("starting run\n");
