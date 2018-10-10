@@ -94,9 +94,7 @@ p <- p + theme_minimal()
 p <- p + guides(fill=FALSE)
 p <- p + labs(x = "Number of Threads Used", y = "Speed Up")
 
-p <- p + scale_color_manual(values=c(" Bin+"="#b2182b", " Bin"="#ef8a62", " Stat"="#fddbc7", " DF"="#d1e5f0", " DF-"="#67a9cf", " BF"="#2166ac", "ideal"="black"), labels=c("BF","DF","DF-","Stat","Bin","Bin+","Ideal"),  name=NULL, guide=guide_legend(nrow=1))
-# old color scheme
-#p <- p + scale_colour_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a", "ideal"="black"),labels=c("BF","DF","DF-","Stat","Bin","Bin+","Ideal"), drop=FALSE, name=NULL,guide=guide_legend(nrow=1))
+p <- p + scale_colour_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a", "ideal"="black"),labels=c("BF","DF","DF-","Stat","Bin","Bin+","Ideal"), drop=FALSE, name=NULL,guide=guide_legend(nrow=1))
 #p <- p + scale_x_discrete(drop=FALSE)
 
 p <- p + leg

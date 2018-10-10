@@ -20,17 +20,17 @@ data_summary <- function(data, varname, groupnames){
 }
 
 
-mydata <- read.csv(file="../experiment1/experiment1.csv", header=FALSE)
-mydata <- rbind(mydata,read.csv(file="../experiment1/experiment1a.csv", header=FALSE))
+mydata <- read.csv(file="experiment4.csv", header=FALSE)
+#mydata <- rbind(mydata,read.csv(file="ment1/experiment1a.csv", header=FALSE))
 
-#mydata$V2  <- relevel(mydata$V2, " Bin")
+mydata$V2  <- relevel(mydata$V2, " Bin")
 mydata$V2  <- relevel(mydata$V2, " Stat")
 mydata$V2  <- relevel(mydata$V2, " DF-")
 mydata$V2  <- relevel(mydata$V2, " DF")
 mydata$V2  <- relevel(mydata$V2, " BF")
 
-mydata <- mydata[mydata$V5==1,]
-mydata <- mydata[mydata$V2!=" Bin+",]
+#mydata <- mydata[mydata$V5==1,]
+#mydata <- mydata[mydata$V2!=" Bin+",]
 
 z <- mydata$V3 == " MNIST"
 mydata[z,]$V6 <- mydata[z,]$V6/10000
@@ -41,13 +41,13 @@ mydata[z,]$V6 <- mydata[z,]$V6/50000
 
 
 
-mydata <- data_summary(mydata, varname="V6",groupnames=c("V2", "V3"))
+#mydata <- data_summary(mydata, varname="V6",groupnames=c("V2", "V3"))
 
 
 data_Relative <- function(data, varnameTimes, varnameTechnique, groupnames){
 	require(plyr)
 	summary_func <- function(x, col1, col2){
-		binTime <- x[[col1]][x[[col2]]==" Bin"]
+		binTime <- median(x[[col1]][x[[col2]]==" Bin+"])
 		x[[col1]] = x[[col1]]/binTime
 		x
 	}
@@ -60,16 +60,17 @@ mydata <- data_Relative(mydata,varnameTimes="V6",varnameTechnique="V2",groupname
 
 leg <- theme(legend.text = element_text(size = 19), legend.title=element_blank(), plot.title = element_text(size = 19,  face="bold"), plot.subtitle = element_text(size = 19),axis.title.x = element_text(size=19), axis.text.x = element_text(size=19), axis.title.y = element_text(size=19), axis.text.y = element_text(size=19))
 
-p <- ggplot(mydata, aes(x=V3, y=V6, fill=V2)) + 
-	geom_bar(stat="identity", position=position_dodge())
+p <- ggplot(mydata, aes(x=V3, y=V6, color=V2))  
+p <- p + geom_jitter(size=4)
+#	geom_bar(stat="identity", position=position_dodge())
 
 p <- p +  theme_minimal() 
 
 p <- p + labs(x = NULL, y ="Inference Time Relative to Bin")
 
 p <- p + theme(legend.position="bottom",axis.title.x=element_blank(), axis.text.x=element_blank(), legend.title=element_text(" "))
-p <- p + scale_fill_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"), name=" " )
-
+p <- p + scale_color_manual(values=c(" Bin+"="#b2182b", " Bin"="#ef8a62", " Stat"="#fddbc7", " DF"="#d1e5f0", " DF-"="#67a9cf", " BF"="#2166ac"),labels=c("BF","DF","DF-","Stat","Bin","Bin+","Ideal"),  name=NULL, guide=guide_legend(nrow=1))
+p <- p + guides(colour = guide_legend(nrow=1))
 p <- p + leg
 
 png(file="EncodingContributions.png")
@@ -77,9 +78,9 @@ print(p)
 dev.off()
 
 
-
-mydata <- read.csv(file="../experiment1/experiment1.csv", header=FALSE)
-mydata <- rbind(mydata,read.csv(file="../experiment1/experiment1a.csv", header=FALSE))
+if(FALSE){
+mydata <- read.csv(file="experiment4.csv", header=FALSE)
+#mydata <- rbind(mydata,read.csv(file="../experiment1/experiment1a.csv", header=FALSE))
 
 mydata <- mydata[mydata$V5==1,]
 mydata <- mydata[mydata$V2==" Bin+" | mydata$V2==" BF" | mydata$V2==" Bin",]
@@ -120,4 +121,4 @@ p <- p + leg
 png(file="AlgorithmContributions.png")
 print(p)
 dev.off()
-
+}
