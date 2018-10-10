@@ -42,13 +42,16 @@ rerf/
 *.ignore
 *.swp
 bin/
-res/allstate
-res/mnist
-res/higgs
+#res/allstate
+#res/mnist
+#res/higgs
+res/
+experiments/experiment5/mnist/*.csv
+experiments/experiment5/higgs/*.csv
 
 # The forest in csv form
-*.csv*
+#*.csv*
 
 # The output from experiments
-*.png
+#*.png
 *.model
