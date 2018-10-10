@@ -65,7 +65,6 @@ experiment1, Bin+, Higgs, SingleCore, 1, 19173050.239000
 experiment1, Bin+, Higgs, SingleCore, 1, 19131716.236000
 experiment1, Bin+, Higgs, SingleCore, 1, 18694875.483000
 experiment1, BF, MNIST, SingleCore, 1, 15563978.090000
-experiment1, BF, MNIST, SingleCore, 1, 20148719.389000
 experiment1, BF, MNIST, SingleCore, 1, 14135629.891000
 experiment1, BF, MNIST, SingleCore, 1, 14051106.819000
 experiment1, BF, MNIST, SingleCore, 1, 13935138.866000

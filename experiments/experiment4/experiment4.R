@@ -66,9 +66,12 @@ p <- p + geom_jitter(size=4)
 
 p <- p +  theme_minimal() 
 
-p <- p + labs(x = NULL, y ="Inference Time Relative to Bin")
+p <- p + labs(x = NULL, y ="Inference Time Relative to Bin+")
 
 p <- p + theme(legend.position="bottom",axis.title.x=element_blank(), axis.text.x=element_blank(), legend.title=element_text(" "))
+
+p <- p + expand_limits(y = 0)
+
 p <- p + scale_color_manual(values=c(" Bin+"="#b2182b", " Bin"="#ef8a62", " Stat"="#fddbc7", " DF"="#d1e5f0", " DF-"="#67a9cf", " BF"="#2166ac"),labels=c("BF","DF","DF-","Stat","Bin","Bin+","Ideal"),  name=NULL, guide=guide_legend(nrow=1))
 p <- p + guides(colour = guide_legend(nrow=1))
 p <- p + leg
