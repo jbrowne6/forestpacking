@@ -94,6 +94,20 @@ experiment3Remove: $(OBJECTS)
 	@rm src/experiment3.cpp
 ###########################################################
 
+###########################Experiment3####################
+experiment4: | experiment4Move resources experiment4Remove
+
+experiment4Move:	
+	@cp experiments/experiment4/experiment4.cpp src/
+experiment4Move:	TARGET     := experiment4
+experiment4Move:	SOURCES    := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+experiment4Move:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+
+experiment4Remove: $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/experiment4 $^ $(LIB)
+	@rm src/experiment4.cpp
+###########################################################
+
 ###########################Experiment5a####################
 experiment5a: | experiment5aMove resources experiment5aRemove
 

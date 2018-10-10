@@ -37,8 +37,7 @@ int main(int argc, char* argv[]) {
 	std::chrono::duration<double, std::micro> diffMilli;
 
 	float percentRight = 0;
-	int numTimes = 10;
-	int numCores = 1;
+	int numTimes = 3;
 
 
 
@@ -54,8 +53,8 @@ int main(int argc, char* argv[]) {
 			//////improv8/////////
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
-
-			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
+int numDepth = 3;
+		//	for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
 				for(int numBins = 1; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName1,1,travs, numBins, numDepth);
 					tester.printForest();
@@ -63,6 +62,8 @@ int main(int argc, char* argv[]) {
 					printf("starting run\n");
 					int treesPerBin = 2048/numBins;
 
+					for(int numCores = 1; numCores <= 32; numCores *= 2){	
+						if(numBins >= numCores){
 						for(int runNum = 0; runNum < numTimes; ++runNum){
 							start_time = std::chrono::high_resolution_clock::now();
 							tester.makePredictionsMultiTree(observations,numCores);
@@ -72,9 +73,9 @@ int main(int argc, char* argv[]) {
 							std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 							std::cout << std::fixed << "experiment3, Bin+, Higgs, MultiTree, " << treesPerBin << ", " << numDepth << ", " << diffMilli.count()<< std::endl;
 						}
-					
+					}
+					}
 				}
-			}
 		}//end improv8 namespace
 
 
@@ -98,7 +99,8 @@ int main(int argc, char* argv[]) {
 			//////improv8/////////
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
-			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
+			int numDepth = 3;
+			//for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
 				for(int numBins = 1; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName2,1,travs, numBins, numDepth);
 					tester.printForest();
@@ -106,6 +108,8 @@ int main(int argc, char* argv[]) {
 					printf("starting run\n");
 					int treesPerBin = 2048/numBins;
 
+					for(int numCores = 1; numCores <= 32; numCores *= 2){	
+						if(numBins >= numCores){
 						for(int runNum = 0; runNum < numTimes; ++runNum){
 							start_time = std::chrono::high_resolution_clock::now();
 							tester.makePredictionsMultiTree(observations,numCores);
@@ -115,6 +119,7 @@ int main(int argc, char* argv[]) {
 							std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 							std::cout << std::fixed << "experiment3, Bin+, MNIST, MultiTree, " << treesPerBin << ", " << numDepth << ", " << diffMilli.count()<< std::endl;
 						}
+					}
 				}
 			}
 
@@ -139,8 +144,8 @@ int main(int argc, char* argv[]) {
 			std::cout << "\n\n\n"; 
 			std::cout << "running improv8 Test"; 
 
-
-			for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
+int numDepth = 3;
+		//	for(int numDepth = 0; numDepth <= maxDepth; numDepth+=5){	
 				for(int numBins = 1; numBins <= 2048; numBins *= 2){	
 					improv8 tester(forestFileName1,1,travs, numBins, numDepth);
 					tester.printForest();
@@ -148,6 +153,8 @@ int main(int argc, char* argv[]) {
 					printf("starting run\n");
 					int treesPerBin = 2048/numBins;
 
+					for(int numCores = 1; numCores <= 32; numCores *= 2){	
+						if(numBins >= numCores){
 						for(int runNum = 0; runNum < numTimes; ++runNum){
 							start_time = std::chrono::high_resolution_clock::now();
 							tester.makePredictionsMultiTree(observations,numCores);
@@ -157,7 +164,7 @@ int main(int argc, char* argv[]) {
 							std::cout << "percentRight does not match: " << percentRight << " : " << observations.returnPercentRight() << "\n";
 							std::cout << std::fixed << "experiment3, Bin+, Allstate, MultiTree, " << treesPerBin << ", " << numDepth << ", " << diffMilli.count()<< std::endl;
 						}
-					
+					}
 				}
 			}
 
