@@ -63,8 +63,6 @@ print(p)
 dev.off()
 
 
-
-
 data_speedUp <- function(data, varnameTimes, varnameCores, groupnames){
       require(plyr)
   summary_func <- function(x, col1, col2){

@@ -57,7 +57,9 @@ p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 p <- p + labs(x = "Number of Threads Used", y =expression(paste("Mean Latency(", mu,"s)")))
 #p <- p + labs(x = "Number of Threads Used", y =expression(paste("Mean Inference Time\nper Observation (", mu,"s)")))
 p <- p + scale_y_continuous(trans = 'log10')
-p <- p + scale_colour_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"))
+p <- p + scale_color_manual(values=c(" Bin+"="#b2182b", " Bin"="#ef8a62", " Stat"="#fddbc7", " DF"="#d1e5f0", " DF-"="#67a9cf", " BF"="#2166ac", "ideal"="black"), labels=c("BF","DF","DF-","Stat","Bin","Bin+","Ideal"),  name=NULL, guide=guide_legend(nrow=1))
+#old color scheme
+#p <- p + scale_colour_manual(values=c(" Bin+"="#e41a1c", " Bin"="#377eb8", " Stat"="#984ea3", " DF"="#ff7f00", " DF-"="#ffff33", " BF"="#4daf4a"))
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
 p <- p + theme(strip.background = element_rect(fill="grey95"))
@@ -102,7 +104,7 @@ p <- p + scale_color_manual(values=c(" Bin+"="#b2182b", " Bin"="#ef8a62", " Stat
 p <- p + leg
 p <- p + facet_grid(. ~ V3, scales="free")
 p <- p + geom_abline(intercept = 0 , slope = 1, color="black", size=1)
-p <- p + theme(legend.position="bottom")
+p <- p + theme(legend.position="bottom",legend.margin=margin(t=-0.30, r=0, b=-0.25, l=0, unit="cm"))
 p <- p + theme(strip.text.x=element_blank())
 ggsave("speedUp.png", width=6.5, height=1.75, units="in")
 #png(file="experiment1SpeedUp.png")

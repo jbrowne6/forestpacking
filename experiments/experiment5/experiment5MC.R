@@ -78,10 +78,12 @@ p <- p + theme_minimal()
 p <- p + labs(x = "Max Depth of Forest", y = expression(paste("Predictions Per Second")))
 
 #p <- p + scale_y_continuous(trans='log10')
-p <- p + scale_colour_manual(values=c("Bin+(MC)"="#e41a1c", "BF(MC)"="#4daf4a", "RerF-Batch(MC)"="#e78ac3", "XGBoost-Batch(MC)"="#fc8d62" ), labels=c("BF","Bin+","RerF","XGBoost"), name=NULL)
+p <- p + scale_colour_manual(values=c("Bin+(MC)"="#b2182b", "BF(MC)"="#2166ac", "RerF-Batch(MC)"="#e78ac3", "XGBoost-Batch(MC)"="#fc8d62" ), labels=c("BF","Bin+","RerF","XGBoost"), name=NULL, guide=guide_legend(nrow=1))
+#old color scheme
+#p <- p + scale_colour_manual(values=c("Bin+(MC)"="#e41a1c", "BF(MC)"="#4daf4a", "RerF-Batch(MC)"="#e78ac3", "XGBoost-Batch(MC)"="#fc8d62" ), labels=c("BF","Bin+","RerF","XGBoost"), name=NULL)
 p <- p + leg
 p <- p + facet_grid(. ~ V3)
-p <- p + theme(legend.position="bottom")
+p <- p + theme(legend.position="bottom",legend.margin=margin(t=-0.30, r=0, b=-0.25, l=0, unit="cm"))
 p <- p + theme(strip.background = element_rect(fill="grey95"))
 
 png(file="SystemMC.png")

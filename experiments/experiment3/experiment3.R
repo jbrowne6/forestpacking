@@ -45,8 +45,10 @@ p <- ggplot(mydata, aes(x=V5, y=V7, group=V6, color=V6)) + geom_line(size=1)
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 #p <- p + scale_colour_manual(name="Depth")
 
-p <- p + scale_colour_manual(values=c("0"="#a6611a", "5"="#dfc27d", "10"="#80cdc1", "15"="#018571"), name="Intertwined Depth")
-p <- p + theme(legend.position="bottom")
+p <- p + scale_colour_manual(values=c("0"="#a6611a", "5"="#dfc27d", "10"="#80cdc1", "15"="#018571"), name="Intertwined Depth", guide=guide_legend(nrow=1))
+
+p <- p + theme(legend.position="bottom",legend.margin=margin(t=-0.30, r=0, b=-0.25, l=0, unit="cm"))
+#p <- p + theme(legend.position="bottom")
 p <- p + labs(x = "Trees Per Bin (log scale)", y =expression(paste("Mean Prediction Time per Observation (log scale, ", mu, "s)")))
 p <- p + leg
 p <- p + scale_x_continuous(trans='log2')
@@ -55,7 +57,7 @@ p <- p + facet_grid(. ~ V3)
 p <- p + theme(strip.background = element_rect(fill="grey95"))
 p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.text.y = element_text(angle=90, hjust=1))
 
-png(file="depthAndStripeTest.png")
+png(file="depthAndStripe.png")
 print(p)
 dev.off()
 
