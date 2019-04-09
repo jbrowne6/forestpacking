@@ -32,6 +32,26 @@ INCDEP      := -I$(INCDIR)
 #---------------------------------------------------------------------------------
 SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+ALLOBJS			:= obj/improv1.o obj/improv2.o obj/improv4.o obj/improv6.o obj/improv8.o obj/naive.o obj/inferenceSamples.o obj/padForest.o obj/padNode.o obj/padNodeStat.o obj/treeBin2.o
+
+###########################ExperimentAll####################
+experimentAll: | resources experimentAllMove experimentAllCombine
+
+experimentAllMove:	
+experimentAllMove:	SOURCES    := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+experimentAllMove:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+
+experimentAllCombine: $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/experiment1 obj/experiment1.o $(ALLOBJS) $(LIB)
+	$(CC) -o $(TARGETDIR)/experiment2 obj/experiment2.o $(ALLOBJS) $(LIB)
+	$(CC) -o $(TARGETDIR)/experiment3 obj/experiment3.o $(ALLOBJS) $(LIB)
+	$(CC) -o $(TARGETDIR)/experiment4 obj/experiment4.o $(ALLOBJS) $(LIB)
+	$(CC) -o $(TARGETDIR)/experiment5a obj/experiment5a.o $(ALLOBJS) $(LIB)
+	$(CC) -o $(TARGETDIR)/experiment5d obj/experiment5d.o $(ALLOBJS) $(LIB)
+###########################################################
+
+
+
 
 packer: mvPacker all rmPacker
 
@@ -56,15 +76,18 @@ resources: directories
 experiment1: | experiment1Move resources experiment1Remove
 
 experiment1Move:	
-	@cp experiments/experiment1/experiment1.cpp src/
+#	@cp experiments/experiment1/experiment1.cpp src/
 experiment1Move:	TARGET     := experiment1
 experiment1Move:	SOURCES    := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 experiment1Move:	OBJECTS    := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 experiment1Remove: $(OBJECTS)
-	$(CC) -o $(TARGETDIR)/experiment1 $^ $(LIB)
-	@rm src/experiment1.cpp
+	$(CC) -o $(TARGETDIR)/experiment1 obj/experiment1.o $(ALLOBJS) $(LIB)
+	$(CC) -o $(TARGETDIR)/experiment2 obj/experiment2.o $(ALLOBJS) $(LIB)
 ###########################################################
+
+
+
 
 ###########################Experiment2####################
 experiment2: | experiment2Move resources experiment2Remove
