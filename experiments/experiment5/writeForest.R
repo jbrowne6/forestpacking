@@ -117,7 +117,7 @@ if(dataSetSelect == "IRIS"){
 
 if(!observedError){
 runDepth <- c(6,10,14)
-runTrees <- c(128,256,512)
+runTrees <- c(128,256,512,1024,2048)
   for (depthToRun in runDepth){
     for(treesToRun in runTrees){
 

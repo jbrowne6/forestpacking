@@ -39,9 +39,27 @@ leg <- theme(legend.text = element_text(size = 13), legend.title=element_text(si
 p <- ggplot(mydata, aes(x=V5, y=V7, group=V8, color=V8)) + geom_line(size=1)
   
 
-
 p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 #p <- p + scale_colour_manual(name="Depth")
+
+#p <- p + scale_colour_manual(name="Number of Threads")
+p <- p + labs(x = "Trees Per Bin", y =expression(paste("Mean Latency (", mu, "s)")))
+p <- p + leg
+p <- p + scale_x_continuous(trans='log2')
+#p <- p + scale_y_continuous(trans='log2')
+p <- p + facet_grid(. ~ V3)
+p <- p + theme(strip.background = element_rect(fill="grey95"))
+p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.text.y = element_text(angle=90, hjust=1))
+#+ guides(colour = guide_legend(nrow = 1))
+p <- p + labs(color="Number of Threads:")
+p <- p + theme(legend.position="bottom",legend.margin=margin(t=-0.30, r=0, b=-0.25, l=0, unit="cm"))
+p <- p + guides(color = guide_legend(label.position = "right", label.hjust = 1,nrow=1 ))
+png(file="stripeAndCore.png")
+print(p)
+dev.off()
+
+if(FALSE){
+p <- p + scale_fill_brewer(palette="Paired") + theme_minimal()
 
 #p <- p + scale_colour_manual(name="Number of Threads")
 p <- p + theme(legend.position="bottom")
@@ -54,7 +72,8 @@ p <- p + theme(strip.background = element_rect(fill="grey95"))
 p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1), axis.text.y = element_text(angle=90, hjust=1))
 #+ guides(colour = guide_legend(nrow = 1))
 p <- p + labs(color="Number of Threads:")
+
 png(file="depthAndStripe.png")
 print(p)
 dev.off()
-
+}
