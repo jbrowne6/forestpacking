@@ -1,6 +1,6 @@
 
 trees <- 2048
-nCs <- 32 # this is the number of cores to use
+nCs <- 16 # this is the number of cores to use
 dataSetSelect <- "higgs" #"MNIST" "IRIS" "allstate" "higgs"
 
 wForest <- function(forest, depth, numTrees){
@@ -122,7 +122,7 @@ runTrees <- c(128,256,512,1024,2048)
     for(treesToRun in runTrees){
 
   print("growing forest")
-  forest <- RerF(X,Y,min.parent =1, max.depth=depthToRun, trees=treesToRun, seed=sample(1:10000,1),mat.options = list(p = ncol(X), d =ceiling(sqrt(ncol(X))), random.matrix = "rf", rho = 1/ncol(X)), num.cores = nCs)
+  forest <- RerF(X,Y,min.parent =1, max.depth=depthToRun, trees=treesToRun, seed=sample(1:10000,1), num.cores = nCs)
 
   print("Saving forest to CSV")
   wForest(forest, depthToRun,treesToRun)
